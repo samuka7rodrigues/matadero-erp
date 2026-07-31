@@ -1,4 +1,4 @@
-import { createMiddlewareClient } from '@supabase/ssr';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import { locales, defaultLocale } from '@/i18n/request';
 
@@ -7,28 +7,45 @@ import { locales, defaultLocale } from '@/i18n/request';
  * Usado no middleware para refrescar tokens automaticamente.
  */
 export async function updateSession(request: NextRequest) {
-  let response = NextResponse.next({
+  const response = NextResponse.next({
     request: { headers: request.headers },
   });
 
-  const supabase = createMiddlewareClient({
-    request,
-    response,
-  });
+  // A partir do @supabase/ssr@0.5.x, createMiddlewareClient foi removido.
+  // Usa-se createServerClient com cookies getAll/setAll (Next.js 14+).
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            request.cookies.set(name, value);
+            response.cookies.set(name, value, options);
+          });
+        },
+      },
+    }
+  );
 
   const { data: { user } } = await supabase.auth.getUser();
 
   const pathname = request.nextUrl.pathname;
 
-  // Redireciona para /login se tentar aceder a área protegida sem auth
-  const publicPaths = ['/login', '/forgot-password', '/'];
-  const isPublicPath = publicPaths.some((p) => pathname.endsWith(p)) ||
-    locales.some((l) => pathname.endsWith(`/${l}`));
+  // Detecta o locale atual (primeiro segmento da URL)
+  const localeInPath = locales.find((l) => pathname.startsWith(`/${l}`)) || defaultLocale;
+  const pathnameWithoutLocale = pathname.replace(`/${localeInPath}`, '') || '/';
+
+  // Rotas públicas (sem precisar de auth)
+  const publicPaths = ['/', '/login', '/forgot-password'];
+  const isPublicPath = publicPaths.includes(pathnameWithoutLocale);
 
   if (!user && !isPublicPath) {
-    const locale = pathname.split('/')[1] || defaultLocale;
     const url = request.nextUrl.clone();
-    url.pathname = `/${locale}/login`;
+    url.pathname = `/${localeInPath}/login`;
     return NextResponse.redirect(url);
   }
 

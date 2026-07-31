@@ -1,11 +1,12 @@
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/config';
 import { AppShell } from '@/components/app-shell';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Plus, FileDown } from 'lucide-react';
-import { FuncionariosList } from '@/components/funcionarios/funcionarios-list';
-import { listFuncionarios } from '@/actions/funcionarios';
+import { Plus } from 'lucide-react';
+import { ColaboradoresList } from '@/components/colaboradores/colaboradores-list';
+import { ExportarButton } from '@/components/colaboradores/exportar-button';
+import { listColaboradores } from '@/actions/colaboradores';
 
 interface PageProps {
   searchParams: {
@@ -15,13 +16,13 @@ interface PageProps {
   };
 }
 
-export default async function FuncionariosPage({ searchParams }: PageProps) {
-  const t = useTranslations('Funcionarios');
+export default async function ColaboradoresPage({ searchParams }: PageProps) {
+  const t = await getTranslations('Colaboradores');
   const page = parseInt(searchParams.page || '1');
   const search = searchParams.search || '';
   const estado = searchParams.estado || '';
 
-  const result = await listFuncionarios({ page, pageSize: 25, search, estado });
+  const result = await listColaboradores({ page, pageSize: 25, search, estado });
 
   return (
     <AppShell>
@@ -29,12 +30,9 @@ export default async function FuncionariosPage({ searchParams }: PageProps) {
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
           <div className="flex gap-2">
-            <Button variant="outline">
-              <FileDown className="mr-2 h-4 w-4" />
-              Exportar
-            </Button>
+            <ExportarButton search={search} estado={estado} />
             <Button asChild>
-              <Link href="/funcionarios/new">
+              <Link href="/colaboradores/new">
                 <Plus className="mr-2 h-4 w-4" />
                 {t('new')}
               </Link>
@@ -43,8 +41,8 @@ export default async function FuncionariosPage({ searchParams }: PageProps) {
         </div>
 
         <Card>
-          <FuncionariosList
-            funcionarios={result.data}
+          <ColaboradoresList
+            colaboradores={result.data}
             total={result.total}
             page={result.page}
             pageSize={result.pageSize}

@@ -17,7 +17,7 @@
   "Nav": {
     "dashboard": "Panel",
     "rh": "Recursos Humanos",
-    "funcionarios": "Empleados",
+    "colaboradores": "Colaboradores",
     "contratos": "Contratos",
     "ferias": "Vacaciones",
     "nominas": "Nóminas",
@@ -30,14 +30,15 @@
     "tesouraria": "Tesorería",
     "configuracoes": "Configuración",
     "utilizadores": "Usuarios",
+    "departamentos": "Departamentos",
     "idioma": "Idioma"
   },
-  "Funcionarios": {
-    "title": "Empleados",
-    "new": "Nuevo Empleado",
-    "edit": "Editar Empleado",
+  "Colaboradores": {
+    "title": "Colaboradores",
+    "new": "Nuevo Colaborador",
+    "edit": "Editar Colaborador",
     "details": "Detalles",
-    "list": "Lista de Empleados",
+    "list": "Lista de Colaboradores",
     "fields": {
       "nome": "Nombre completo",
       "nif": "NIF",
@@ -79,10 +80,10 @@
       "uploadDocumento": "Subir documento"
     },
     "messages": {
-      "criado": "Empleado creado con éxito",
-      "atualizado": "Empleado actualizado",
-      "eliminado": "Empleado eliminado",
-      "erroEliminar": "Error al eliminar empleado"
+      "criado": "Colaborador creado con éxito",
+      "atualizado": "Colaborador actualizado",
+      "eliminado": "Colaborador eliminado",
+      "erroEliminar": "Error al eliminar colaborador"
     }
   },
   "Common": {
@@ -104,13 +105,67 @@
     "next": "Siguiente",
     "back": "Volver",
     "required": "Obligatorio",
-    "optional": "Opcional"
+    "optional": "Opcional",
+    "soon": "Próximamente",
+    "underDevelopment": "Funcionalidad en desarrollo"
+  },
+  "Ponto": {
+    "title": "Fichaje",
+    "markTitle": "Registrar Fichaje",
+    "markEntry": "Marcar Entrada",
+    "markExit": "Marcar Salida",
+    "markLunchStart": "Iniciar Almuerzo",
+    "markLunchEnd": "Terminar Almuerzo",
+    "todayHistory": "Fichajes de hoy",
+    "noMarcacoes": "Sin fichajes hoy",
+    "ultimaMarcacao": "Último fichaje",
+    "tipo": {
+      "entrada": "Entrada",
+      "saida": "Salida",
+      "inicio_almoco": "Inicio Almuerzo",
+      "volta_almoco": "Fin Almuerzo"
+    },
+    "resumo": {
+      "title": "Resumen del día",
+      "horasOrdinarias": "Horas ordinarias",
+      "horasExtras": "Horas extra",
+      "horasNoturnas": "Horas nocturnas",
+      "total": "Total trabajado"
+    },
+    "messages": {
+      "marcado": "Fichaje registrado",
+      "erro": "Error al registrar fichaje"
+    }
+  },
+  "Departamento": {
+    "title": "Departamentos",
+    "list": "Lista de Departamentos",
+    "codigo": "Código",
+    "nombre": "Nombre",
+    "descripcion": "Descripción"
+  },
+  "Utilizadores": {
+    "title": "Usuarios",
+    "list": "Lista de Usuarios",
+    "email": "Correo electrónico",
+    "role": "Perfil",
+    "ativo": "Activo",
+    "ultimoAcesso": "Último acceso",
+    "new": "Nuevo Usuario"
+  },
+  "Configuracoes": {
+    "title": "Configuración",
+    "general": "General",
+    "locale": "Idioma",
+    "timezone": "Zona horaria",
+    "currency": "Moneda",
+    "about": "Acerca de"
   },
   "Dashboard": {
     "title": "Panel",
     "welcome": "Bienvenido, {name}",
     "kpis": {
-      "totalFuncionarios": "Total de Empleados",
+      "totalColaboradores": "Total de Colaboradores",
       "admitidosMes": "Ingresados este mes",
       "contratosFim": "Contratos por expirar",
       "examesVencer": "Exámenes médicos por vencer"

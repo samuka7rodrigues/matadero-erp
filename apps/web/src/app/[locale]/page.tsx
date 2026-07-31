@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/config';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, Clock, Receipt, Building2 } from 'lucide-react';
 
 export default function HomePage() {
@@ -23,7 +23,7 @@ export default function HomePage() {
           <CardHeader>
             <Users className="h-8 w-8 text-primary mb-2" />
             <CardTitle>{t('Nav.rh')}</CardTitle>
-            <CardDescription>8 módulos · 100 funcionários</CardDescription>
+            <CardDescription>8 módulos · 100 colaboradores</CardDescription>
           </CardHeader>
         </Card>
         <Card>

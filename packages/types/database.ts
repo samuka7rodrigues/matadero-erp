@@ -8,12 +8,12 @@
  * Em produção, regenerar com: `supabase gen types typescript`
  */
 
-export type EstadoFuncionario = 'ativo' | 'baixa' | 'ferias' | 'suspenso' | 'inativo';
+export type EstadoColaborador = 'ativo' | 'baixa' | 'ferias' | 'suspenso' | 'inativo';
 export type TipoContrato = 'indefinido' | 'temporal' | 'formacao' | 'pratica' | 'fixo_discontinuo' | 'obra_servico';
 export type TipoJornada = 'completa' | 'parcial' | 'reduzida' | 'intensiva';
 export type TipoDocumento = 'dni' | 'nie' | 'contrato' | 'exame_medico' | 'epi' | 'outro';
 export type AptidaoMedica = 'apto' | 'no_apto' | 'apto_con_restricciones';
-export type RoleUtilizador = 'admin' | 'rh' | 'financeiro' | 'encarregado' | 'funcionario' | 'auditor';
+export type RoleUtilizador = 'admin' | 'rh' | 'financeiro' | 'encarregado' | 'colaborador' | 'auditor';
 export type EstadoFerias = 'pendente' | 'aprovado' | 'rejeitado' | 'cancelado';
 export type TipoMarcacao = 'entrada' | 'saida' | 'inicio_almoco' | 'volta_almoco' | 'saida_emergencia';
 export type TipoTurno = 'manha' | 'tarde' | 'noite' | 'misto' | 'rotativo';
@@ -29,11 +29,12 @@ export interface Departamento {
   updated_at: string;
 }
 
-export interface Funcionario {
+export interface Colaborador {
   id: string;
   // Pessoais
   nif: string;
   nie: string | null;
+  passaporte: string | null;
   nombre: string;
   apellido1: string;
   apellido2: string | null;
@@ -43,8 +44,8 @@ export interface Funcionario {
   sexo: 'M' | 'F' | 'O' | null;
   // Contacto
   email: string;
-  telefone: string | null;
-  telefone_emergencia: string | null;
+  telefono: string | null;
+  telefono_emergencia: string | null;
   contacto_emergencia: string | null;
   direccion: string | null;
   codigo_postal: string | null;
@@ -54,7 +55,7 @@ export interface Funcionario {
   // Profissionais
   fecha_admision: string;
   fecha_fin_contrato: string | null;
-  estado: EstadoFuncionario;
+  estado: EstadoColaborador;
   tipo_contrato: TipoContrato;
   jornada: TipoJornada;
   horas_semanales: number;
@@ -78,14 +79,15 @@ export interface Funcionario {
   deleted_at: string | null;
 }
 
-export interface FuncionarioCompleto extends Funcionario {
+export interface ColaboradorCompleto extends Colaborador {
   departamento_nombre?: string;
+  departamentos?: { nombre: string | null; codigo: string | null } | null;
   dias_para_fim?: number;
 }
 
 export interface Contrato {
   id: string;
-  funcionario_id: string;
+  colaborador_id: string;
   tipo: TipoContrato;
   fecha_inicio: string;
   fecha_fin: string | null;
@@ -104,9 +106,9 @@ export interface Contrato {
   updated_at: string;
 }
 
-export interface DocumentoFuncionario {
+export interface DocumentoColaborador {
   id: string;
-  funcionario_id: string;
+  colaborador_id: string;
   tipo: TipoDocumento;
   nombre: string;
   descripcion: string | null;
@@ -121,7 +123,7 @@ export interface DocumentoFuncionario {
 
 export interface ExameMedico {
   id: string;
-  funcionario_id: string;
+  colaborador_id: string;
   fecha_examen: string;
   fecha_validez: string;
   aptidao: AptidaoMedica;
@@ -136,7 +138,7 @@ export interface ExameMedico {
 
 export interface EntregaEPI {
   id: string;
-  funcionario_id: string;
+  colaborador_id: string;
   epi_tipo: string;
   epi_descripcion: string | null;
   cantidad: number;
@@ -154,7 +156,7 @@ export interface EntregaEPI {
 export interface Utilizador {
   id: string;
   user_id: string;
-  funcionario_id: string | null;
+  colaborador_id: string | null;
   role: RoleUtilizador;
   email: string;
   ativo: boolean;
@@ -166,7 +168,7 @@ export interface Utilizador {
 
 export interface Ferias {
   id: string;
-  funcionario_id: string;
+  colaborador_id: string;
   data_inicio: string;
   data_fim: string;
   dias: number;
@@ -184,7 +186,7 @@ export interface Ferias {
 
 export interface MarcacaoPonto {
   id: string;
-  funcionario_id: string;
+  colaborador_id: string;
   data_hora: string;
   tipo: TipoMarcacao;
   geolocalizacao: string | null;
@@ -201,7 +203,7 @@ export interface MarcacaoPonto {
 
 export interface Turno {
   id: string;
-  funcionario_id: string;
+  colaborador_id: string;
   data: string;
   hora_inicio: string;
   hora_fim: string;

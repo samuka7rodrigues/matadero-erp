@@ -4,7 +4,7 @@
 **Versão:** 1.0
 **Data:** 2026-07-31
 **Autor:** Samuel Oliveira (Analista Funcional)
-**Cliente:** Matadouro (Espanha) — ~100 funcionários
+**Cliente:** Matadouro (Espanha) — ~100 colaboradores
 **Idioma do sistema:** Português (PT-BR) + Espanhol (ES)
 **Idioma deste documento:** Português (PT-BR)
 
@@ -13,7 +13,7 @@
 ## 1. Introdução
 
 ### 1.1. Objetivo do documento
-Este documento especifica, do ponto de vista funcional, os requisitos do **ERP Matadero**, sistema de informação destinado a apoiar a gestão de Recursos Humanos, Controle de Ponto/Horas, Financeiro e Processos Operacionais de um matadouro situado em Espanha, com aproximadamente 100 funcionários.
+Este documento especifica, do ponto de vista funcional, os requisitos do **ERP Matadero**, sistema de informação destinado a apoiar a gestão de Recursos Humanos, Controle de Ponto/Horas, Financeiro e Processos Operacionais de um matadouro situado em Espanha, com aproximadamente 100 colaboradores.
 
 O documento serve como **base contratual** entre o cliente e a equipa de desenvolvimento, e como **referência para todas as fases seguintes** do projeto (design, implementação, testes, homologação).
 
@@ -55,7 +55,7 @@ O documento serve como **base contratual** entre o cliente e a equipa de desenvo
 ## 2. Descrição Geral do Sistema
 
 ### 2.1. Visão do produto
-O **ERP Matadero** é uma plataforma integrada, acessível via web e mobile, desenhada especificamente para matadouros de média dimensão (50–200 funcionários). Centraliza toda a informação operacional, de pessoal e financeira, garantindo:
+O **ERP Matadero** é uma plataforma integrada, acessível via web e mobile, desenhada especificamente para matadouros de média dimensão (50–200 colaboradores). Centraliza toda a informação operacional, de pessoal e financeira, garantindo:
 
 - Conformidade legal com a legislação laboral espanhola
 - Rastreabilidade das operações (preparação para HACCP na Fase 2)
@@ -70,7 +70,7 @@ O **ERP Matadero** é uma plataforma integrada, acessível via web e mobile, des
 | **Responsável de RH** | Gestor de RH | Cadastros, contratos, recibos, férias, relatórios |
 | **Responsável Financeiro** | Controller / contabilista | Lançamentos, pagamentos, relatórios, conciliação |
 | **Encarregado de Produção** | Supervisor de chão de fábrica | Aprovar horas, gerir turnos, ocorrências |
-| **Funcionário** | Operador do matadouro | Marcar ponto, ver recibos, solicitar férias |
+| **Colaborador** | Operador do matadouro | Marcar ponto, ver recibos, solicitar férias |
 | **Auditor** | Auditor interno/externo | Acesso read-only a relatórios e logs |
 
 ### 2.3. Restrições e premissas
@@ -82,7 +82,7 @@ O **ERP Matadero** é uma plataforma integrada, acessível via web e mobile, des
 
 **Premissas:**
 - O cliente dispõe de ligação à internet estável
-- Existe infraestrutrura mínima (1 PC por encarregado, smartphones dos funcionários)
+- Existe infraestrutrura mínima (1 PC por encarregado, smartphones dos colaboradores)
 - A equipa interna do cliente dará formação aos utilizadores
 - Haverá **1 ambiente de produção** e **1 ambiente de testes**
 
@@ -90,10 +90,10 @@ O **ERP Matadero** é uma plataforma integrada, acessível via web e mobile, des
 
 ## 3. Requisitos Funcionais (RF)
 
-### 3.1. Módulo RH — Gestão de Funcionários
+### 3.1. Módulo RH — Gestão de Colaboradores
 
-#### RF-RH-001 — Cadastro de Funcionário
-**Descrição:** O sistema deve permitir o cadastro completo de funcionários.
+#### RF-RH-001 — Cadastro de Colaborador
+**Descrição:** O sistema deve permitir o cadastro completo de colaboradores.
 
 **Atributos obrigatórios:**
 - Dados pessoais (nome, NIF, NIE ou passaporte, data nascimento, nacionalidade, estado civil)
@@ -101,14 +101,14 @@ O **ERP Matadero** é uma plataforma integrada, acessível via web e mobile, des
 - Dados profissionais (data admissão, cargo, departamento, tipo contrato, jornada, salário base, categoría profissional segundo **Convenio Colectivo** aplicable)
 - Dados bancários (IBAN)
 - Documentos digitalizados (DNI, contrato, certificados médicos, EPI's entregues)
-- Foto do funcionário
+- Foto do colaborador
 - **Campos específicos matadouro:** nº segurança social, mutua de acidentes, reconhecimento médico (data, validade, apto/não apto), EPI's atribuídos
 
 **Regras de negócio:**
 - **RN-RH-001:** NIF deve ser único no sistema e validado pelo algoritmo oficial espanhol
 - **RN-RH-002:** A data de admissão não pode ser futura
 - **RN-RH-003:** O salário base não pode ser inferior ao **Salario Mínimo Interprofesional (SMI)** vigente
-- **RN-RH-004:** Funcionários em contacto com carne devem ter **reconhecimento médico válido** para iniciar/continuar a trabalhar
+- **RN-RH-004:** Colaboradores em contacto com carne devem ter **reconhecimento médico válido** para iniciar/continuar a trabalhar
 
 #### RF-RH-002 — Gestão de Contratos
 - CRUD de contratos (indefinido, temporal, formação, prática, etc.)
@@ -116,7 +116,7 @@ O **ERP Matadero** é uma plataforma integrada, acessível via web e mobile, des
 - Alertas de fim de contrato (30, 15, 7 dias antes)
 
 #### RF-RH-003 — Gestão de Férias e Ausências
-- Solicitação de férias pelo funcionário (via mobile/web)
+- Solicitação de férias pelo colaborador (via mobile/web)
 - Workflow de aprovação (Encarregado → RH)
 - Calendário coletivo de férias
 - Tipos de ausência: férias, baixa médica (IT), licença, assuntos próprios, greve
@@ -134,14 +134,14 @@ O **ERP Matadero** é uma plataforma integrada, acessível via web e mobile, des
 #### RF-RH-005 — Cessação (Finiquito)
 - Cálculo automático de finiquito conforme tipo de cessação
 - Geração de documento oficial
-- Atualização de estado do funcionário
+- Atualização de estado do colaborador
 
 ---
 
 ### 3.2. Módulo de Ponto e Horas
 
 #### RF-PT-001 — Marcação de Ponto
-**Descrição:** O sistema deve permitir o registo de entrada/saída dos funcionários.
+**Descrição:** O sistema deve permitir o registo de entrada/saída dos colaboradores.
 
 **Modalidades:**
 - Via **app mobile** (com geolocalização opcional)
@@ -149,7 +149,7 @@ O **ERP Matadero** é uma plataforma integrada, acessível via web e mobile, des
 - Via **PIN numérico** ou **biometria** (futuro — fase 2)
 
 **Atributos de cada marcação:**
-- Funcionário
+- Colaborador
 - Data/hora (timestamp UTC + offset local)
 - Tipo (entrada, saída, pausa almoço, saída emergência)
 - Geolocalização (se mobile)
@@ -171,13 +171,13 @@ O **ERP Matadero** é uma plataforma integrada, acessível via web e mobile, des
 
 #### RF-PT-003 — Turnos e Escalas
 - Planeamento mensal de turnos (matutino, vespertino, noturno)
-- Atribuição por funcionário/departamento
+- Atribuição por colaborador/departamento
 - Visualização em calendário
 - Trocas de turno (com aprovação)
 - Exportação para impressão
 
 #### RF-PT-004 — Relatórios de Ponto (cumprimento RD 8/2019)
-- Relatório mensal por funcionário com totais de horas
+- Relatório mensal por colaborador com totais de horas
 - Exportação para inspeção de trabalho (formato CSV/XML estándar)
 - **Retenção mínima:** 4 anos (RD 8/2019)
 
@@ -245,7 +245,7 @@ O **ERP Matadero** é uma plataforma integrada, acessível via web e mobile, des
 - Interface em PT-BR e ES (seleção automática por browser/dispositivo + manual)
 - Datas e números conforme locale
 - Textos traduzíveis (arquivos .json)
-- Documentos gerados (recibos, faturas) no idioma do funcionário
+- Documentos gerados (recibos, faturas) no idioma do colaborador
 
 #### RF-TR-005 — Auditoria e Logs
 - Registo de: quem fez o quê, quando, de onde (IP)
@@ -301,7 +301,7 @@ O **ERP Matadero** é uma plataforma integrada, acessível via web e mobile, des
 ```mermaid
 graph TB
     subgraph Sistema["Sistema ERP Matadero"]
-        UC01[UC01: Gerir Funcionários]
+        UC01[UC01: Gerir Colaboradores]
         UC02[UC02: Gerir Contratos]
         UC03[UC03: Solicitar Férias]
         UC04[UC04: Aprovar Férias]
@@ -321,7 +321,7 @@ graph TB
     RH((Responsável RH))
     Fin((Responsável Fin.))
     Enc((Encarregado))
-    Func((Funcionário))
+    Col((Colaborador))
     Aud((Auditor))
 
     Admin --> UC13
@@ -340,9 +340,9 @@ graph TB
     Enc --> UC07
     Enc --> UC08
     Enc --> UC09
-    Func --> UC03
-    Func --> UC06
-    Func --> UC07
+    Col --> UC03
+    Col --> UC06
+    Col --> UC07
     Aud --> UC14
     Aud --> UC07
 ```
@@ -353,13 +353,13 @@ graph TB
 
 ```mermaid
 classDiagram
-    class Funcionario {
+    class Colaborador {
         +id: UUID
         +nif: string
         +nome: string
         +dataNascimento: date
         +dataAdmissao: date
-        +estado: EstadoFuncionario
+        +estado: EstadoColaborador
         +salarioBase: decimal
         +categoriaProfissional: string
         +departamento: Departamento
@@ -368,7 +368,7 @@ classDiagram
 
     class Contrato {
         +id: UUID
-        +funcionarioId: UUID
+        +colaboradorId: UUID
         +tipo: TipoContrato
         +dataInicio: date
         +dataFim: date
@@ -380,7 +380,7 @@ classDiagram
 
     class MarcacaoPonto {
         +id: UUID
-        +funcionarioId: UUID
+        +colaboradorId: UUID
         +dataHora: timestamp
         +tipo: TipoMarcacao
         +geolocalizacao: GeoPoint
@@ -390,7 +390,7 @@ classDiagram
 
     class ApuramentoHoras {
         +id: UUID
-        +funcionarioId: UUID
+        +colaboradorId: UUID
         +periodoInicio: date
         +periodoFim: date
         +horasOrdinarias: decimal
@@ -401,7 +401,7 @@ classDiagram
 
     class Ferias {
         +id: UUID
-        +funcionarioId: UUID
+        +colaboradorId: UUID
         +dataInicio: date
         +dataFim: date
         +dias: int
@@ -411,7 +411,7 @@ classDiagram
 
     class ReciboVencimento {
         +id: UUID
-        +funcionarioId: UUID
+        +colaboradorId: UUID
         +mes: int
         +ano: int
         +salarioBase: decimal
@@ -449,17 +449,17 @@ classDiagram
         +email: string
         +passwordHash: string
         +role: Role
-        +funcionarioId: UUID
+        +colaboradorId: UUID
         +ultimoAcesso: timestamp
         +ativo: boolean
     }
 
-    Funcionario "1" --o "many" Contrato
-    Funcionario "1" --o "many" MarcacaoPonto
-    Funcionario "1" --o "many" ApuramentoHoras
-    Funcionario "1" --o "many" Ferias
-    Funcionario "1" --o "many" ReciboVencimento
-    Utilizador "1" --o "0..1" Funcionario
+    Colaborador "1" --o "many" Contrato
+    Colaborador "1" --o "many" MarcacaoPonto
+    Colaborador "1" --o "many" ApuramentoHoras
+    Colaborador "1" --o "many" Ferias
+    Colaborador "1" --o "many" ReciboVencimento
+    Utilizador "1" --o "0..1" Colaborador
 ```
 
 ---
@@ -523,7 +523,7 @@ graph TB
 
 ```mermaid
 sequenceDiagram
-    actor F as Funcionário
+    actor F as Colaborador
     participant M as App Mobile
     participant API as Ponto API
     participant DB as Base de Dados
@@ -553,15 +553,15 @@ sequenceDiagram
 
 ```mermaid
 erDiagram
-    DEPARTAMENTO ||--o{ FUNCIONARIO : "tem"
-    FUNCIONARIO ||--o{ CONTRATO : "possui"
-    FUNCIONARIO ||--o{ MARCACAO_PONTO : "regista"
-    FUNCIONARIO ||--o{ APURAMENTO_HORAS : "tem"
-    FUNCIONARIO ||--o{ FERIAS : "solicita"
-    FUNCIONARIO ||--o{ RECIBO_VENCIMENTO : "recebe"
-    FUNCIONARIO ||--o| UTILIZADOR : "associado a"
-    FUNCIONARIO ||--o{ EPI_ENTREGA : "recebeu"
-    FUNCIONARIO ||--o{ EXAME_MEDICO : "realizou"
+    DEPARTAMENTO ||--o{ COLABORADOR : "tem"
+    COLABORADOR ||--o{ CONTRATO : "possui"
+    COLABORADOR ||--o{ MARCACAO_PONTO : "regista"
+    COLABORADOR ||--o{ APURAMENTO_HORAS : "tem"
+    COLABORADOR ||--o{ FERIAS : "solicita"
+    COLABORADOR ||--o{ RECIBO_VENCIMENTO : "recebe"
+    COLABORADOR ||--o| UTILIZADOR : "associado a"
+    COLABORADOR ||--o{ EPI_ENTREGA : "recebeu"
+    COLABORADOR ||--o{ EXAME_MEDICO : "realizou"
 
     CLIENTE ||--o{ FATURA : "emite"
     FORNECEDOR ||--o{ DESPESA : "origina"
@@ -575,7 +575,7 @@ erDiagram
         string nome
         string responsavel_id
     }
-    FUNCIONARIO {
+    COLABORADOR {
         uuid id PK
         string nif UK
         string nome
@@ -587,7 +587,7 @@ erDiagram
     }
     MARCACAO_PONTO {
         uuid id PK
-        uuid funcionario_id FK
+        uuid colaborador_id FK
         timestamp data_hora
         string tipo
         point geolocalizacao
@@ -604,7 +604,7 @@ erDiagram
 | **RN-RH-001** | NIF deve ser único e válido (algoritmo espanhol) |
 | **RN-RH-002** | Data admissão não pode ser futura |
 | **RN-RH-003** | Salário base ≥ SMI vigente |
-| **RN-RH-004** | Funcionários em produção: reconhecimento médico válido |
+| **RN-RH-004** | Colaboradores em produção: reconhecimento médico válido |
 | **RN-RH-005** | Mínimo 15 dias férias consecutivas em jun-set |
 | **RN-PT-001** | Jornada diária conforme contrato (alerta de excesso) |
 | **RN-PT-002** | Marcação fora do local → alerta (não bloqueia) |
@@ -617,7 +617,7 @@ erDiagram
 ## 11. Critérios de Aceitação (resumo por módulo)
 
 ### 11.1. RH
-- ✅ Cadastrar funcionário com todos os campos obrigatórios + validação NIF
+- ✅ Cadastrar colaborador com todos os campos obrigatórios + validação NIF
 - ✅ Upload de documentos (PDF, JPG, PNG até 10MB)
 - ✅ Solicitar férias via app e aprovar via web em < 5 cliques
 - ✅ Gerar recibo mensal em PDF oficial espanhol em < 30s
@@ -641,7 +641,7 @@ erDiagram
 | Risco | Probabilidade | Impacto | Mitigação |
 |---|---|---|---|
 | Legislação espanhola muda | Média | Alto | Camada de regras de negócio isolada, fácil de atualizar |
-| Resistência dos funcionários ao app | Média | Médio | Formação + UI simples + modo offline |
+| Resistência dos colaboradores ao app | Média | Médio | Formação + UI simples + modo offline |
 | Cliente sem boa infraestrutura IT | Alta | Médio | Cloud (Supabase) reduz dependência local |
 | Prazo apertado | Média | Alto | MVP focado, fases bem definidas |
 | Dados sensíveis (RGPD) | Alta | Crítico | Encriptação, 2FA, audit log, DPA assinado |

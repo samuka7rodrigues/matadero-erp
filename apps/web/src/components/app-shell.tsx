@@ -1,8 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-import { Sidebar } from './sidebar';
-import { Header } from './header';
-import { LocaleSwitcher } from './locale-switcher';
+import { Sidebar } from './layout/sidebar';
+import { Header } from './layout/header';
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
   const supabase = createClient();
@@ -15,13 +14,13 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
   // Obter role do utilizador
   const { data: utilizador } = await supabase
     .from('utilizadores')
-    .select('role, funcionario_id')
+    .select('role, colaborador_id')
     .eq('user_id', user.id)
     .single();
 
   return (
     <div className="flex min-h-screen w-full bg-muted/30">
-      <Sidebar role={utilizador?.role || 'funcionario'} />
+      <Sidebar role={utilizador?.role || 'colaborador'} />
       <div className="flex flex-1 flex-col">
         <Header user={user} />
         <main className="flex-1 p-6">

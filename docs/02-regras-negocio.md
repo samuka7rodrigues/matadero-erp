@@ -9,7 +9,7 @@
 
 ## ⚠️ AVISO IMPORTANTE
 
-Este documento resume aspetos da legislação laboral espanhola aplicável a um matadouro com ~100 funcionários. **Não constitui aconselhamento jurídico.** Antes de implementação, o cliente deve validar cada regra com o seu **assessoria jurídica / graduado social**, pois detalhes podem variar conforme:
+Este documento resume aspetos da legislação laboral espanhola aplicável a um matadouro com ~100 colaboradores. **Não constitui aconselhamento jurídico.** Antes de implementação, o cliente deve validar cada regra com o seu **assessoria jurídica / graduado social**, pois detalhes podem variar conforme:
 
 - **Convenio Colectivo aplicable** (existe convenio nacional de mataderos: *"Convenio colectivo nacional de mataderos, aves y conejos"*)
 - **Comunidade Autónoma** (cada CC.AA pode ter particularidades)
@@ -268,14 +268,14 @@ Modelo oficial — o trabalhador deve assinar ou marcar desacordo.
 - Roupa térmica para câmaras frias
 - Capacete quando necessário
 
-**Implicação RH:** sistema deve registar entrega de EPI por funcionário, com data, modelo, tamanho, assinatura.
+**Implicação RH:** sistema deve registar entrega de EPI por colaborador, com data, modelo, tamanho, assinatura.
 
 ### 9.3. Reconhecimento Médico (Vigilancia de la Salud)
 - **Obrigatório** para postos com riscos específicos (art. 22 Ley 31/1995 LPRL)
 - **Periodicidade:** anual (recomendada) ou conforme protocolo
 - **Apto / No Apto / Con Aps restricciones**
 
-**RN derivada:** Funcionário "No Apto" para um posto deve ser **reubicado** ou **não escalado** nesse posto.
+**RN derivada:** Colaborador "No Apto" para um posto deve ser **reubicado** ou **não escalado** nesse posto.
 
 ### 9.4. Incapacidade Temporal (IT — Baixa Médica)
 - **Modalidades:**

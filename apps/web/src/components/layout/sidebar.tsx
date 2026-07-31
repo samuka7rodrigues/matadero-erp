@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/config';
-import { cn } from '@/lib/utils';
+import { cn, isNavItemActive } from '@/lib/utils';
 import {
   LayoutDashboard,
   Users,
@@ -25,12 +25,12 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { href: '/dashboard', labelKey: 'Nav.dashboard', icon: LayoutDashboard, roles: ['admin', 'rh', 'financeiro', 'encarregado', 'funcionario', 'auditor'] },
-  { href: '/funcionarios', labelKey: 'Nav.funcionarios', icon: Users, roles: ['admin', 'rh', 'encarregado', 'auditor'] },
+  { href: '/dashboard', labelKey: 'Nav.dashboard', icon: LayoutDashboard, roles: ['admin', 'rh', 'financeiro', 'encarregado', 'colaborador', 'auditor'] },
+  { href: '/colaboradores', labelKey: 'Nav.colaboradores', icon: Users, roles: ['admin', 'rh', 'encarregado', 'auditor'] },
   { href: '/contratos', labelKey: 'Nav.contratos', icon: FileText, roles: ['admin', 'rh', 'auditor'] },
-  { href: '/ponto', labelKey: 'Nav.ponto', icon: Clock, roles: ['admin', 'rh', 'encarregado', 'funcionario', 'auditor'] },
+  { href: '/ponto', labelKey: 'Nav.ponto', icon: Clock, roles: ['admin', 'rh', 'encarregado', 'colaborador', 'auditor'] },
   { href: '/turnos', labelKey: 'Nav.turnos', icon: Calendar, roles: ['admin', 'rh', 'encarregado', 'auditor'] },
-  { href: '/nominas', labelKey: 'Nav.nominas', icon: Receipt, roles: ['admin', 'rh', 'funcionario', 'auditor'] },
+  { href: '/nominas', labelKey: 'Nav.nominas', icon: Receipt, roles: ['admin', 'rh', 'colaborador', 'auditor'] },
   { href: '/faturas', labelKey: 'Nav.faturas', icon: Wallet, roles: ['admin', 'financeiro', 'auditor'] },
   { href: '/despesas', labelKey: 'Nav.despesas', icon: Wallet, roles: ['admin', 'financeiro', 'auditor'] },
   { href: '/departamentos', labelKey: 'Nav.rh', icon: Building2, roles: ['admin', 'rh', 'auditor'] },
@@ -52,7 +52,7 @@ export function Sidebar({ role }: { role: RoleUtilizador }) {
       <nav className="flex flex-col gap-1 p-4">
         {filteredNav.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname.includes(item.href);
+          const isActive = isNavItemActive(pathname, item.href);
           return (
             <Link
               key={item.href}

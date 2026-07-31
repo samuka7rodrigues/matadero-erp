@@ -24,10 +24,11 @@ export const nifSchema = z
     return expected === val.charAt(8);
   }, { message: 'NIF inválido' });
 
-export const funcionarioSchema = z.object({
+export const colaboradorSchema = z.object({
   // Pessoais
   nif: nifSchema,
   nie: z.string().optional().nullable(),
+  passaporte: z.string().optional().nullable(),
   nombre: z.string().min(2, 'Nombre demasiado corto'),
   apellido1: z.string().min(2, 'Apellido demasiado corto'),
   apellido2: z.string().optional().nullable(),
@@ -79,4 +80,4 @@ export const funcionarioSchema = z.object({
   }
 );
 
-export type FuncionarioFormData = z.infer<typeof funcionarioSchema>;
+export type ColaboradorFormData = z.infer<typeof colaboradorSchema>;

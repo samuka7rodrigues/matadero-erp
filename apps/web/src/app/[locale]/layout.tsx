@@ -16,14 +16,19 @@ export function generateStaticParams() {
 
 export default async function LocaleLayout({
   children,
-  params: { locale },
+  params,
 }: {
   children: React.ReactNode;
-  params: { locale: string };
+  // Next.js 14+: params é Promise — precisa de await
+  params: Promise<{ locale: string }>;
 }) {
+  // Await dos params (Next.js 14+ async params)
+  const { locale } = await params;
+
   if (!locales.includes(locale as any)) notFound();
 
-  const messages = await getMessages();
+  // next-intl v3.22+: passa locale para getMessages (devido a async params)
+  const messages = await getMessages({ locale });
 
   return (
     <html lang={locale} suppressHydrationWarning>

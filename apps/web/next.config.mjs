@@ -1,5 +1,6 @@
 import createNextIntlPlugin from 'next-intl/plugin';
 
+// next-intl v3: indica o caminho do request.ts
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 /** @type {import('next').NextConfig} */

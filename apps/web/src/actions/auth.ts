@@ -32,7 +32,10 @@ export async function loginAction(formData: FormData) {
 export async function logoutAction() {
   const supabase = createClient();
   await supabase.auth.signOut();
-  redirect('/login');
+
+  // Preserva o locale ao redirecionar (ex: /pt-BR/login)
+  const locale = await getLocale();
+  redirect(`/${locale}/login`);
 }
 
 export async function forgotPasswordAction(formData: FormData) {
@@ -45,7 +48,7 @@ export async function forgotPasswordAction(formData: FormData) {
 
   const supabase = createClient();
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `/${locale}/reset-password`,
+    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/${locale}/reset-password`,
   });
 
   if (error) {

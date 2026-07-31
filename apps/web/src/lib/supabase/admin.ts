@@ -1,5 +1,4 @@
 import { createClient as createServerClient } from '@supabase/supabase-js';
-import { Database } from '@/types/database';
 
 /**
  * Cliente Supabase de Admin (service role).
@@ -7,7 +6,7 @@ import { Database } from '@/types/database';
  * NUNCA expor ao cliente.
  */
 export function createAdminClient() {
-  return createServerClient<Database>(
+  return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     {

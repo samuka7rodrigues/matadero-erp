@@ -1,7 +1,7 @@
 # 🐂 ERP Matadero
 
 > Sistema de Gestão Integral para matadouro em Espanha.
-> ~100 funcionários · PT-BR + ES · Web + Mobile · Cloud-native
+> ~100 colaboradores · PT-BR + ES · Web + Mobile · Cloud-native
 
 ---
 
@@ -40,7 +40,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbG...
 1. Vai ao **Dashboard Supabase** → SQL Editor
 2. Cria nova query
 3. Cola o conteúdo de `supabase/migrations/0001_rh_initial.sql` → Run
-4. Repete para `supabase/migrations/0002_rh_util_functions.sql`
+4. Repete para `0002_rh_util_functions.sql` e `0003_ponto_fixes.sql`
 
 Ou via CLI:
 ```bash
@@ -98,8 +98,8 @@ Depois de instalar, executa este SQL no Supabase para criar o teu primeiro admin
 INSERT INTO public.utilizadores (user_id, email, role, ativo)
 SELECT id, email, 'admin', TRUE FROM auth.users WHERE email = 'teu-email@dominio.com';
 
--- E criar o funcionário correspondente
-INSERT INTO public.funcionarios (
+-- E criar o colaborador correspondente
+INSERT INTO public.colaboradores (
   nif, nombre, apellido1, fecha_nacimiento, fecha_admision,
   email, tipo_contrato, salario_base
 ) VALUES (
@@ -107,6 +107,10 @@ INSERT INTO public.funcionarios (
   'teu-email@dominio.com', 'indefinido', 2000
 );
 ```
+
+### 🧪 Base de teste (colaboradores + ponto)
+
+Para testar o módulo de Ponto com dados prontos, executa `supabase/seed.sql` no **SQL Editor** do Supabase. Cria 1 admin + 5 colaboradores (email + password `Teste123!`) e insere marcações de exemplo de hoje para `juan@matadero.es`.
 
 ---
 
@@ -136,17 +140,18 @@ INSERT INTO public.funcionarios (
 ### ✅ Implementado
 - [x] Setup do projeto Next.js + Supabase
 - [x] Configuração i18n (PT-BR + ES)
-- [x] Schema SQL do módulo RH (funcionários, contratos, férias, EPI's, exames)
+- [x] Schema SQL do módulo RH (colaboradores, contratos, férias, EPI's, exames)
 - [x] Sistema de permissões com RLS no Supabase
 - [x] Autenticação (login, logout, forgot password)
-- [x] CRUD de Funcionários (UI + Server Actions)
+- [x] CRUD de Colaboradores (UI + Server Actions)
 - [x] Validação de NIF em tempo real
 - [x] Dashboard com KPIs
+- [x] Módulo de Ponto (marcações entrada/saída/almoço, resumo diário de horas)
 
 ### 🔄 Em desenvolvimento
 - [ ] Upload de documentos (DNI, contratos, exames)
-- [ ] Módulo de Ponto (marcações, RD 8/2019)
-- [ ] Cálculo de horas extras
+- [ ] Apuramento mensal de ponto (RD 8/2019)
+- [ ] Cálculo de horas extras (relatório)
 - [ ] Recibos de vencimento (PDF)
 - [ ] Módulo Financeiro (faturas, despesas)
 - [ ] App Mobile (Expo)

@@ -19,11 +19,12 @@ BEGIN
     RETURN FALSE;
   END IF;
 
-  -- Converter para 8 dígitos (X→0, Y→1, Z→2)
+  -- Converter para 8 dígitos (X→0, Y→1, Z→2 seguido dos 7 dígitos).
+  -- Ex: Y0719810 → 1 + 0719810 = 10719810.
   v_number := CASE
-    WHEN substr(p_nif, 1, 1) = 'X' THEN 0
-    WHEN substr(p_nif, 1, 1) = 'Y' THEN 1
-    WHEN substr(p_nif, 1, 1) = 'Z' THEN 2
+    WHEN substr(p_nif, 1, 1) = 'X' THEN ('0' || substring(p_nif FROM 2 FOR 7))::INTEGER
+    WHEN substr(p_nif, 1, 1) = 'Y' THEN ('1' || substring(p_nif FROM 2 FOR 7))::INTEGER
+    WHEN substr(p_nif, 1, 1) = 'Z' THEN ('2' || substring(p_nif FROM 2 FOR 7))::INTEGER
     ELSE substring(p_nif FROM 1 FOR 8)::INTEGER
   END;
 
@@ -90,7 +91,7 @@ $$ LANGUAGE plpgsql IMMUTABLE;
 -- ============================================================
 
 CREATE OR REPLACE FUNCTION calcular_dias_ferias(
-  p_funcionario_id UUID,
+  p_colaborador_id UUID,
   p_ano INTEGER
 )
 RETURNS TABLE (
@@ -117,14 +118,14 @@ BEGIN
         ELSE 0
       END), 0) AS dias_verao
     FROM ferias, ano_atual
-    WHERE ferias.funcionario_id = p_funcionario_id
+    WHERE ferias.colaborador_id = p_colaborador_id
       AND EXTRACT(YEAR FROM data_inicio) = p_ano
   )
   SELECT
     (SELECT dias FROM dias_totais_ano)::INTEGER,
-    (SELECT dias_gozados FROM ferias_ano)::INTEGER,
-    ((SELECT dias FROM dias_totais_ano) - (SELECT dias_gozados FROM ferias_ano))::INTEGER,
-    GREATEST(15 - (SELECT dias_verao FROM ferias_ano), 0)::INTEGER;
+    (SELECT fa.dias_gozados FROM ferias_ano fa)::INTEGER,
+    ((SELECT dias FROM dias_totais_ano) - (SELECT fa.dias_gozados FROM ferias_ano fa))::INTEGER,
+    GREATEST(15 - (SELECT fa.dias_verao FROM ferias_ano fa), 0)::INTEGER;
 END;
 $$ LANGUAGE plpgsql STABLE;
 
@@ -133,7 +134,7 @@ $$ LANGUAGE plpgsql STABLE;
 -- ============================================================
 
 CREATE OR REPLACE FUNCTION calcular_horas_jornada(
-  p_funcionario_id UUID,
+  p_colaborador_id UUID,
   p_data DATE
 )
 RETURNS TABLE (
@@ -150,7 +151,7 @@ BEGIN
       data_hora,
       LEAD(data_hora) OVER (ORDER BY data_hora) AS prox_data_hora
     FROM marcacoes_ponto
-    WHERE funcionario_id = p_funcionario_id
+    WHERE colaborador_id = p_colaborador_id
       AND DATE(data_hora) = p_data
   ),
   pares AS (
@@ -181,10 +182,10 @@ BEGIN
     FROM pares
   )
   SELECT
-    COALESCE(horas_ordinarias, 0)::NUMERIC,
-    COALESCE(horas_extras, 0)::NUMERIC,
-    COALESCE(horas_noturnas, 0)::NUMERIC
-  FROM analise;
+    COALESCE(a.horas_ordinarias, 0)::NUMERIC,
+    COALESCE(a.horas_extras, 0)::NUMERIC,
+    COALESCE(a.horas_noturnas, 0)::NUMERIC
+  FROM analise a;
 END;
 $$ LANGUAGE plpgsql STABLE;
 
@@ -201,7 +202,7 @@ CREATE TYPE estado_ferias AS ENUM (
 
 CREATE TABLE ferias (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  funcionario_id UUID NOT NULL REFERENCES funcionarios(id) ON DELETE CASCADE,
+  colaborador_id UUID NOT NULL REFERENCES colaboradores(id) ON DELETE CASCADE,
   data_inicio DATE NOT NULL,
   data_fim DATE NOT NULL,
   dias INTEGER GENERATED ALWAYS AS (data_fim - data_inicio + 1) STORED,
@@ -219,7 +220,7 @@ CREATE TABLE ferias (
   CONSTRAINT chk_datas_ferias CHECK (data_fim >= data_inicio)
 );
 
-CREATE INDEX idx_ferias_funcionario ON ferias(funcionario_id);
+CREATE INDEX idx_ferias_colaborador ON ferias(colaborador_id);
 CREATE INDEX idx_ferias_estado ON ferias(estado);
 CREATE INDEX idx_ferias_periodo ON ferias(data_inicio, data_fim);
 
@@ -237,7 +238,7 @@ CREATE POLICY "ferias_proprio" ON ferias
     EXISTS (
       SELECT 1 FROM utilizadores u
       WHERE u.user_id = auth.uid()
-        AND u.funcionario_id = ferias.funcionario_id
+        AND u.colaborador_id = ferias.colaborador_id
         AND u.ativo = TRUE
     )
   );
@@ -248,7 +249,7 @@ CREATE POLICY "ferias_insert_proprio" ON ferias
     EXISTS (
       SELECT 1 FROM utilizadores u
       WHERE u.user_id = auth.uid()
-        AND u.funcionario_id = ferias.funcionario_id
+        AND u.colaborador_id = ferias.colaborador_id
         AND u.ativo = TRUE
     )
   );
@@ -267,7 +268,7 @@ CREATE TYPE tipo_marcacao AS ENUM (
 
 CREATE TABLE marcacoes_ponto (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  funcionario_id UUID NOT NULL REFERENCES funcionarios(id) ON DELETE CASCADE,
+  colaborador_id UUID NOT NULL REFERENCES colaboradores(id) ON DELETE CASCADE,
   data_hora TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   tipo tipo_marcacao NOT NULL,
   geolocalizacao POINT,             -- PostGIS opcional
@@ -282,8 +283,8 @@ CREATE TABLE marcacoes_ponto (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_marcacoes_funcionario_data ON marcacoes_ponto(funcionario_id, data_hora DESC);
-CREATE INDEX idx_marcacoes_data ON marcacoes_ponto(DATE(data_hora));
+CREATE INDEX idx_marcacoes_colaborador_data ON marcacoes_ponto(colaborador_id, data_hora DESC);
+CREATE INDEX idx_marcacoes_data ON marcacoes_ponto(((data_hora AT TIME ZONE 'UTC')::date));
 CREATE INDEX idx_marcacoes_tipo ON marcacoes_ponto(tipo);
 
 -- Constraint: evitar marcações duplicadas (min 60 segundos)
@@ -292,7 +293,7 @@ RETURNS TRIGGER AS $$
 BEGIN
   IF EXISTS (
     SELECT 1 FROM marcacoes_ponto
-    WHERE funcionario_id = NEW.funcionario_id
+    WHERE colaborador_id = NEW.colaborador_id
       AND ABS(EXTRACT(EPOCH FROM (data_hora - NEW.data_hora))) < 60
       AND tipo = NEW.tipo
   ) THEN
@@ -314,7 +315,7 @@ CREATE POLICY "ponto_insert" ON marcacoes_ponto
     EXISTS (
       SELECT 1 FROM utilizadores u
       WHERE u.user_id = auth.uid()
-        AND u.funcionario_id = marcacoes_ponto.funcionario_id
+        AND u.colaborador_id = marcacoes_ponto.colaborador_id
         AND u.ativo = TRUE
     )
   );
@@ -327,7 +328,7 @@ CREATE POLICY "ponto_select" ON marcacoes_ponto
       WHERE u.user_id = auth.uid()
         AND u.ativo = TRUE
         AND (u.role IN ('rh', 'admin', 'encarregado', 'auditor')
-             OR u.funcionario_id = marcacoes_ponto.funcionario_id)
+             OR u.colaborador_id = marcacoes_ponto.colaborador_id)
     )
   );
 
@@ -347,7 +348,7 @@ CREATE TYPE tipo_turno AS ENUM (
 
 CREATE TABLE turnos (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  funcionario_id UUID NOT NULL REFERENCES funcionarios(id) ON DELETE CASCADE,
+  colaborador_id UUID NOT NULL REFERENCES colaboradores(id) ON DELETE CASCADE,
   data DATE NOT NULL,
   hora_inicio TIME NOT NULL,
   hora_fim TIME NOT NULL,
@@ -359,10 +360,10 @@ CREATE TABLE turnos (
   updated_at TIMESTAMPTZ DEFAULT NOW(),
 
   CONSTRAINT chk_horas_turno CHECK (hora_fim > hora_inicio),
-  UNIQUE(funcionario_id, data)
+  UNIQUE(colaborador_id, data)
 );
 
-CREATE INDEX idx_turnos_funcionario ON turnos(funcionario_id);
+CREATE INDEX idx_turnos_colaborador ON turnos(colaborador_id);
 CREATE INDEX idx_turnos_data ON turnos(data);
 CREATE INDEX idx_turnos_departamento ON turnos(departamento_id);
 
@@ -380,7 +381,7 @@ CREATE POLICY "turnos_select_proprio" ON turnos
     EXISTS (
       SELECT 1 FROM utilizadores u
       WHERE u.user_id = auth.uid()
-        AND u.funcionario_id = turnos.funcionario_id
+        AND u.colaborador_id = turnos.colaborador_id
         AND u.ativo = TRUE
     )
   );

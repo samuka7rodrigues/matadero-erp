@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { useRouter, usePathname } from '@/i18n/config';
+import { useRouter, usePathname, type Locale } from '@/i18n/config';
 import { Languages } from 'lucide-react';
 import { useTransition } from 'react';
 
@@ -12,7 +12,7 @@ export function LocaleSwitcher() {
   const [, startTransition] = useTransition();
 
   function onSelectChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    const nextLocale = event.target.value;
+    const nextLocale = event.target.value as Locale;
     startTransition(() => {
       router.replace(pathname, { locale: nextLocale });
     });

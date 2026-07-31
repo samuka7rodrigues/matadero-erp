@@ -13,8 +13,8 @@ CREATE EXTENSION IF NOT EXISTS "citext";          -- emails case-insensitive
 -- ENUMS
 -- ============================================================
 
--- Estados do funcionário
-CREATE TYPE estado_funcionario AS ENUM (
+-- Estados do colaborador
+CREATE TYPE estado_colaborador AS ENUM (
   'ativo',
   'baixa',
   'ferias',
@@ -65,7 +65,7 @@ CREATE TABLE departamentos (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   nombre TEXT NOT NULL,
   codigo TEXT UNIQUE NOT NULL,
-  responsable_id UUID,             -- FK para funcionarios (adic. depois)
+  responsable_id UUID,             -- FK para colaboradores (adic. depois)
   descripcion TEXT,
   activo BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -75,10 +75,10 @@ CREATE TABLE departamentos (
 COMMENT ON TABLE departamentos IS 'Departamentos do matadouro (ex: Sacrificio, Despiece, Expedición, Administración...)';
 
 -- ============================================================
--- TABELA: funcionarios (coração do módulo)
+-- TABELA: colaboradores (coração do módulo)
 -- ============================================================
 
-CREATE TABLE funcionarios (
+CREATE TABLE colaboradores (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   -- Dados pessoais
   nif TEXT UNIQUE NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE funcionarios (
   -- Dados profissionais
   fecha_admision DATE NOT NULL,
   fecha_fin_contrato DATE,
-  estado estado_funcionario DEFAULT 'ativo',
+  estado estado_colaborador DEFAULT 'ativo',
   tipo_contrato tipo_contrato NOT NULL,
   jornada tipo_jornada DEFAULT 'completa',
   horas_semanales NUMERIC(5,2) DEFAULT 40,
@@ -140,16 +140,16 @@ CREATE TABLE funcionarios (
   CONSTRAINT chk_iban_formato CHECK (iban IS NULL OR iban ~ '^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$')
 );
 
-COMMENT ON TABLE funcionarios IS 'Cadastro principal de funcionários do matadouro';
+COMMENT ON TABLE colaboradores IS 'Cadastro principal de colaboradores do matadouro';
 
 -- Índices para performance
-CREATE INDEX idx_funcionarios_nif ON funcionarios(nif);
-CREATE INDEX idx_funcionarios_nombre ON funcionarios(nombre, apellido1);
-CREATE INDEX idx_funcionarios_estado ON funcionarios(estado) WHERE deleted_at IS NULL;
-CREATE INDEX idx_funcionarios_departamento ON funcionarios(departamento_id);
-CREATE INDEX idx_funcionarios_admision ON funcionarios(fecha_admision);
-CREATE INDEX idx_funcionarios_email ON funcionarios(email);
-CREATE INDEX idx_funcionarios_fin_contrato ON funcionarios(fecha_fin_contrato)
+CREATE INDEX idx_colaboradores_nif ON colaboradores(nif);
+CREATE INDEX idx_colaboradores_nombre ON colaboradores(nombre, apellido1);
+CREATE INDEX idx_colaboradores_estado ON colaboradores(estado) WHERE deleted_at IS NULL;
+CREATE INDEX idx_colaboradores_departamento ON colaboradores(departamento_id);
+CREATE INDEX idx_colaboradores_admision ON colaboradores(fecha_admision);
+CREATE INDEX idx_colaboradores_email ON colaboradores(email);
+CREATE INDEX idx_colaboradores_fin_contrato ON colaboradores(fecha_fin_contrato)
   WHERE estado = 'ativo' AND fecha_fin_contrato IS NOT NULL;
 
 -- ============================================================
@@ -158,7 +158,7 @@ CREATE INDEX idx_funcionarios_fin_contrato ON funcionarios(fecha_fin_contrato)
 
 CREATE TABLE contratos (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  funcionario_id UUID NOT NULL REFERENCES funcionarios(id) ON DELETE CASCADE,
+  colaborador_id UUID NOT NULL REFERENCES colaboradores(id) ON DELETE CASCADE,
   tipo tipo_contrato NOT NULL,
   fecha_inicio DATE NOT NULL,
   fecha_fin DATE,
@@ -179,16 +179,16 @@ CREATE TABLE contratos (
   CONSTRAINT chk_fechas_contrato CHECK (fecha_fin IS NULL OR fecha_fin >= fecha_inicio)
 );
 
-CREATE INDEX idx_contratos_funcionario ON contratos(funcionario_id);
+CREATE INDEX idx_contratos_colaborador ON contratos(colaborador_id);
 CREATE INDEX idx_contratos_fecha_fin ON contratos(fecha_fin) WHERE activo = TRUE;
 
 -- ============================================================
--- TABELA: documentos_funcionario
+-- TABELA: documentos_colaborador
 -- ============================================================
 
-CREATE TABLE documentos_funcionario (
+CREATE TABLE documentos_colaborador (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  funcionario_id UUID NOT NULL REFERENCES funcionarios(id) ON DELETE CASCADE,
+  colaborador_id UUID NOT NULL REFERENCES colaboradores(id) ON DELETE CASCADE,
   tipo tipo_documento NOT NULL,
   nombre TEXT NOT NULL,
   descripcion TEXT,
@@ -201,9 +201,9 @@ CREATE TABLE documentos_funcionario (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_documentos_funcionario ON documentos_funcionario(funcionario_id);
-CREATE INDEX idx_documentos_tipo ON documentos_funcionario(tipo);
-CREATE INDEX idx_documentos_expira ON documentos_funcionario(expires_at) WHERE expires_at IS NOT NULL;
+CREATE INDEX idx_documentos_colaborador ON documentos_colaborador(colaborador_id);
+CREATE INDEX idx_documentos_tipo ON documentos_colaborador(tipo);
+CREATE INDEX idx_documentos_expira ON documentos_colaborador(expires_at) WHERE expires_at IS NOT NULL;
 
 -- ============================================================
 -- TABELA: exames_medicos
@@ -211,7 +211,7 @@ CREATE INDEX idx_documentos_expira ON documentos_funcionario(expires_at) WHERE e
 
 CREATE TABLE exames_medicos (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  funcionario_id UUID NOT NULL REFERENCES funcionarios(id) ON DELETE CASCADE,
+  colaborador_id UUID NOT NULL REFERENCES colaboradores(id) ON DELETE CASCADE,
   fecha_examen DATE NOT NULL,
   fecha_validez DATE NOT NULL,
   aptidao aptidao_medica NOT NULL,
@@ -224,7 +224,7 @@ CREATE TABLE exames_medicos (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_exames_funcionario ON exames_medicos(funcionario_id);
+CREATE INDEX idx_exames_colaborador ON exames_medicos(colaborador_id);
 CREATE INDEX idx_exames_validez ON exames_medicos(fecha_validez);
 
 -- ============================================================
@@ -233,7 +233,7 @@ CREATE INDEX idx_exames_validez ON exames_medicos(fecha_validez);
 
 CREATE TABLE entregas_epi (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  funcionario_id UUID NOT NULL REFERENCES funcionarios(id) ON DELETE CASCADE,
+  colaborador_id UUID NOT NULL REFERENCES colaboradores(id) ON DELETE CASCADE,
   epi_tipo TEXT NOT NULL,           -- 'botas', 'guantes_anticorte', 'casco', etc.
   epi_descripcion TEXT,
   cantidad INTEGER DEFAULT 1,
@@ -248,7 +248,7 @@ CREATE TABLE entregas_epi (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_epis_funcionario ON entregas_epi(funcionario_id);
+CREATE INDEX idx_epis_colaborador ON entregas_epi(colaborador_id);
 CREATE INDEX idx_epis_tipo ON entregas_epi(epi_tipo);
 
 -- ============================================================
@@ -261,15 +261,15 @@ CREATE TYPE role_utilizador AS ENUM (
   'rh',
   'financeiro',
   'encarregado',
-  'funcionario',
+  'colaborador',
   'auditor'
 );
 
 CREATE TABLE utilizadores (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID UNIQUE NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  funcionario_id UUID REFERENCES funcionarios(id) ON DELETE SET NULL,
-  role role_utilizador NOT NULL DEFAULT 'funcionario',
+  colaborador_id UUID REFERENCES colaboradores(id) ON DELETE SET NULL,
+  role role_utilizador NOT NULL DEFAULT 'colaborador',
   email CITEXT NOT NULL,
   ativo BOOLEAN DEFAULT TRUE,
   ultimo_acesso TIMESTAMPTZ,
@@ -279,7 +279,7 @@ CREATE TABLE utilizadores (
 );
 
 CREATE INDEX idx_utilizadores_user ON utilizadores(user_id);
-CREATE INDEX idx_utilizadores_funcionario ON utilizadores(funcionario_id);
+CREATE INDEX idx_utilizadores_colaborador ON utilizadores(colaborador_id);
 CREATE INDEX idx_utilizadores_role ON utilizadores(role);
 
 -- ============================================================
@@ -320,8 +320,8 @@ CREATE TRIGGER trg_departamentos_updated
   BEFORE UPDATE ON departamentos
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TRIGGER trg_funcionarios_updated
-  BEFORE UPDATE ON funcionarios
+CREATE TRIGGER trg_colaboradores_updated
+  BEFORE UPDATE ON colaboradores
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER trg_contratos_updated
@@ -383,8 +383,8 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- Aplica às tabelas principais
-CREATE TRIGGER trg_audit_funcionarios
-  AFTER INSERT OR UPDATE OR DELETE ON funcionarios
+CREATE TRIGGER trg_audit_colaboradores
+  AFTER INSERT OR UPDATE OR DELETE ON colaboradores
   FOR EACH ROW EXECUTE FUNCTION audit_trigger_func();
 
 CREATE TRIGGER trg_audit_contratos
@@ -399,13 +399,13 @@ CREATE TRIGGER trg_audit_exames
 -- VIEWS: consultas úteis
 -- ============================================================
 
--- Funcionários ativos com info de vencimento de contrato
-CREATE OR REPLACE VIEW v_funcionarios_ativos AS
+-- Colaboradores ativos com info de vencimento de contrato
+CREATE OR REPLACE VIEW v_colaboradores_ativos AS
 SELECT
   f.*,
   d.nombre AS departamento_nombre,
-  EXTRACT(DAY FROM (f.fecha_fin_contrato - CURRENT_DATE))::int AS dias_para_fim
-FROM funcionarios f
+  (f.fecha_fin_contrato - CURRENT_DATE)::int AS dias_para_fim
+FROM colaboradores f
 LEFT JOIN departamentos d ON f.departamento_id = d.id
 WHERE f.estado = 'ativo' AND f.deleted_at IS NULL;
 
@@ -417,9 +417,9 @@ SELECT
   f.apellido1,
   f.apellido2,
   f.nif,
-  EXTRACT(DAY FROM (em.fecha_validez - CURRENT_DATE))::int AS dias_para_vencer
+  (em.fecha_validez - CURRENT_DATE)::int AS dias_para_vencer
 FROM exames_medicos em
-JOIN funcionarios f ON em.funcionario_id = f.id
+JOIN colaboradores f ON em.colaborador_id = f.id
 WHERE em.fecha_validez >= CURRENT_DATE
   AND em.fecha_validez <= CURRENT_DATE + INTERVAL '30 days'
   AND f.deleted_at IS NULL
@@ -434,8 +434,8 @@ SELECT
   f.nif,
   f.fecha_fin_contrato,
   f.tipo_contrato,
-  EXTRACT(DAY FROM (f.fecha_fin_contrato - CURRENT_DATE))::int AS dias_para_fim
-FROM funcionarios f
+  (f.fecha_fin_contrato - CURRENT_DATE)::int AS dias_para_fim
+FROM colaboradores f
 WHERE f.estado = 'ativo'
   AND f.fecha_fin_contrato IS NOT NULL
   AND f.fecha_fin_contrato >= CURRENT_DATE
@@ -447,9 +447,9 @@ ORDER BY f.fecha_fin_contrato ASC;
 -- ROW LEVEL SECURITY (RLS)
 -- ============================================================
 
-ALTER TABLE funcionarios ENABLE ROW LEVEL SECURITY;
+ALTER TABLE colaboradores ENABLE ROW LEVEL SECURITY;
 ALTER TABLE contratos ENABLE ROW LEVEL SECURITY;
-ALTER TABLE documentos_funcionario ENABLE ROW LEVEL SECURITY;
+ALTER TABLE documentos_colaborador ENABLE ROW LEVEL SECURITY;
 ALTER TABLE exames_medicos ENABLE ROW LEVEL SECURITY;
 ALTER TABLE entregas_epi ENABLE ROW LEVEL SECURITY;
 ALTER TABLE utilizadores ENABLE ROW LEVEL SECURITY;
@@ -459,91 +459,104 @@ ALTER TABLE departamentos ENABLE ROW LEVEL SECURITY;
 -- ============================================================
 -- RLS POLICIES
 -- ============================================================
+-- IMPORTANTE: as policies consultam `utilizadores` para saber o role.
+-- Para evitar "infinite recursion detected in policy", a consulta é
+-- feita dentro de funções SECURITY DEFINER (o RLS da tabela consultada
+-- não é aplicado no interior da função).
+
+-- Verifica se um utilizador (auth.uid()) tem um dos roles dados.
+CREATE OR REPLACE FUNCTION public.utilizador_tem_role(
+  uid uuid,
+  roles role_utilizador[]
+)
+RETURNS boolean
+LANGUAGE sql
+SECURITY DEFINER
+STABLE
+SET search_path = public
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.utilizadores
+    WHERE user_id = uid
+      AND role = ANY(roles)
+      AND ativo = TRUE
+  );
+$$;
+
+-- Devolve o colaborador_id ligado ao utilizador (para leitura do próprio).
+CREATE OR REPLACE FUNCTION public.utilizador_colaborador_id(
+  uid uuid
+)
+RETURNS uuid
+LANGUAGE sql
+SECURITY DEFINER
+STABLE
+SET search_path = public
+AS $$
+  SELECT colaborador_id FROM public.utilizadores
+  WHERE user_id = uid AND ativo = TRUE
+  LIMIT 1;
+$$;
 
 -- ROLE: admin (acesso total)
-CREATE POLICY "admin_all_funcionarios" ON funcionarios
+CREATE POLICY "admin_all_colaboradores" ON colaboradores
   FOR ALL TO authenticated
-  USING (
-    EXISTS (SELECT 1 FROM utilizadores WHERE user_id = auth.uid() AND role = 'admin' AND ativo = TRUE)
-  );
+  USING (public.utilizador_tem_role(auth.uid(), ARRAY['admin']::role_utilizador[]))
+  WITH CHECK (public.utilizador_tem_role(auth.uid(), ARRAY['admin']::role_utilizador[]));
 
 CREATE POLICY "admin_all_contratos" ON contratos
   FOR ALL TO authenticated
-  USING (
-    EXISTS (SELECT 1 FROM utilizadores WHERE user_id = auth.uid() AND role = 'admin' AND ativo = TRUE)
-  );
+  USING (public.utilizador_tem_role(auth.uid(), ARRAY['admin']::role_utilizador[]))
+  WITH CHECK (public.utilizador_tem_role(auth.uid(), ARRAY['admin']::role_utilizador[]));
 
 -- ROLE: rh (CRUD completo)
-CREATE POLICY "rh_all_funcionarios" ON funcionarios
+CREATE POLICY "rh_all_colaboradores" ON colaboradores
   FOR ALL TO authenticated
-  USING (
-    EXISTS (SELECT 1 FROM utilizadores WHERE user_id = auth.uid() AND role IN ('rh', 'admin') AND ativo = TRUE)
-  );
+  USING (public.utilizador_tem_role(auth.uid(), ARRAY['admin','rh']::role_utilizador[]))
+  WITH CHECK (public.utilizador_tem_role(auth.uid(), ARRAY['admin','rh']::role_utilizador[]));
 
 CREATE POLICY "rh_all_contratos" ON contratos
   FOR ALL TO authenticated
-  USING (
-    EXISTS (SELECT 1 FROM utilizadores WHERE user_id = auth.uid() AND role IN ('rh', 'admin') AND ativo = TRUE)
-  );
+  USING (public.utilizador_tem_role(auth.uid(), ARRAY['admin','rh']::role_utilizador[]))
+  WITH CHECK (public.utilizador_tem_role(auth.uid(), ARRAY['admin','rh']::role_utilizador[]));
 
 CREATE POLICY "rh_all_exames" ON exames_medicos
   FOR ALL TO authenticated
-  USING (
-    EXISTS (SELECT 1 FROM utilizadores WHERE user_id = auth.uid() AND role IN ('rh', 'admin') AND ativo = TRUE)
-  );
+  USING (public.utilizador_tem_role(auth.uid(), ARRAY['admin','rh']::role_utilizador[]))
+  WITH CHECK (public.utilizador_tem_role(auth.uid(), ARRAY['admin','rh']::role_utilizador[]));
 
-CREATE POLICY "rh_all_documentos" ON documentos_funcionario
+CREATE POLICY "rh_all_documentos" ON documentos_colaborador
   FOR ALL TO authenticated
-  USING (
-    EXISTS (SELECT 1 FROM utilizadores WHERE user_id = auth.uid() AND role IN ('rh', 'admin') AND ativo = TRUE)
-  );
+  USING (public.utilizador_tem_role(auth.uid(), ARRAY['admin','rh']::role_utilizador[]))
+  WITH CHECK (public.utilizador_tem_role(auth.uid(), ARRAY['admin','rh']::role_utilizador[]));
 
--- ROLE: encarregado (leitura dos seus subordinados)
-CREATE POLICY "encarregado_ler_funcionarios" ON funcionarios
+-- ROLE: encarregado (leitura dos seus subordinados — na prática leitura geral)
+CREATE POLICY "encarregado_ler_colaboradores" ON colaboradores
   FOR SELECT TO authenticated
-  USING (
-    EXISTS (
-      SELECT 1 FROM utilizadores u
-      WHERE u.user_id = auth.uid()
-        AND u.role IN ('encarregado', 'rh', 'admin')
-        AND u.ativo = TRUE
-    )
-  );
+  USING (public.utilizador_tem_role(auth.uid(), ARRAY['encarregado','rh','admin']::role_utilizador[]));
 
--- ROLE: funcionário (só vê os seus próprios dados)
-CREATE POLICY "funcionario_ler_proprio" ON funcionarios
+-- ROLE: colaborador (só vê os seus próprios dados)
+CREATE POLICY "colaborador_ler_proprio" ON colaboradores
   FOR SELECT TO authenticated
-  USING (
-    EXISTS (
-      SELECT 1 FROM utilizadores u
-      WHERE u.user_id = auth.uid()
-        AND u.funcionario_id = funcionarios.id
-        AND u.ativo = TRUE
-    )
-  );
+  USING (public.utilizador_colaborador_id(auth.uid()) = colaboradores.id);
 
 -- ROLE: financeiro (sem acesso a dados pessoais sensíveis)
 -- Nota: financeiro NÃO tem policy, então NÃO tem acesso ao módulo RH
 
 -- ROLE: auditor (leitura de tudo)
-CREATE POLICY "auditor_ler_funcionarios" ON funcionarios
+CREATE POLICY "auditor_ler_colaboradores" ON colaboradores
   FOR SELECT TO authenticated
-  USING (
-    EXISTS (SELECT 1 FROM utilizadores WHERE user_id = auth.uid() AND role = 'auditor' AND ativo = TRUE)
-  );
+  USING (public.utilizador_tem_role(auth.uid(), ARRAY['auditor']::role_utilizador[]));
 
 CREATE POLICY "auditor_ler_audit" ON audit_log
   FOR SELECT TO authenticated
-  USING (
-    EXISTS (SELECT 1 FROM utilizadores WHERE user_id = auth.uid() AND role IN ('auditor', 'admin') AND ativo = TRUE)
-  );
+  USING (public.utilizador_tem_role(auth.uid(), ARRAY['auditor','admin']::role_utilizador[]));
 
--- Utilizadores: só admin pode gerir
+-- Utilizadores: só admin pode gerir (a função SECURITY DEFINER evita recursão)
 CREATE POLICY "utilizadores_admin_all" ON utilizadores
   FOR ALL TO authenticated
-  USING (
-    EXISTS (SELECT 1 FROM utilizadores WHERE user_id = auth.uid() AND role = 'admin' AND ativo = TRUE)
-  );
+  USING (public.utilizador_tem_role(auth.uid(), ARRAY['admin']::role_utilizador[]))
+  WITH CHECK (public.utilizador_tem_role(auth.uid(), ARRAY['admin']::role_utilizador[]));
 
 -- Utilizadores: cada um pode ler o próprio
 CREATE POLICY "utilizadores_proprio" ON utilizadores
@@ -556,9 +569,8 @@ CREATE POLICY "departamentos_ler" ON departamentos
 
 CREATE POLICY "departamentos_admin" ON departamentos
   FOR ALL TO authenticated
-  USING (
-    EXISTS (SELECT 1 FROM utilizadores WHERE user_id = auth.uid() AND role IN ('admin', 'rh') AND ativo = TRUE)
-  );
+  USING (public.utilizador_tem_role(auth.uid(), ARRAY['admin','rh']::role_utilizador[]))
+  WITH CHECK (public.utilizador_tem_role(auth.uid(), ARRAY['admin','rh']::role_utilizador[]));
 
 -- ============================================================
 -- STORAGE: buckets para fotos e documentos
@@ -566,8 +578,8 @@ CREATE POLICY "departamentos_admin" ON departamentos
 
 INSERT INTO storage.buckets (id, name, public)
 VALUES
-  ('fotos-funcionarios', 'fotos-funcionarios', false),
-  ('documentos-funcionarios', 'documentos-funcionarios', false),
+  ('fotos-colaboradores', 'fotos-colaboradores', false),
+  ('documentos-colaboradores', 'documentos-colaboradores', false),
   ('contratos', 'contratos', false),
   ('exames-medicos', 'exames-medicos', false);
 
@@ -575,22 +587,22 @@ VALUES
 CREATE POLICY "rh_manage_fotos" ON storage.objects
   FOR ALL TO authenticated
   USING (
-    bucket_id = 'fotos-funcionarios'
+    bucket_id = 'fotos-colaboradores'
     AND EXISTS (SELECT 1 FROM utilizadores WHERE user_id = auth.uid() AND role IN ('rh', 'admin') AND ativo = TRUE)
   );
 
 CREATE POLICY "rh_manage_documentos" ON storage.objects
   FOR ALL TO authenticated
   USING (
-    bucket_id IN ('documentos-funcionarios', 'contratos', 'exames-medicos')
+    bucket_id IN ('documentos-colaboradores', 'contratos', 'exames-medicos')
     AND EXISTS (SELECT 1 FROM utilizadores WHERE user_id = auth.uid() AND role IN ('rh', 'admin') AND ativo = TRUE)
   );
 
--- Funcionário pode ler o seu próprio documento
-CREATE POLICY "funcionario_ler_proprio_documento" ON storage.objects
+-- Colaborador pode ler o seu próprio documento
+CREATE POLICY "colaborador_ler_proprio_documento" ON storage.objects
   FOR SELECT TO authenticated
   USING (
-    bucket_id IN ('documentos-funcionarios', 'exames-medicos')
+    bucket_id IN ('documentos-colaboradores', 'exames-medicos')
     AND auth.uid()::text = (storage.foldername(name))[1]
   );
 
@@ -611,7 +623,7 @@ INSERT INTO departamentos (codigo, nombre, descripcion) VALUES
 
 -- Salario Mínimo Interprofesional 2026 (valor de referência)
 -- Atualizar anualmente!!
-COMMENT ON TABLE funcionarios IS 'Salário base mínimo (SMI 2026 España): 1.134€/mês x 14 pag = 15.876€/ano';
+COMMENT ON TABLE colaboradores IS 'Salário base mínimo (SMI 2026 España): 1.134€/mês x 14 pag = 15.876€/ano';
 
 -- ============================================================
 -- FIM DA MIGRATION 0001

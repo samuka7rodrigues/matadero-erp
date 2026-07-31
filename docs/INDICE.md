@@ -1,6 +1,6 @@
 # 🐂 ERP Matadero — Documentação
 
-Sistema de gestão integral (ERP) para matadouro em Espanha, com ~100 funcionários.
+Sistema de gestão integral (ERP) para matadouro em Espanha, com ~100 colaboradores.
 
 ## 📚 Documentos
 

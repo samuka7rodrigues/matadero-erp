@@ -2,18 +2,24 @@ import { AppShell } from '@/components/app-shell';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { getFuncionario } from '@/actions/funcionarios';
-import { ArrowLeft, Mail, Phone, MapPin, Calendar, Building2 } from 'lucide-react';
+import { getColaborador, listDocumentos } from '@/actions/colaboradores';
+import { DocumentosCard } from '@/components/colaboradores/documentos-card';
+import { ArrowLeft, Pencil, Mail, Phone, MapPin, Calendar } from 'lucide-react';
 import { Link } from '@/i18n/config';
 import { formatCurrency, formatDate, calculateAge } from '@/lib/utils';
 import { notFound } from 'next/navigation';
 
 interface Props {
-  params: { id: string };
+  // Next.js 14+: params é Promise — precisa de await
+  params: Promise<{ id: string }>;
 }
 
-export default async function FuncionarioDetalhePage({ params }: Props) {
-  const f = await getFuncionario(params.id);
+export default async function ColaboradorDetalhePage({ params }: Props) {
+  const { id } = await params;
+  const [f, docsResult] = await Promise.all([
+    getColaborador(id),
+    listDocumentos(id),
+  ]);
   if (!f) notFound();
 
   return (
@@ -21,7 +27,7 @@ export default async function FuncionarioDetalhePage({ params }: Props) {
       <div className="space-y-6">
         <div className="flex items-center gap-4">
           <Button variant="outline" size="icon" asChild>
-            <Link href="/funcionarios">
+            <Link href="/colaboradores">
               <ArrowLeft className="h-4 w-4" />
             </Link>
           </Button>
@@ -39,6 +45,12 @@ export default async function FuncionarioDetalhePage({ params }: Props) {
           >
             {f.estado}
           </Badge>
+          <Button variant="outline" asChild>
+            <Link href={`/colaboradores/${id}/edit`}>
+              <Pencil className="mr-2 h-4 w-4" />
+              Editar
+            </Link>
+          </Button>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
@@ -56,6 +68,12 @@ export default async function FuncionarioDetalhePage({ params }: Props) {
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">NIE</span>
                   <span className="font-mono">{f.nie}</span>
+                </div>
+              )}
+              {f.passaporte && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Passaporte</span>
+                  <span className="font-mono">{f.passaporte}</span>
                 </div>
               )}
               <div className="flex justify-between">
@@ -85,10 +103,10 @@ export default async function FuncionarioDetalhePage({ params }: Props) {
                 <Mail className="h-4 w-4 text-muted-foreground" />
                 <span>{f.email}</span>
               </div>
-              {f.telefone && (
+              {f.telefono && (
                 <div className="flex items-center gap-2">
                   <Phone className="h-4 w-4 text-muted-foreground" />
-                  <span>{f.telefone}</span>
+                  <span>{f.telefono}</span>
                 </div>
               )}
               {f.direccion && (
@@ -105,7 +123,7 @@ export default async function FuncionarioDetalhePage({ params }: Props) {
                 <div className="border-t pt-3 mt-3">
                   <div className="text-xs text-muted-foreground">Contacto emergência</div>
                   <div>{f.contacto_emergencia}</div>
-                  {f.telefone_emergencia && <div className="text-muted-foreground">{f.telefone_emergencia}</div>}
+                  {f.telefono_emergencia && <div className="text-muted-foreground">{f.telefono_emergencia}</div>}
                 </div>
               )}
             </CardContent>
@@ -179,6 +197,8 @@ export default async function FuncionarioDetalhePage({ params }: Props) {
             </CardContent>
           </Card>
         </div>
+
+        <DocumentosCard colaboradorId={id} documentos={docsResult.data} />
       </div>
     </AppShell>
   );

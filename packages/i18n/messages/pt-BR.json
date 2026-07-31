@@ -17,7 +17,7 @@
   "Nav": {
     "dashboard": "Painel",
     "rh": "Recursos Humanos",
-    "funcionarios": "Funcionários",
+    "colaboradores": "Colaboradores",
     "contratos": "Contratos",
     "ferias": "Férias",
     "nominas": "Recibos",
@@ -30,14 +30,15 @@
     "tesouraria": "Tesouraria",
     "configuracoes": "Configurações",
     "utilizadores": "Utilizadores",
+    "departamentos": "Departamentos",
     "idioma": "Idioma"
   },
-  "Funcionarios": {
-    "title": "Funcionários",
-    "new": "Novo Funcionário",
-    "edit": "Editar Funcionário",
+  "Colaboradores": {
+    "title": "Colaboradores",
+    "new": "Novo Colaborador",
+    "edit": "Editar Colaborador",
     "details": "Detalhes",
-    "list": "Lista de Funcionários",
+    "list": "Lista de Colaboradores",
     "fields": {
       "nome": "Nome completo",
       "nif": "NIF",
@@ -79,10 +80,10 @@
       "uploadDocumento": "Carregar documento"
     },
     "messages": {
-      "criado": "Funcionário criado com sucesso",
-      "atualizado": "Funcionário atualizado",
-      "eliminado": "Funcionário eliminado",
-      "erroEliminar": "Erro ao eliminar funcionário"
+      "criado": "Colaborador criado com sucesso",
+      "atualizado": "Colaborador atualizado",
+      "eliminado": "Colaborador eliminado",
+      "erroEliminar": "Erro ao eliminar colaborador"
     }
   },
   "Common": {
@@ -104,13 +105,67 @@
     "next": "Seguinte",
     "back": "Voltar",
     "required": "Obrigatório",
-    "optional": "Opcional"
+    "optional": "Opcional",
+    "soon": "Em breve",
+    "underDevelopment": "Funcionalidade em desenvolvimento"
+  },
+  "Ponto": {
+    "title": "Marcação de Ponto",
+    "markTitle": "Registar Marcação",
+    "markEntry": "Marcar Entrada",
+    "markExit": "Marcar Saída",
+    "markLunchStart": "Iniciar Almoço",
+    "markLunchEnd": "Terminar Almoço",
+    "todayHistory": "Marcações de hoje",
+    "noMarcacoes": "Sem marcações hoje",
+    "ultimaMarcacao": "Última marcação",
+    "tipo": {
+      "entrada": "Entrada",
+      "saida": "Saída",
+      "inicio_almoco": "Início Almoço",
+      "volta_almoco": "Fim Almoço"
+    },
+    "resumo": {
+      "title": "Resumo do dia",
+      "horasOrdinarias": "Horas ordinárias",
+      "horasExtras": "Horas extras",
+      "horasNoturnas": "Horas noturnas",
+      "total": "Total trabalhado"
+    },
+    "messages": {
+      "marcado": "Marcação registada",
+      "erro": "Erro ao registar marcação"
+    }
+  },
+  "Departamento": {
+    "title": "Departamentos",
+    "list": "Lista de Departamentos",
+    "codigo": "Código",
+    "nombre": "Nome",
+    "descripcion": "Descrição"
+  },
+  "Utilizadores": {
+    "title": "Utilizadores",
+    "list": "Lista de Utilizadores",
+    "email": "E-mail",
+    "role": "Perfil",
+    "ativo": "Ativo",
+    "ultimoAcesso": "Último acesso",
+    "new": "Novo Utilizador"
+  },
+  "Configuracoes": {
+    "title": "Configurações",
+    "general": "Geral",
+    "locale": "Idioma",
+    "timezone": "Fuso horário",
+    "currency": "Moeda",
+    "about": "Sobre"
   },
   "Dashboard": {
     "title": "Painel",
     "welcome": "Bem-vindo, {name}",
     "kpis": {
-      "totalFuncionarios": "Total de Funcionários",
+      "totalColaboradores": "Total de Colaboradores",
       "admitidosMes": "Admitidos este mês",
       "contratosFim": "Contratos a expirar",
       "examesVencer": "Exames médicos a vencer"

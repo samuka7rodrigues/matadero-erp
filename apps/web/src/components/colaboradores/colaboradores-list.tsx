@@ -1,28 +1,26 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/config';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select } from '@/components/ui/select';
-import { Search, ChevronLeft, ChevronRight, Mail, Phone } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, Mail, Phone, Pencil } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { formatCurrency, formatDate } from '@/lib/utils';
-import type { Funcionario } from '@/types/database';
+import type { ColaboradorCompleto } from '@/types/database';
 
 interface Props {
-  funcionarios: any[];
+  colaboradores: ColaboradorCompleto[];
   total: number;
   page: number;
   pageSize: number;
   totalPages: number;
 }
 
-export function FuncionariosList({ funcionarios, total, page, pageSize, totalPages }: Props) {
-  const t = useTranslations('Funcionarios');
+export function ColaboradoresList({ colaboradores, total, page, totalPages }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [search, setSearch] = useState(searchParams.get('search') || '');
@@ -30,7 +28,9 @@ export function FuncionariosList({ funcionarios, total, page, pageSize, totalPag
   function applyFilter() {
     const params = new URLSearchParams();
     if (search) params.set('search', search);
-    router.push(`/funcionarios?${params.toString()}`);
+    const estado = searchParams.get('estado');
+    if (estado) params.set('estado', estado);
+    router.push(`/colaboradores?${params.toString()}`);
   }
 
   return (
@@ -61,7 +61,7 @@ export function FuncionariosList({ funcionarios, total, page, pageSize, totalPag
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Funcionário</TableHead>
+            <TableHead>Colaborador</TableHead>
             <TableHead>NIF</TableHead>
             <TableHead>Departamento</TableHead>
             <TableHead>Categoria</TableHead>
@@ -69,29 +69,30 @@ export function FuncionariosList({ funcionarios, total, page, pageSize, totalPag
             <TableHead>Salário</TableHead>
             <TableHead>Admissão</TableHead>
             <TableHead>Estado</TableHead>
+            <TableHead className="text-right">Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {funcionarios.length === 0 ? (
+          {colaboradores.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
-                Nenhum funcionário encontrado
+              <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
+                Nenhum colaborador encontrado
               </TableCell>
             </TableRow>
           ) : (
-            funcionarios.map((f) => (
+            colaboradores.map((f) => (
               <TableRow key={f.id}>
                 <TableCell>
-                  <Link href={`/funcionarios/${f.id}`} className="font-medium hover:underline">
+                  <Link href={`/colaboradores/${f.id}`} className="font-medium hover:underline">
                     {f.apellido1}, {f.nombre}
                   </Link>
                   <div className="flex gap-2 mt-1 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <Mail className="h-3 w-3" /> {f.email}
                     </span>
-                    {f.telefone && (
+                    {f.telefono && (
                       <span className="flex items-center gap-1">
-                        <Phone className="h-3 w-3" /> {f.telefone}
+                        <Phone className="h-3 w-3" /> {f.telefono}
                       </span>
                     )}
                   </div>
@@ -115,6 +116,13 @@ export function FuncionariosList({ funcionarios, total, page, pageSize, totalPag
                     {f.estado}
                   </Badge>
                 </TableCell>
+                <TableCell className="text-right">
+                  <Button variant="ghost" size="icon" asChild title="Editar">
+                    <Link href={`/colaboradores/${f.id}/edit`}>
+                      <Pencil className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </TableCell>
               </TableRow>
             ))
           )}
@@ -124,7 +132,7 @@ export function FuncionariosList({ funcionarios, total, page, pageSize, totalPag
       {/* Paginação */}
       <div className="flex items-center justify-between p-4 border-t text-sm">
         <span className="text-muted-foreground">
-          {total} {total === 1 ? 'funcionário' : 'funcionários'} · Página {page} de {totalPages || 1}
+          {total} {total === 1 ? 'colaborador' : 'colaboradores'} · Página {page} de {totalPages || 1}
         </span>
         <div className="flex gap-2">
           <Button
@@ -134,7 +142,7 @@ export function FuncionariosList({ funcionarios, total, page, pageSize, totalPag
             onClick={() => {
               const params = new URLSearchParams(searchParams);
               params.set('page', String(page - 1));
-              router.push(`/funcionarios?${params.toString()}`);
+              router.push(`/colaboradores?${params.toString()}`);
             }}
           >
             <ChevronLeft className="h-4 w-4" />
@@ -147,7 +155,7 @@ export function FuncionariosList({ funcionarios, total, page, pageSize, totalPag
             onClick={() => {
               const params = new URLSearchParams(searchParams);
               params.set('page', String(page + 1));
-              router.push(`/funcionarios?${params.toString()}`);
+              router.push(`/colaboradores?${params.toString()}`);
             }}
           >
             Seguinte
