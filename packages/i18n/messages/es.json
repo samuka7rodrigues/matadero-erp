@@ -1,0 +1,126 @@
+{
+  "App": {
+    "name": "ERP Matadero",
+    "description": "Sistema de Gestión Integral"
+  },
+  "Auth": {
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "rememberMe": "Recuérdame",
+    "forgotPassword": "Olvidé mi contraseña",
+    "loginWith": "Entrar con {provider}",
+    "loginError": "Credenciales inválidas",
+    "sessionExpired": "Sesión expirada. Por favor, inicia sesión de nuevo."
+  },
+  "Nav": {
+    "dashboard": "Panel",
+    "rh": "Recursos Humanos",
+    "funcionarios": "Empleados",
+    "contratos": "Contratos",
+    "ferias": "Vacaciones",
+    "nominas": "Nóminas",
+    "ponto": "Fichaje",
+    "horas": "Horas",
+    "turnos": "Turnos",
+    "financeiro": "Financiero",
+    "faturas": "Facturas",
+    "despesas": "Gastos",
+    "tesouraria": "Tesorería",
+    "configuracoes": "Configuración",
+    "utilizadores": "Usuarios",
+    "idioma": "Idioma"
+  },
+  "Funcionarios": {
+    "title": "Empleados",
+    "new": "Nuevo Empleado",
+    "edit": "Editar Empleado",
+    "details": "Detalles",
+    "list": "Lista de Empleados",
+    "fields": {
+      "nome": "Nombre completo",
+      "nif": "NIF",
+      "nie": "NIE",
+      "dataNascimento": "Fecha de nacimiento",
+      "dataAdmissao": "Fecha de ingreso",
+      "email": "Correo electrónico",
+      "telefone": "Teléfono",
+      "endereco": "Dirección",
+      "departamento": "Departamento",
+      "cargo": "Puesto",
+      "categoria": "Categoría profesional",
+      "contratoTipo": "Tipo de contrato",
+      "salarioBase": "Salario base",
+      "estado": "Estado",
+      "iban": "IBAN",
+      "numeroSS": "Nº Seguridad Social",
+      "foto": "Fotografía"
+    },
+    "estados": {
+      "ativo": "Activo",
+      "baixa": "Baja",
+      "ferias": "Vacaciones",
+      "suspenso": "Suspendido",
+      "inativo": "Inactivo"
+    },
+    "validation": {
+      "nifInvalido": "NIF inválido",
+      "dataAdmissaoFutura": "La fecha de ingreso no puede ser futura",
+      "salarioMinimo": "Salario por debajo del SMI",
+      "camposObrigatorios": "Rellene todos los campos obligatorios"
+    },
+    "actions": {
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "view": "Ver",
+      "uploadDocumento": "Subir documento"
+    },
+    "messages": {
+      "criado": "Empleado creado con éxito",
+      "atualizado": "Empleado actualizado",
+      "eliminado": "Empleado eliminado",
+      "erroEliminar": "Error al eliminar empleado"
+    }
+  },
+  "Common": {
+    "loading": "Cargando...",
+    "noData": "Sin datos para mostrar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "actions": "Acciones",
+    "confirm": "Confirmar",
+    "yes": "Sí",
+    "no": "No",
+    "all": "Todos",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "total": "Total",
+    "page": "Página",
+    "of": "de",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "back": "Volver",
+    "required": "Obligatorio",
+    "optional": "Opcional"
+  },
+  "Dashboard": {
+    "title": "Panel",
+    "welcome": "Bienvenido, {name}",
+    "kpis": {
+      "totalFuncionarios": "Total de Empleados",
+      "admitidosMes": "Ingresados este mes",
+      "contratosFim": "Contratos por expirar",
+      "examesVencer": "Exámenes médicos por vencer"
+    }
+  },
+  "Errors": {
+    "generic": "Ha ocurrido un error. Inténtelo de nuevo.",
+    "notFound": "Recurso no encontrado",
+    "unauthorized": "No autorizado",
+    "forbidden": "Acceso denegado",
+    "validation": "Error de validación"
+  }
+}

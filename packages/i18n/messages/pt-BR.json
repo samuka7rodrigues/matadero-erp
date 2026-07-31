@@ -1,0 +1,126 @@
+{
+  "App": {
+    "name": "ERP Matadero",
+    "description": "Sistema de Gestão Integral"
+  },
+  "Auth": {
+    "login": "Entrar",
+    "logout": "Sair",
+    "email": "E-mail",
+    "password": "Palavra-passe",
+    "rememberMe": "Lembrar-me",
+    "forgotPassword": "Esqueci a palavra-passe",
+    "loginWith": "Entrar com {provider}",
+    "loginError": "Credenciais inválidas",
+    "sessionExpired": "Sessão expirada. Por favor, inicie sessão novamente."
+  },
+  "Nav": {
+    "dashboard": "Painel",
+    "rh": "Recursos Humanos",
+    "funcionarios": "Funcionários",
+    "contratos": "Contratos",
+    "ferias": "Férias",
+    "nominas": "Recibos",
+    "ponto": "Ponto",
+    "horas": "Horas",
+    "turnos": "Turnos",
+    "financeiro": "Financeiro",
+    "faturas": "Faturas",
+    "despesas": "Despesas",
+    "tesouraria": "Tesouraria",
+    "configuracoes": "Configurações",
+    "utilizadores": "Utilizadores",
+    "idioma": "Idioma"
+  },
+  "Funcionarios": {
+    "title": "Funcionários",
+    "new": "Novo Funcionário",
+    "edit": "Editar Funcionário",
+    "details": "Detalhes",
+    "list": "Lista de Funcionários",
+    "fields": {
+      "nome": "Nome completo",
+      "nif": "NIF",
+      "nie": "NIE",
+      "dataNascimento": "Data de nascimento",
+      "dataAdmissao": "Data de admissão",
+      "email": "E-mail",
+      "telefone": "Telefone",
+      "endereco": "Morada",
+      "departamento": "Departamento",
+      "cargo": "Cargo",
+      "categoria": "Categoria profissional",
+      "contratoTipo": "Tipo de contrato",
+      "salarioBase": "Salário base",
+      "estado": "Estado",
+      "iban": "IBAN",
+      "numeroSS": "Nº Segurança Social",
+      "foto": "Fotografia"
+    },
+    "estados": {
+      "ativo": "Ativo",
+      "baixa": "Baixa",
+      "ferias": "Férias",
+      "suspenso": "Suspenso",
+      "inativo": "Inativo"
+    },
+    "validation": {
+      "nifInvalido": "NIF inválido",
+      "dataAdmissaoFutura": "Data de admissão não pode ser futura",
+      "salarioMinimo": "Salário abaixo do SMI",
+      "camposObrigatorios": "Preencha todos os campos obrigatórios"
+    },
+    "actions": {
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "view": "Ver",
+      "uploadDocumento": "Carregar documento"
+    },
+    "messages": {
+      "criado": "Funcionário criado com sucesso",
+      "atualizado": "Funcionário atualizado",
+      "eliminado": "Funcionário eliminado",
+      "erroEliminar": "Erro ao eliminar funcionário"
+    }
+  },
+  "Common": {
+    "loading": "A carregar...",
+    "noData": "Sem dados para mostrar",
+    "search": "Pesquisar",
+    "filter": "Filtrar",
+    "actions": "Ações",
+    "confirm": "Confirmar",
+    "yes": "Sim",
+    "no": "Não",
+    "all": "Todos",
+    "active": "Ativo",
+    "inactive": "Inativo",
+    "total": "Total",
+    "page": "Página",
+    "of": "de",
+    "previous": "Anterior",
+    "next": "Seguinte",
+    "back": "Voltar",
+    "required": "Obrigatório",
+    "optional": "Opcional"
+  },
+  "Dashboard": {
+    "title": "Painel",
+    "welcome": "Bem-vindo, {name}",
+    "kpis": {
+      "totalFuncionarios": "Total de Funcionários",
+      "admitidosMes": "Admitidos este mês",
+      "contratosFim": "Contratos a expirar",
+      "examesVencer": "Exames médicos a vencer"
+    }
+  },
+  "Errors": {
+    "generic": "Ocorreu um erro. Tente novamente.",
+    "notFound": "Recurso não encontrado",
+    "unauthorized": "Não autorizado",
+    "forbidden": "Acesso negado",
+    "validation": "Erro de validação"
+  }
+}

@@ -1,0 +1,14 @@
+import { getRequestConfig } from 'next-intl/server';
+import { notFound } from 'next/navigation';
+
+export const locales = ['pt-BR', 'es'] as const;
+export type Locale = (typeof locales)[number];
+export const defaultLocale: Locale = 'pt-BR';
+
+export default getRequestConfig(async ({ locale }) => {
+  if (!locales.includes(locale as Locale)) notFound();
+
+  return {
+    messages: (await import(`../../../../packages/i18n/messages/${locale}.json`)).default,
+  };
+});
