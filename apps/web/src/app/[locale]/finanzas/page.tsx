@@ -4,15 +4,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ArrowDownToLine, ArrowUpFromLine, TrendingDown, Wallet, Receipt } from 'lucide-react';
-import { getResumoFinanzas, getFlujoCaja } from '@/actions/finanzas';
+import { getResumoFinanzas, getFlujoCaja, listDocumentosFinanzas } from '@/actions/finanzas';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { getLocale } from 'next-intl/server';
+import { DocumentosFinanzasCard } from '@/components/finanzas/documentos-finanzas-card';
 
 export default async function FinanzasPage() {
   const t = await getTranslations('Finanzas');
   const locale = await getLocale();
   const resumo = await getResumoFinanzas();
   const { data: flujo } = await getFlujoCaja();
+  const { data: documentos } = await listDocumentosFinanzas();
 
   const kpis = [
     { label: t('kpis.facturado'), value: resumo.totalFacturado, icon: Receipt, tone: 'text-primary' },
@@ -99,6 +101,8 @@ export default async function FinanzasPage() {
             </CardContent>
           </Card>
         </div>
+
+        <DocumentosFinanzasCard documentos={documentos} />
       </div>
     </AppShell>
   );

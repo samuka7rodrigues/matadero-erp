@@ -625,3 +625,17 @@ export interface RentabilidadCliente {
   costes: number;
   beneficio: number;
 }
+
+export interface DocumentoFinanzas {
+  id: string;
+  categoria: string;
+  nombre: string;
+  descripcion: string | null;
+  archivo_url: string;
+  archivo_size: number | null;
+  mime_type: string | null;
+  uploaded_at: string;
+  uploaded_by: string | null;
+  expires_at: string | null;
+  created_at: string;
+}

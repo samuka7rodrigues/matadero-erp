@@ -659,6 +659,29 @@
       "costes": "Costes",
       "beneficio": "Beneficio",
       "noData": "Sin datos de rentabilidad"
+    },
+    "documentos": {
+      "title": "Documentos",
+      "noData": "Ningún documento adjuntado",
+      "categoria": "Categoría",
+      "descripcion": "Descripción (opcional)",
+      "descripcionPlaceholder": "Ej.: Factura de proveedor 2026",
+      "file": "Archivo",
+      "validUntil": "Válido hasta",
+      "upload": "Subir documento",
+      "view": "Ver documento",
+      "delete": "Eliminar",
+      "confirmDelete": "Eliminar el documento",
+      "selectFile": "Selecciona un archivo para subir",
+      "uploadError": "Error al subir documento",
+      "deleteError": "Error al eliminar documento",
+      "categorias": {
+        "fatura": "Factura",
+        "recibo": "Recibo",
+        "contrato": "Contrato",
+        "comprovativo": "Comprobante",
+        "outro": "Otro"
+      }
     }
   },
   "Dashboard": {

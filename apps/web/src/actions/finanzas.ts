@@ -41,6 +41,7 @@ import type {
   HoraExtraCompleto,
   FlujoCajaRow,
   RentabilidadCliente,
+  DocumentoFinanzas,
 } from '@/types/database';
 
 /**
@@ -988,4 +989,136 @@ export async function getResumoFinanzas(): Promise<ResumoFinanzas> {
     saldo: Math.round((totalCobrado - totalPagado - totalDespesas) * 100) / 100,
     faturasPendentes,
   };
+}
+
+/* ============================================================
+ * Documentos anexos globais (Finanzas)
+ * ============================================================ */
+
+const DOCUMENTOS_BUCKET = 'documentos-finanzas';
+
+/**
+ * Lista os documentos anexos globais com URLs assinados (1h).
+ * Acesso: admin/financeiro/auditor (leitura via RLS).
+ */
+export async function listDocumentosFinanzas(): Promise<{
+  data: Array<DocumentoFinanzas & { url: string | null }>;
+  error?: string;
+}> {
+  const supabase = createClient();
+
+  const { data, error } = await supabase
+    .from('documentos_finanzas')
+    .select('*')
+    .order('uploaded_at', { ascending: false });
+
+  if (error) {
+    return { data: [], error: error.message };
+  }
+
+  const withUrl = await Promise.all(
+    (data || []).map(async (doc) => {
+      const { data: signed } = await supabase.storage
+        .from(DOCUMENTOS_BUCKET)
+        .createSignedUrl(doc.archivo_url, 3600);
+      return { ...doc, url: signed?.signedUrl || null };
+    })
+  );
+
+  return { data: withUrl };
+}
+
+/**
+ * Faz upload de um documento anexo global (storage + registo na BD).
+ * Recebe um FormData com: file, categoria, descripcion, expires_at.
+ */
+export async function uploadDocumentoFinanzas(
+  formData: FormData
+): Promise<{ success: boolean; error?: string }> {
+  const supabase = createClient();
+  const user = await requireRoles(supabase, OPERATIVA_ROLES);
+  if (!user) return { success: false, error: 'Sem permissão para gerir documentos' };
+
+  const file = formData.get('file') as File | null;
+  const categoria = (formData.get('categoria') as string) || 'outro';
+  const descripcion = (formData.get('descripcion') as string) || null;
+  const expiresAt = (formData.get('expires_at') as string) || null;
+
+  if (!file || file.size === 0) {
+    return { success: false, error: 'Seleciona um ficheiro para carregar' };
+  }
+  if (file.size > 20 * 1024 * 1024) {
+    return { success: false, error: 'Ficheiro demasiado grande (máximo 20 MB)' };
+  }
+
+  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+  const path = `global/${Date.now()}-${safeName}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from(DOCUMENTOS_BUCKET)
+    .upload(path, file, { cacheControl: '3600', upsert: false });
+
+  if (uploadError) {
+    console.error('Erro no upload:', uploadError);
+    return { success: false, error: `Erro no upload: ${uploadError.message}` };
+  }
+
+  const { error: insertError } = await supabase
+    .from('documentos_finanzas')
+    .insert({
+      categoria,
+      nombre: file.name,
+      descripcion,
+      archivo_url: path,
+      archivo_size: file.size,
+      mime_type: file.type || null,
+      uploaded_by: user.id,
+      expires_at: expiresAt,
+    });
+
+  if (insertError) {
+    await supabase.storage.from(DOCUMENTOS_BUCKET).remove([path]);
+    console.error('Erro ao registar documento:', insertError);
+    return { success: false, error: `Erro ao registar documento: ${insertError.message}` };
+  }
+
+  const locale = await getLocale();
+  revalidatePath(`/${locale}/finanzas`);
+  return { success: true };
+}
+
+/**
+ * Elimina um documento (BD + ficheiro no storage).
+ */
+export async function eliminarDocumentoFinanzas(
+  id: string
+): Promise<{ success: boolean; error?: string }> {
+  const supabase = createClient();
+  const user = await requireRoles(supabase, OPERATIVA_ROLES);
+  if (!user) return { success: false, error: 'Sem permissão para gerir documentos' };
+
+  const { data: doc } = await supabase
+    .from('documentos_finanzas')
+    .select('archivo_url')
+    .eq('id', id)
+    .single();
+
+  if (!doc) return { success: false, error: 'Documento não encontrado' };
+
+  const { error } = await supabase
+    .from('documentos_finanzas')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    return { success: false, error: `Erro ao eliminar: ${error.message}` };
+  }
+
+  if (doc.archivo_url) {
+    await supabase.storage.from(DOCUMENTOS_BUCKET).remove([doc.archivo_url]);
+  }
+
+  const locale = await getLocale();
+  revalidatePath(`/${locale}/finanzas`);
+  return { success: true };
 }

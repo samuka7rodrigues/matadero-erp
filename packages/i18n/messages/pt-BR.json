@@ -659,6 +659,29 @@
       "costes": "Costes",
       "beneficio": "Benefício",
       "noData": "Sem dados de rentabilidade"
+    },
+    "documentos": {
+      "title": "Documentos",
+      "noData": "Nenhum documento anexado",
+      "categoria": "Categoria",
+      "descripcion": "Descrição (opcional)",
+      "descripcionPlaceholder": "Ex.: Fatura de fornecedor 2026",
+      "file": "Ficheiro",
+      "validUntil": "Válido até",
+      "upload": "Carregar documento",
+      "view": "Ver documento",
+      "delete": "Eliminar",
+      "confirmDelete": "Eliminar o documento",
+      "selectFile": "Seleciona um ficheiro para carregar",
+      "uploadError": "Erro ao carregar documento",
+      "deleteError": "Erro ao eliminar documento",
+      "categorias": {
+        "fatura": "Fatura",
+        "recibo": "Recibo",
+        "contrato": "Contrato",
+        "comprovativo": "Comprovativo",
+        "outro": "Outro"
+      }
     }
   },
   "Dashboard": {
