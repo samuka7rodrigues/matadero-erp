@@ -701,6 +701,8 @@
     "estado": "Estado",
     "periodo": "Período",
     "observacoes": "Observaciones",
+    "documentosCount": "Documentos: {count}",
+    "firmasCount": "Firmas: {count}",
     "estados": {
       "borrador": "Borrador",
       "ativo": "Activo",
@@ -719,6 +721,7 @@
       "title": "Documentos",
       "noData": "Ningún documento adjuntado",
       "send": "Enviar documento",
+      "attach": "Adjuntar documento",
       "categoria": "Categoría",
       "descripcion": "Descripción (opcional)",
       "descripcionPlaceholder": "Ej.: Contrato firmado 2026",

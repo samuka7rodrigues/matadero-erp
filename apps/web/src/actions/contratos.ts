@@ -81,6 +81,29 @@ export async function getContrato(id: string): Promise<ContratoGeralCompleto | n
   return data as ContratoGeralCompleto;
 }
 
+/**
+ * Conta documentos e firmas por contrato (para o grid de cards).
+ */
+export async function getContratoCounts(): Promise<{
+  documentos: Record<string, number>;
+  firmas: Record<string, number>;
+}> {
+  const supabase = createClient();
+
+  const { data: docs } = await supabase.from('contratos_documentos').select('contrato_id');
+  const { data: firmas } = await supabase.from('contratos_firmas').select('contrato_id');
+
+  const contagem = (rows: { contrato_id: string }[] | null) => {
+    const map: Record<string, number> = {};
+    (rows || []).forEach((r) => {
+      map[r.contrato_id] = (map[r.contrato_id] || 0) + 1;
+    });
+    return map;
+  };
+
+  return { documentos: contagem(docs), firmas: contagem(firmas) };
+}
+
 export async function createContrato(
   data: ContratoFormData
 ): Promise<{ success: boolean; error?: string; id?: string }> {
