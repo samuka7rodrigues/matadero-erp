@@ -12,7 +12,20 @@
     "forgotPassword": "Esqueci a palavra-passe",
     "loginWith": "Entrar com {provider}",
     "loginError": "Credenciais inválidas",
-    "sessionExpired": "Sessão expirada. Por favor, inicie sessão novamente."
+    "sessionExpired": "Sessão expirada. Por favor, inicie sessão novamente.",
+    "register": "Criar conta",
+    "registerTitle": "Registar",
+    "registerSubtitle": "Crie a sua conta para aceder ao sistema",
+    "name": "Nome",
+    "phone": "Telefone",
+    "createAccount": "Registar",
+    "haveAccount": "Já tem conta?",
+    "noAccount": "Ainda não tem conta?",
+    "registerSuccess": "Conta criada! Verifique o seu email para confirmar o registo antes de entrar.",
+    "registerError": "Erro ao criar a conta. Tente novamente.",
+    "passwordMin": "A palavra-passe deve ter pelo menos 8 caracteres",
+    "emailNotConfirmed": "Email ainda não confirmado. Verifique a sua caixa de entrada (e o spam).",
+    "backToLogin": "Voltar ao login"
   },
   "Nav": {
     "dashboard": "Painel",
@@ -39,8 +52,26 @@
     "tesouraria": "Tesouraria",
     "configuracoes": "Configurações",
     "utilizadores": "Utilizadores",
+    "perfil": "Perfil",
     "departamentos": "Departamentos",
-    "idioma": "Idioma"
+    "idioma": "Idioma",
+    "feriasSub": "Férias",
+    "ausencias": "Ausências",
+    "cursos": "Cursos",
+    "certificados": "Certificados",
+    "exames": "Exames Médicos",
+    "epis": "EPIs",
+    "advertencias": "Advertências",
+    "avaliacoes": "Avaliações",
+    "flota": "Flota",
+    "flotaVehiculos": "Veículos",
+    "flotaConductores": "Condutores",
+    "flotaItv": "ITV",
+    "flotaSeguros": "Seguros",
+    "flotaMantenimiento": "Manutenção",
+    "flotaCombustible": "Combustível",
+    "flotaKilometraje": "Quilometragem",
+    "flotaMultas": "Multas"
   },
   "Colaboradores": {
     "title": "Colaboradores",
@@ -771,6 +802,479 @@
         "colaborador": "Colaborador"
       }
     }
+  },
+  "RH": {
+    "title": "Recursos Humanos",
+    "subtitle": "Gestão do pessoal: processos e controlo de desenvolvimento",
+    "hub": {
+      "processos": "Procesos",
+      "desenvolvimento": "Controlo e Desenvolvimento",
+      "colaboradores": "Colaboradores",
+      "contratos": "Contratos",
+      "departamentos": "Departamentos",
+      "ferias": "Férias",
+      "ausencias": "Ausências",
+      "cursos": "Cursos",
+      "certificados": "Certificados",
+      "exames": "Exames Médicos",
+      "epis": "EPIs",
+      "advertencias": "Advertências",
+      "avaliacoes": "Avaliações",
+      "nominas": "Recibos",
+      "horasExtras": "Horas Extras"
+    },
+    "kpis": {
+      "colaboradoresAtivos": "Colaboradores ativos",
+      "feriasPendentes": "Férias pendentes",
+      "ausenciasAbertas": "Ausências abertas",
+      "examesAVencer": "Exames a vencer",
+      "cursosEmCurso": "Cursos em curso",
+      "advertenciasAbertas": "Advertências abertas"
+    },
+    "ferias": {
+      "title": "Férias",
+      "new": "Novas Férias",
+      "colaborador": "Colaborador",
+      "dataInicio": "Data de início",
+      "dataFim": "Data de fim",
+      "dias": "Dias",
+      "tipo": "Tipo",
+      "estado": "Estado",
+      "solicitadoEm": "Solicitado em",
+      "observacoes": "Observações",
+      "noData": "Nenhum registo de férias",
+      "confirmDelete": "Eliminar este registo de férias?",
+      "aprovar": "Aprovar",
+      "rejeitar": "Rejeitar",
+      "tipos": {
+        "vacaciones": "Férias",
+        "asuntos_propios": "Assuntos próprios",
+        "boda": "Casamento",
+        "nacimiento": "Nascimento",
+        "mudanza": "Mudança"
+      },
+      "estados": {
+        "pendente": "Pendente",
+        "aprovado": "Aprovado",
+        "rejeitado": "Rejeitado",
+        "cancelado": "Cancelado"
+      }
+    },
+    "ausencias": {
+      "title": "Ausências e Baixas",
+      "new": "Registar Ausência",
+      "colaborador": "Colaborador",
+      "tipo": "Tipo",
+      "dataInicio": "Data de início",
+      "dataFim": "Data de fim",
+      "dias": "Dias",
+      "motivo": "Motivo",
+      "justificada": "Justificada",
+      "estado": "Estado",
+      "observacoes": "Observações",
+      "noData": "Nenhuma ausência registada",
+      "confirmDelete": "Eliminar esta ausência?",
+      "tipos": {
+        "ausencia": "Ausência",
+        "baixa_medica": "Baixa médica",
+        "permiso": "Permiso",
+        "otra": "Outra"
+      },
+      "estados": {
+        "pendiente": "Pendente",
+        "justificada": "Justificada",
+        "injustificada": "Injustificada",
+        "cancelada": "Cancelada"
+      },
+      "sim": "Sim",
+      "nao": "Não"
+    },
+    "cursos": {
+      "title": "Cursos",
+      "new": "Novo Curso",
+      "colaborador": "Colaborador",
+      "nombre": "Nome do curso",
+      "entidad": "Entidade",
+      "horas": "Horas",
+      "dataInicio": "Data de início",
+      "dataFim": "Data de fim",
+      "estado": "Estado",
+      "observacoes": "Observações",
+      "noData": "Nenhum curso registado",
+      "confirmDelete": "Eliminar este curso?",
+      "estados": {
+        "programado": "Programado",
+        "en_curso": "Em curso",
+        "completado": "Completado",
+        "cancelado": "Cancelado"
+      }
+    },
+    "certificados": {
+      "title": "Certificados",
+      "new": "Novo Certificado",
+      "colaborador": "Colaborador",
+      "nombre": "Nome do certificado",
+      "entidad": "Entidade",
+      "tipo": "Tipo",
+      "numero": "Número",
+      "dataEmision": "Data de emissão",
+      "dataValidez": "Válido até",
+      "observacoes": "Observações",
+      "noData": "Nenhum certificado registado",
+      "confirmDelete": "Eliminar este certificado?",
+      "tipos": {
+        "formacion": "Formação",
+        "seguridad": "Segurança",
+        "manipulacion": "Manipulação",
+        "otro": "Outro"
+      }
+    },
+    "exames": {
+      "title": "Exames Médicos",
+      "new": "Novo Exame",
+      "colaborador": "Colaborador",
+      "fechaExamen": "Data do exame",
+      "fechaValidez": "Válido até",
+      "aptidao": "Aptidão",
+      "restricciones": "Restrições",
+      "medico": "Médico",
+      "centroMedico": "Centro médico",
+      "observaciones": "Observações",
+      "noData": "Nenhum exame médico registado",
+      "confirmDelete": "Eliminar este exame?",
+      "aptidoes": {
+        "apto": "Apto",
+        "no_apto": "Não apto",
+        "apto_con_restricciones": "Apto com restrições"
+      }
+    },
+    "epis": {
+      "title": "Entregas EPI",
+      "new": "Registar Entrega",
+      "colaborador": "Colaborador",
+      "epiTipo": "Tipo de EPI",
+      "epiDescripcion": "Descrição",
+      "cantidad": "Quantidade",
+      "talla": "Tamanho",
+      "marca": "Marca",
+      "modelo": "Modelo",
+      "fechaEntrega": "Data de entrega",
+      "fechaValidez": "Válido até",
+      "estado": "Estado",
+      "observaciones": "Observações",
+      "noData": "Nenhuma entrega registada",
+      "confirmDelete": "Eliminar esta entrega?",
+      "estados": {
+        "entregado": "Entregado",
+        "devuelto": "Devolvido",
+        "sustituido": "Substituído"
+      }
+    },
+    "advertencias": {
+      "title": "Advertências",
+      "new": "Nova Advertência",
+      "colaborador": "Colaborador",
+      "tipo": "Tipo",
+      "gravidade": "Gravidade",
+      "motivo": "Motivo",
+      "data": "Data",
+      "estado": "Estado",
+      "observacoes": "Observações",
+      "noData": "Nenhuma advertência registada",
+      "confirmDelete": "Eliminar esta advertência?",
+      "fechar": "Fechar",
+      "tipos": {
+        "verbal": "Verbal",
+        "escrita": "Escrita"
+      },
+      "gravedades": {
+        "leve": "Leve",
+        "grave": "Grave",
+        "muy_grave": "Muito grave"
+      },
+      "estados": {
+        "abierta": "Aberta",
+        "cerrada": "Fechada"
+      }
+    },
+    "avaliacoes": {
+      "title": "Avaliações",
+      "new": "Nova Avaliação",
+      "colaborador": "Colaborador",
+      "avaliador": "Avaliador",
+      "tipo": "Tipo",
+      "periodo": "Período",
+      "data": "Data",
+      "pontuacao": "Pontuação (0-10)",
+      "resultados": "Resultados",
+      "objetivos": "Objetivos",
+      "observacoes": "Observações",
+      "noData": "Nenhuma avaliação registada",
+      "confirmDelete": "Eliminar esta avaliação?",
+      "tipos": {
+        "inicial": "Inicial",
+        "seguimiento": "Seguimento",
+        "anual": "Anual",
+        "salida": "Saída"
+      }
+    },
+    "messages": {
+      "criado": "Registo criado com sucesso",
+      "atualizado": "Registo atualizado",
+      "eliminado": "Registo eliminado",
+      "erro": "Ocorreu um erro. Tente novamente."
+    }
+  },
+  "Flota": {
+    "title": "Flota",
+    "subtitle": "Gestão dos veículos da frota",
+    "kpis": {
+      "vehiculos": "Veículos",
+      "itvVencer": "ITV a vencer",
+      "segurosVencer": "Seguros a vencer",
+      "multasPendientes": "Multas pendentes",
+      "combustibleMes": "Combustível (mês)",
+      "mantenimientos": "Manutenções registadas"
+    },
+    "hub": {
+      "vehiculos": "Veículos",
+      "conductores": "Condutores",
+      "itv": "ITV",
+      "seguros": "Seguros",
+      "mantenimiento": "Manutenção",
+      "combustible": "Combustível",
+      "kilometraje": "Quilometragem",
+      "multas": "Multas"
+    },
+    "vehiculos": {
+      "title": "Veículos",
+      "subtitle": "Registo dos veículos da frota",
+      "new": "Novo veículo",
+      "matricula": "Matrícula",
+      "marca": "Marca",
+      "modelo": "Modelo",
+      "tipo": "Tipo",
+      "ano": "Ano",
+      "km": "KM",
+      "estado": "Estado",
+      "fechaCompra": "Data de compra",
+      "observacoes": "Observações",
+      "noData": "Sem veículos registados",
+      "confirmDelete": "Eliminar este veículo?",
+      "edit": "Editar",
+      "cancelar": "Cancelar",
+      "tipos": {
+        "coche": "Carro",
+        "furgoneta": "Furgoneta",
+        "camion": "Camião",
+        "moto": "Moto",
+        "otro": "Outro"
+      },
+      "estados": {
+        "activo": "Ativo",
+        "en_taller": "Em oficina",
+        "baja": "Dado de baixa"
+      }
+    },
+    "conductores": {
+      "title": "Condutores",
+      "subtitle": "Atribuição de condutores aos veículos",
+      "new": "Atribuir condutor",
+      "vehiculo": "Veículo",
+      "colaborador": "Condutor",
+      "desde": "Atribuído desde",
+      "hasta": "Atribuído até",
+      "principal": "Condutor principal",
+      "noData": "Sem atribuições registadas",
+      "confirmDelete": "Remover esta atribuição?"
+    },
+    "itv": {
+      "title": "ITV",
+      "subtitle": "Inspeções técnicas dos veículos",
+      "new": "Nova inspeção",
+      "vehiculo": "Veículo",
+      "fecha": "Data",
+      "fechaValidez": "Validade",
+      "resultado": "Resultado",
+      "centro": "Centro ITV",
+      "observacoes": "Observações",
+      "noData": "Sem inspeções registadas",
+      "confirmDelete": "Eliminar esta inspeção?",
+      "resultados": {
+        "pendiente": "Pendente",
+        "favorable": "Favorável",
+        "desfavorable": "Desfavorável",
+        "no_presentado": "Não apresentado"
+      }
+    },
+    "seguros": {
+      "title": "Seguros",
+      "subtitle": "Seguros dos veículos",
+      "new": "Novo seguro",
+      "vehiculo": "Veículo",
+      "compania": "Companhia",
+      "poliza": "Apólice",
+      "tipo": "Tipo",
+      "fechaInicio": "Início",
+      "fechaFin": "Fim",
+      "importe": "Importe",
+      "estado": "Estado",
+      "observacoes": "Observações",
+      "noData": "Sem seguros registados",
+      "confirmDelete": "Eliminar este seguro?",
+      "tipos": {
+        "basico": "Básico",
+        "terceros": "Contra terceiros",
+        "todo_riesgo": "Todo risco",
+        "otro": "Outro"
+      },
+      "estados": {
+        "activo": "Ativo",
+        "vencido": "Vencido",
+        "cancelado": "Cancelado"
+      }
+    },
+    "mantenimiento": {
+      "title": "Manutenção",
+      "subtitle": "Manutenções e reparações",
+      "new": "Nova manutenção",
+      "vehiculo": "Veículo",
+      "fecha": "Data",
+      "tipo": "Tipo",
+      "descricao": "Descrição",
+      "km": "KM",
+      "importe": "Importe",
+      "proveedor": "Fornecedor",
+      "observacoes": "Observações",
+      "noData": "Sem manutenções registadas",
+      "confirmDelete": "Eliminar este registo?",
+      "tipos": {
+        "correctivo": "Corretivo",
+        "preventivo": "Preventivo",
+        "neumaticos": "Pneus",
+        "frenos": "Travões",
+        "revision": "Revisão",
+        "otro": "Outro"
+      }
+    },
+    "combustible": {
+      "title": "Combustível",
+      "subtitle": "Abastecimentos de combustível",
+      "new": "Novo abastecimento",
+      "vehiculo": "Veículo",
+      "fecha": "Data",
+      "litros": "Litros",
+      "importe": "Importe",
+      "km": "KM",
+      "tipo": "Tipo",
+      "colaborador": "Condutor",
+      "observacoes": "Observações",
+      "noData": "Sem abastecimentos registados",
+      "confirmDelete": "Eliminar este registo?",
+      "tipos": {
+        "diesel": "Gasóleo",
+        "gasolina": "Gasolina",
+        "electrico": "Elétrico",
+        "otro": "Outro"
+      }
+    },
+    "kilometraje": {
+      "title": "Quilometragem",
+      "subtitle": "Registos de quilómetros por veículo",
+      "new": "Novo registo",
+      "vehiculo": "Veículo",
+      "fecha": "Data",
+      "km": "KM",
+      "colaborador": "Condutor",
+      "observacoes": "Observações",
+      "noData": "Sem registos de quilometragem",
+      "confirmDelete": "Eliminar este registo?"
+    },
+    "multas": {
+      "title": "Multas",
+      "subtitle": "Multas e sanções de trânsito",
+      "new": "Nova multa",
+      "vehiculo": "Veículo",
+      "colaborador": "Condutor",
+      "fecha": "Data",
+      "importe": "Importe",
+      "descricao": "Descrição",
+      "lugar": "Local",
+      "estado": "Estado",
+      "observacoes": "Observações",
+      "noData": "Sem multas registadas",
+      "confirmDelete": "Eliminar esta multa?",
+      "estados": {
+        "pendiente": "Pendente",
+        "pagada": "Paga",
+        "recurrida": "Recorrida",
+        "anulada": "Anulada"
+      }
+    },
+    "messages": {
+      "criado": "Registo criado com sucesso",
+      "atualizado": "Registo atualizado",
+      "eliminado": "Registo eliminado",
+      "erro": "Ocorreu um erro. Tente novamente."
+    }
+  },
+  "Perfil": {
+    "title": "Meu Perfil",
+    "subtitle": "As suas informações de acesso ao sistema",
+    "nome": "Nome",
+    "email": "E-mail",
+    "telefone": "Telefone",
+    "role": "Perfil de acesso",
+    "estado": "Estado",
+    "ativo": "Ativo",
+    "inativo": "Inativo",
+    "ultimoAcesso": "Último acesso",
+    "nunca": "Nunca",
+    "criadoEm": "Conta criada em",
+    "editar": "Editar",
+    "guardar": "Guardar",
+    "cancelar": "Cancelar",
+    "guardado": "Dados atualizados com sucesso",
+    "erro": "Ocorreu um erro ao guardar.",
+    "roles": {
+      "admin": "Administrador",
+      "rh": "Recursos Humanos",
+      "financeiro": "Financeiro",
+      "encarregado": "Encarregado",
+      "colaborador": "Colaborador",
+      "auditor": "Auditor"
+    }
+  },
+  "Utilizadores": {
+    "title": "Utilizadores",
+    "subtitle": "Gestão de acessos ao sistema",
+    "nome": "Nome",
+    "email": "E-mail",
+    "telefone": "Telefone",
+    "role": "Perfil",
+    "estado": "Estado",
+    "ultimoAcesso": "Último acesso",
+    "criadoEm": "Criado em",
+    "ativo": "Ativo",
+    "inativo": "Inativo",
+    "noData": "Nenhum utilizador encontrado",
+    "confirmAtivar": "Ativar este utilizador?",
+    "confirmInativar": "Inativar este utilizador? Ele deixará de aceder ao sistema.",
+    "confirmDelete": "Eliminar este utilizador?",
+    "colaboradorLigado": "Colaborador ligado",
+    "semColaborador": "Sem colaborador",
+    "actions": "Ações",
+    "guardado": "Utilizador atualizado",
+    "erro": "Ocorreu um erro.",
+    "permissoes": "Permissões",
+    "permissoesTitulo": "Permissões de menus",
+    "permissoesSubtitle": "Define quais os menus que este utilizador vê no menu lateral. Sem configuração, são usados os menus padrão do perfil.",
+    "geral": "Geral",
+    "usarPadrao": "Usar perfil padrão",
+    "cancelar": "Cancelar",
+    "guardar": "Guardar",
+    "menusPadrao": "A usar o padrão do perfil",
+    "sempreVisiveis": "O Painel e o Perfil estão sempre visíveis."
   },
   "Dashboard": {
     "title": "Painel",

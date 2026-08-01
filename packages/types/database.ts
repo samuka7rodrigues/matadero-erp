@@ -345,10 +345,18 @@ export interface Utilizador {
   colaborador_id: string | null;
   role: RoleUtilizador;
   email: string;
+  nome_completo: string | null;
+  telefone: string | null;
   ativo: boolean;
   ultimo_acesso: string | null;
   totp_enabled: boolean;
   created_at: string;
+  updated_at: string;
+}
+
+export interface PermissoesMenus {
+  user_id: string;
+  menus: string[];
   updated_at: string;
 }
 
@@ -689,6 +697,234 @@ export interface ContratoFirma {
   dni: string | null;
   data_firma: string | null;
   estado: string;
+  created_at: string;
+  updated_at: string;
+}
+
+/* ============================================================
+ * Módulo RH ampliado (migration 0015)
+ * ============================================================ */
+
+export type TipoAusencia = 'ausencia' | 'baixa_medica' | 'permiso' | 'otra';
+export type EstadoAusencia = 'pendiente' | 'justificada' | 'injustificada' | 'cancelada';
+
+export interface Ausencia {
+  id: string;
+  colaborador_id: string;
+  tipo: TipoAusencia;
+  data_inicio: string;
+  data_fim: string | null;
+  dias: number | null;
+  motivo: string | null;
+  justificada: boolean;
+  justificante_url: string | null;
+  estado: EstadoAusencia;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AusenciaCompleto extends Ausencia {
+  colaboradores?: { nombre: string | null; apellido1: string | null; apellido2: string | null } | null;
+}
+
+export type EstadoCurso = 'programado' | 'en_curso' | 'completado' | 'cancelado';
+
+export interface Curso {
+  id: string;
+  colaborador_id: string;
+  nombre: string;
+  entidad: string | null;
+  horas: number | null;
+  data_inicio: string | null;
+  data_fim: string | null;
+  estado: EstadoCurso;
+  certificado_url: string | null;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CursoCompleto extends Curso {
+  colaboradores?: { nombre: string | null; apellido1: string | null; apellido2: string | null } | null;
+}
+
+export interface Certificado {
+  id: string;
+  colaborador_id: string;
+  curso_id: string | null;
+  nombre: string;
+  entidad: string | null;
+  tipo: string;
+  numero: string | null;
+  data_emision: string;
+  data_validez: string | null;
+  documento_url: string | null;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CertificadoCompleto extends Certificado {
+  colaboradores?: { nombre: string | null; apellido1: string | null; apellido2: string | null } | null;
+}
+
+export type TipoAdvertencia = 'verbal' | 'escrita';
+export type GravidadeAdvertencia = 'leve' | 'grave' | 'muy_grave';
+export type EstadoAdvertencia = 'abierta' | 'cerrada';
+
+export interface Advertencia {
+  id: string;
+  colaborador_id: string;
+  tipo: TipoAdvertencia;
+  gravidade: GravidadeAdvertencia;
+  motivo: string;
+  data_advertencia: string;
+  documento_url: string | null;
+  estado: EstadoAdvertencia;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AdvertenciaCompleto extends Advertencia {
+  colaboradores?: { nombre: string | null; apellido1: string | null; apellido2: string | null } | null;
+}
+
+export type TipoAvaliacao = 'inicial' | 'seguimiento' | 'anual' | 'salida';
+
+export interface Avaliacao {
+  id: string;
+  colaborador_id: string;
+  tipo: TipoAvaliacao;
+  periodo: string | null;
+  data_avaliacao: string;
+  pontuacao: number | null;
+  resultados: string | null;
+  objetivos: string | null;
+  avaliador_id: string | null;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AvaliacaoCompleto extends Avaliacao {
+  colaboradores?: { nombre: string | null; apellido1: string | null; apellido2: string | null } | null;
+  avaliadores?: { nombre: string | null; apellido1: string | null; apellido2: string | null } | null;
+}
+
+/* ============================================================
+ * Flota (veículos)
+ * ============================================================ */
+
+export interface FlotaVehiculo {
+  id: string;
+  matricula: string;
+  marca: string;
+  modelo: string;
+  tipo: string;
+  ano: number | null;
+  km_actuales: number | null;
+  estado: string;
+  fecha_compra: string | null;
+  fecha_baja: string | null;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FlotaConductor {
+  id: string;
+  vehiculo_id: string;
+  colaborador_id: string;
+  asignado_desde: string;
+  asignado_hasta: string | null;
+  principal: boolean;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FlotaITV {
+  id: string;
+  vehiculo_id: string;
+  fecha: string;
+  fecha_validez: string | null;
+  resultado: string;
+  centro: string | null;
+  documento_url: string | null;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FlotaSeguro {
+  id: string;
+  vehiculo_id: string;
+  compania: string;
+  poliza: string | null;
+  tipo: string;
+  fecha_inicio: string | null;
+  fecha_fin: string | null;
+  importe: number | null;
+  estado: string;
+  documento_url: string | null;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FlotaMantenimiento {
+  id: string;
+  vehiculo_id: string;
+  fecha: string;
+  tipo: string;
+  descricao: string;
+  km: number | null;
+  importe: number | null;
+  proveedor: string | null;
+  factura_url: string | null;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FlotaCombustible {
+  id: string;
+  vehiculo_id: string;
+  fecha: string;
+  litros: number;
+  importe: number;
+  km: number | null;
+  tipo: string;
+  colaborador_id: string | null;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FlotaKilometraje {
+  id: string;
+  vehiculo_id: string;
+  fecha: string;
+  km: number;
+  colaborador_id: string | null;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FlotaMulta {
+  id: string;
+  vehiculo_id: string;
+  colaborador_id: string | null;
+  fecha: string;
+  importe: number;
+  descricao: string | null;
+  lugar: string | null;
+  estado: string;
+  documento_url: string | null;
+  observacoes: string | null;
   created_at: string;
   updated_at: string;
 }

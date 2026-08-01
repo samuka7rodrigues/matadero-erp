@@ -779,7 +779,7 @@ export async function createNomina(
   }
 
   const locale = await getLocale();
-  revalidatePath(`/${locale}/nominas`);
+  revalidatePath(`/${locale}/rh/nominas`);
   revalidatePath(`/${locale}/finanzas`);
   return { success: true, id: (novo as Nomina).id };
 }
@@ -804,7 +804,7 @@ export async function updateNominaEstado(
   }
 
   const locale = await getLocale();
-  revalidatePath(`/${locale}/nominas`);
+  revalidatePath(`/${locale}/rh/nominas`);
   revalidatePath(`/${locale}/finanzas`);
   return { success: true };
 }
@@ -827,7 +827,7 @@ export async function deleteNomina(
   }
 
   const locale = await getLocale();
-  revalidatePath(`/${locale}/nominas`);
+  revalidatePath(`/${locale}/rh/nominas`);
   revalidatePath(`/${locale}/finanzas`);
   return { success: true };
 }
@@ -875,7 +875,7 @@ export async function createHoraExtra(
   }
 
   const locale = await getLocale();
-  revalidatePath(`/${locale}/horas-extras`);
+  revalidatePath(`/${locale}/rh/horas-extras`);
   revalidatePath(`/${locale}/finanzas`);
   return { success: true, id: (novo as HoraExtra).id };
 }
@@ -898,7 +898,7 @@ export async function deleteHoraExtra(
   }
 
   const locale = await getLocale();
-  revalidatePath(`/${locale}/horas-extras`);
+  revalidatePath(`/${locale}/rh/horas-extras`);
   revalidatePath(`/${locale}/finanzas`);
   return { success: true };
 }

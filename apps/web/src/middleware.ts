@@ -13,7 +13,7 @@ const intlMiddleware = createMiddleware({
  * Rotas públicas (sem auth) que NÃO devem ter Cache-Control: no-store.
  * Tudo o resto sob /[locale]/* é considerado protegido.
  */
-const PUBLIC_PATHS = ['/login', '/forgot-password', '/reset-password'];
+const PUBLIC_PATHS = ['/login', '/register', '/forgot-password', '/reset-password'];
 
 function isPublicPath(pathname: string): boolean {
   // Remove o prefixo do locale: /pt-BR/login -> /login

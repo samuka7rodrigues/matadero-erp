@@ -7,20 +7,19 @@ import { Button } from '@/components/ui/button';
 import { LocaleSwitcher } from './locale-switcher';
 import { MobileNav } from './sidebar';
 import { logoutAction } from '@/actions/auth';
-import type { RoleUtilizador } from '@/types/database';
 
 interface HeaderProps {
   user: User;
-  role: RoleUtilizador;
+  allowedMenus: string[];
 }
 
-export function Header({ user, role }: HeaderProps) {
+export function Header({ user, allowedMenus }: HeaderProps) {
   const t = useTranslations('Auth');
 
   return (
     <header className="flex h-16 items-center justify-between gap-3 border-b bg-card px-4 lg:px-6">
       <div className="flex items-center gap-3">
-        <MobileNav role={role} />
+        <MobileNav allowedMenus={allowedMenus} />
         <span className="hidden text-sm text-muted-foreground sm:block">
           {user.email}
         </span>

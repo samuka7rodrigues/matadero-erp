@@ -53,7 +53,7 @@ export function HoraExtraForm({ colaboradores }: Props) {
       setSubmitting(false);
       return;
     }
-    router.push('/horas-extras');
+    router.push('/rh/horas-extras');
   }
 
   return (
@@ -131,7 +131,7 @@ export function HoraExtraForm({ colaboradores }: Props) {
       </Card>
 
       <div className="flex justify-end gap-3">
-        <Button type="button" variant="outline" onClick={() => router.push('/horas-extras')}>
+        <Button type="button" variant="outline" onClick={() => router.push('/rh/horas-extras')}>
           {tc('cancel')}
         </Button>
         <Button type="submit" disabled={submitting}>

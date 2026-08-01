@@ -69,7 +69,7 @@ export function NominaForm({ colaboradores }: Props) {
       setSubmitting(false);
       return;
     }
-    router.push('/nominas');
+    router.push('/rh/nominas');
   }
 
   return (
@@ -172,7 +172,7 @@ export function NominaForm({ colaboradores }: Props) {
       </Card>
 
       <div className="flex justify-end gap-3">
-        <Button type="button" variant="outline" onClick={() => router.push('/nominas')}>
+        <Button type="button" variant="outline" onClick={() => router.push('/rh/nominas')}>
           {tc('cancel')}
         </Button>
         <Button type="submit" disabled={submitting}>

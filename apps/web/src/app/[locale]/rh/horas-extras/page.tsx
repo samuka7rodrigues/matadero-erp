@@ -27,7 +27,7 @@ export default async function HorasExtrasPage() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{t('horasExtras.title')}</h1>
           <Button asChild>
-            <Link href="/horas-extras/new">
+                <Link href="/rh/horas-extras/new">
               <Plus className="mr-2 h-4 w-4" />
               {t('horasExtras.new')}
             </Link>
@@ -44,7 +44,7 @@ export default async function HorasExtrasPage() {
               </div>
               <p className="text-sm text-muted-foreground">{t('horasExtras.noData')}</p>
               <Button asChild variant="outline" size="sm">
-                <Link href="/horas-extras/new">
+            <Link href="/rh/horas-extras/new">
                   <Plus className="mr-2 h-4 w-4" />
                   {t('horasExtras.new')}
                 </Link>

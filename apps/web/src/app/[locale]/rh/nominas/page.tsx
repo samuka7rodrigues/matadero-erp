@@ -30,7 +30,7 @@ export default async function NominasPage() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{t('nominas.title')}</h1>
           <Button asChild>
-            <Link href="/nominas/new">
+                <Link href="/rh/nominas/new">
               <Plus className="mr-2 h-4 w-4" />
               {t('nominas.new')}
             </Link>
@@ -47,7 +47,7 @@ export default async function NominasPage() {
               </div>
               <p className="text-sm text-muted-foreground">{t('nominas.noData')}</p>
               <Button asChild variant="outline" size="sm">
-                <Link href="/nominas/new">
+            <Link href="/rh/nominas/new">
                   <Plus className="mr-2 h-4 w-4" />
                   {t('nominas.new')}
                 </Link>
