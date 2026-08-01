@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from '@/i18n/config';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,7 @@ import {
   Trash2,
   ExternalLink,
   AlertCircle,
+  CheckCircle2,
 } from 'lucide-react';
 import { uploadDocumentoFinanzas, eliminarDocumentoFinanzas } from '@/actions/finanzas';
 import type { DocumentoFinanzas } from '@/types/database';
@@ -52,10 +53,13 @@ export function DocumentosFinanzasCard({ documentos }: Props) {
   const [expiresAt, setExpiresAt] = useState('');
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   async function handleUpload(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    setSuccess(null);
 
     if (!file) {
       setError(t('documentos.selectFile'));
@@ -78,8 +82,11 @@ export function DocumentosFinanzasCard({ documentos }: Props) {
     }
 
     setFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
     setDescripcion('');
     setExpiresAt('');
+    setSuccess(t('documentos.uploadSuccess'));
+    setUploading(false);
     router.refresh();
   }
 
@@ -95,14 +102,20 @@ export function DocumentosFinanzasCard({ documentos }: Props) {
   }
 
   return (
-    <Card>
+    <Card className="border-slate-200 bg-slate-50 shadow-sm">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <FileText className="h-4 w-4" />
+          <FileText className="h-4 w-4 text-primary" />
           {t('documentos.title')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
+        {success && (
+          <div className="flex items-center gap-2 rounded-md bg-emerald-500/15 p-3 text-sm text-emerald-600">
+            <CheckCircle2 className="h-4 w-4" />
+            {success}
+          </div>
+        )}
         {error && (
           <div className="flex items-center gap-2 rounded-md bg-destructive/15 p-3 text-sm text-destructive">
             <AlertCircle className="h-4 w-4" />
@@ -150,7 +163,7 @@ export function DocumentosFinanzasCard({ documentos }: Props) {
           </ul>
         )}
 
-        <form onSubmit={handleUpload} className="space-y-3 rounded-md border p-3">
+        <form onSubmit={handleUpload} className="space-y-3 rounded-md border border-slate-200 bg-white p-3 shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div className="space-y-1.5">
               <Label htmlFor="doc-categoria">{t('documentos.categoria')}</Label>
@@ -175,6 +188,7 @@ export function DocumentosFinanzasCard({ documentos }: Props) {
               <Label htmlFor="doc-file">{t('documentos.file')} *</Label>
               <Input
                 id="doc-file"
+                ref={fileInputRef}
                 type="file"
                 onChange={(e) => setFile(e.target.files?.[0] || null)}
               />

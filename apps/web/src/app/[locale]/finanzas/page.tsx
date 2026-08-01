@@ -17,47 +17,57 @@ export default async function FinanzasPage() {
   const { data: documentos } = await listDocumentosFinanzas();
 
   const kpis = [
-    { label: t('kpis.facturado'), value: resumo.totalFacturado, icon: Receipt, tone: 'text-primary' },
-    { label: t('kpis.cobrado'), value: resumo.totalCobrado, icon: ArrowDownToLine, tone: 'text-emerald-600' },
-    { label: t('kpis.pagado'), value: resumo.totalPagado, icon: ArrowUpFromLine, tone: 'text-destructive' },
-    { label: t('kpis.despesas'), value: resumo.totalDespesas, icon: TrendingDown, tone: 'text-destructive' },
+    { label: t('kpis.facturado'), value: resumo.totalFacturado, icon: Receipt, tile: 'bg-white text-primary ring-slate-200' },
+    { label: t('kpis.cobrado'), value: resumo.totalCobrado, icon: ArrowDownToLine, tile: 'bg-emerald-50 text-emerald-600 ring-emerald-100' },
+    { label: t('kpis.pagado'), value: resumo.totalPagado, icon: ArrowUpFromLine, tile: 'bg-amber-50 text-amber-600 ring-amber-100' },
+    { label: t('kpis.despesas'), value: resumo.totalDespesas, icon: TrendingDown, tile: 'bg-red-50 text-destructive ring-red-100' },
   ];
 
   return (
     <AppShell>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{t('resumen')}</h1>
-          <p className="text-muted-foreground mt-1">{t('title')}</p>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{t('resumen')}</h1>
+            <p className="text-muted-foreground mt-1">{t('title')}</p>
+          </div>
+          <Badge variant="outline" className="w-fit gap-1.5 py-1.5">
+            <Wallet className="h-3.5 w-3.5" />
+            {formatCurrency(resumo.saldo, locale)}
+          </Badge>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {kpis.map((kpi) => (
-            <Card key={kpi.label}>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  {kpi.label}
-                </CardTitle>
-                <kpi.icon className={`h-4 w-4 ${kpi.tone}`} />
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold">{formatCurrency(kpi.value, locale)}</p>
+            <Card key={kpi.label} className="border-slate-200 bg-slate-50 shadow-sm">
+              <CardContent className="flex items-center gap-4 p-5">
+                <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-lg ring-1 ${kpi.tile}`}>
+                  <kpi.icon className="h-5 w-5" />
+                </span>
+                <div className="min-w-0">
+                  <p className="truncate text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    {kpi.label}
+                  </p>
+                  <p className="mt-0.5 text-xl font-bold tracking-tight sm:text-2xl">
+                    {formatCurrency(kpi.value, locale)}
+                  </p>
+                </div>
               </CardContent>
             </Card>
           ))}
         </div>
 
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">{t('kpis.saldo')}</CardTitle>
+          <Card className="border-emerald-200 bg-gradient-to-br from-emerald-50 to-white shadow-sm">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-emerald-700">{t('kpis.saldo')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-bold text-emerald-600">
+              <p className="text-3xl font-bold tracking-tight text-emerald-700">
                 {formatCurrency(resumo.saldo, locale)}
               </p>
-              <p className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
-                <Wallet className="h-4 w-4" />
+              <p className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
+                <Wallet className="h-4 w-4 text-emerald-600" />
                 {t('kpis.faturasPendentes')}: {resumo.faturasPendentes}
               </p>
             </CardContent>

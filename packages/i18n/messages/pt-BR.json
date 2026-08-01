@@ -673,6 +673,7 @@
       "delete": "Eliminar",
       "confirmDelete": "Eliminar o documento",
       "selectFile": "Seleciona um ficheiro para carregar",
+      "uploadSuccess": "Documento carregado com sucesso",
       "uploadError": "Erro ao carregar documento",
       "deleteError": "Erro ao eliminar documento",
       "categorias": {

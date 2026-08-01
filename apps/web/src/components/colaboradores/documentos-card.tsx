@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from '@/i18n/config';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,7 @@ import {
   Trash2,
   ExternalLink,
   AlertCircle,
+  CheckCircle2,
 } from 'lucide-react';
 import { uploadDocumento, eliminarDocumento } from '@/actions/colaboradores';
 import type { DocumentoColaborador } from '@/types/database';
@@ -52,10 +53,13 @@ export function DocumentosCard({ colaboradorId, documentos }: Props) {
   const [expiresAt, setExpiresAt] = useState('');
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   async function handleUpload(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    setSuccess(null);
 
     if (!file) {
       setError('Seleciona um ficheiro para carregar');
@@ -78,8 +82,11 @@ export function DocumentosCard({ colaboradorId, documentos }: Props) {
     }
 
     setFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
     setDescripcion('');
     setExpiresAt('');
+    setSuccess('Documento carregado com sucesso');
+    setUploading(false);
     router.refresh();
   }
 
@@ -103,6 +110,12 @@ export function DocumentosCard({ colaboradorId, documentos }: Props) {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
+        {success && (
+          <div className="flex items-center gap-2 rounded-md bg-emerald-500/15 p-3 text-sm text-emerald-600">
+            <CheckCircle2 className="h-4 w-4" />
+            {success}
+          </div>
+        )}
         {error && (
           <div className="flex items-center gap-2 rounded-md bg-destructive/15 p-3 text-sm text-destructive">
             <AlertCircle className="h-4 w-4" />
@@ -175,6 +188,7 @@ export function DocumentosCard({ colaboradorId, documentos }: Props) {
               <Label htmlFor="doc-file">Ficheiro *</Label>
               <Input
                 id="doc-file"
+                ref={fileInputRef}
                 type="file"
                 onChange={(e) => setFile(e.target.files?.[0] || null)}
               />
