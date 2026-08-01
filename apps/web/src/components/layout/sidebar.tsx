@@ -16,6 +16,7 @@ import {
   Receipt,
   Wallet,
   Building2,
+  Home,
   Settings,
   Shield,
 } from 'lucide-react';
@@ -31,6 +32,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { href: '/dashboard', labelKey: 'Nav.dashboard', icon: LayoutDashboard, roles: ['admin', 'rh', 'financeiro', 'encarregado', 'colaborador', 'auditor'] },
   { href: '/empresas', labelKey: 'Nav.empresa', icon: Building2, roles: ['admin', 'rh', 'financeiro', 'auditor'] },
+  { href: '/alojamientos', labelKey: 'Nav.alojamentos', icon: Home, roles: ['admin', 'rh', 'auditor'] },
   { href: '/colaboradores', labelKey: 'Nav.colaboradores', icon: Users, roles: ['admin', 'rh', 'encarregado', 'auditor'] },
   { href: '/contratos', labelKey: 'Nav.contratos', icon: FileText, roles: ['admin', 'rh', 'auditor'] },
   { href: '/ponto', labelKey: 'Nav.ponto', icon: Clock, roles: ['admin', 'rh', 'encarregado', 'colaborador', 'auditor'] },

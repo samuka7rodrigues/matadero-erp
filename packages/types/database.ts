@@ -61,6 +61,160 @@ export interface Empresa {
   deleted_at: string | null;
 }
 
+export interface Alojamiento {
+  id: string;
+  empresa_id: string | null;
+  codigo: string | null;
+  nombre: string;
+  tipo: string;
+  capacidad: number | null;
+  direccion: string | null;
+  ciudad: string | null;
+  codigo_postal: string | null;
+  pais: string;
+  renda_mensal: number | null;
+  responsable: string | null;
+  estado: string;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+export interface AlojamientoCompleto extends Alojamiento {
+  empresas?: { nombre: string | null } | null;
+}
+
+export interface Habitacion {
+  id: string;
+  alojamiento_id: string;
+  numero: string;
+  nombre: string | null;
+  tipo: string;
+  capacidad: number;
+  estado: string;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+export interface HabitacionCompleto extends Habitacion {
+  alojamientos?: { nombre: string | null } | null;
+}
+
+export interface Ocupacion {
+  id: string;
+  alojamiento_id: string;
+  habitacion_id: string | null;
+  colaborador_id: string;
+  data_entrada: string;
+  data_saida: string | null;
+  estado: string;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+export interface OcupacionCompleto extends Ocupacion {
+  alojamientos?: { nombre: string | null } | null;
+  habitaciones?: { numero: string | null } | null;
+  colaboradores?: { nombre: string | null; apellido1: string | null; apellido2: string | null } | null;
+}
+
+export interface Inventario {
+  id: string;
+  alojamiento_id: string;
+  habitacion_id: string | null;
+  nombre: string;
+  categoria: string;
+  quantidade: number;
+  estado: string;
+  valor: number | null;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+export interface InventarioCompleto extends Inventario {
+  habitaciones?: { numero: string | null } | null;
+}
+
+export interface Fotografia {
+  id: string;
+  alojamiento_id: string;
+  habitacion_id: string | null;
+  url: string;
+  descripcion: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+export interface FotografiaCompleto extends Fotografia {
+  habitaciones?: { numero: string | null } | null;
+}
+
+export interface Incidencia {
+  id: string;
+  alojamiento_id: string;
+  habitacion_id: string | null;
+  colaborador_id: string | null;
+  tipo: string;
+  descripcion: string;
+  prioridad: string;
+  estado: string;
+  fecha: string;
+  fecha_resolucion: string | null;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+export interface IncidenciaCompleto extends Incidencia {
+  habitaciones?: { numero: string | null } | null;
+  colaboradores?: { nombre: string | null; apellido1: string | null; apellido2: string | null } | null;
+}
+
+export interface ContratoArrendamento {
+  id: string;
+  codigo: string | null;
+  alojamiento_id: string;
+  habitacion_id: string | null;
+  colaborador_id: string;
+  data_inicio: string;
+  data_fim: string | null;
+  renda: number | null;
+  estado: string;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+export interface ContratoArrendamentoCompleto extends ContratoArrendamento {
+  habitaciones?: { numero: string | null } | null;
+  colaboradores?: { nombre: string | null; apellido1: string | null; apellido2: string | null } | null;
+}
+
+export interface Consumo {
+  id: string;
+  alojamiento_id: string;
+  tipo: string;
+  data: string;
+  leitura_anterior: number | null;
+  leitura_atual: number | null;
+  importe: number | null;
+  fornecedor: string | null;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
 export interface Colaborador {
   id: string;
   // Pessoais

@@ -17,6 +17,7 @@
   "Nav": {
     "dashboard": "Painel",
     "empresa": "Empresa",
+    "alojamentos": "Alojamentos",
     "rh": "Recursos Humanos",
     "colaboradores": "Colaboradores",
     "contratos": "Contratos",
@@ -191,6 +192,246 @@
       "atualizado": "Empresa atualizada",
       "eliminado": "Empresa eliminada",
       "confirmDelete": "Eliminar esta empresa?"
+    }
+  },
+  "Alojamiento": {
+    "title": "Alojamentos",
+    "new": "Novo Alojamento",
+    "edit": "Editar Alojamento",
+    "details": "Detalhes do Alojamento",
+    "list": "Lista de Alojamentos",
+    "noData": "Nenhum alojamento cadastrado",
+    "sections": {
+      "identificacion": "Identificação",
+      "morada": "Morada",
+      "gestao": "Gestão"
+    },
+    "fields": {
+      "empresa": "Empresa",
+      "codigo": "Código",
+      "nombre": "Nome",
+      "tipo": "Tipo",
+      "capacidad": "Capacidade (plazas)",
+      "direccion": "Morada",
+      "ciudad": "Cidade",
+      "codigoPostal": "Código postal",
+      "pais": "País",
+      "rendaMensal": "Renda mensal (€)",
+      "responsable": "Responsável",
+      "estado": "Estado",
+      "observacoes": "Observações"
+    },
+    "estados": {
+      "ativo": "Ativo",
+      "inativo": "Inativo"
+    },
+    "habitaciones": {
+      "title": "Habitaciones",
+      "new": "Nova Habitación",
+      "numero": "Número",
+      "nombre": "Nome",
+      "tipo": "Tipo",
+      "capacidad": "Capacidade (camas)",
+      "estado": "Estado",
+      "tipoHabitacion": {
+        "individual": "Individual",
+        "compartida": "Compartilhada",
+        "matrimonial": "Matrimonial"
+      },
+      "estados": {
+        "livre": "Livre",
+        "ocupada": "Ocupada",
+        "manutencao": "Manutenção",
+        "fora_de_uso": "Fora de uso"
+      },
+      "noData": "Nenhuma habitación cadastrada",
+      "confirmDelete": "Eliminar esta habitación?",
+      "actions": {
+        "delete": "Eliminar"
+      },
+      "messages": {
+        "requiredNumero": "O número é obrigatório",
+        "criado": "Habitación criada",
+        "eliminado": "Habitación eliminada"
+      }
+    },
+    "ocupacion": {
+      "title": "Ocupação",
+      "new": "Registar Ocupação",
+      "colaborador": "Colaborador",
+      "habitacion": "Habitación",
+      "sinHabitacion": "Vivienda (sem habitación)",
+      "dataEntrada": "Data de entrada",
+      "dataSaida": "Data de saída",
+      "estado": "Estado",
+      "observacoes": "Observações",
+      "estados": {
+        "ativa": "Ativa",
+        "concluida": "Concluída"
+      },
+      "noData": "Nenhuma ocupação registada",
+      "finalizar": "Finalizar",
+      "confirmDelete": "Eliminar esta ocupação?",
+      "actions": {
+        "delete": "Eliminar"
+      },
+      "messages": {
+        "requiredColaborador": "Selecione um colaborador",
+        "criado": "Ocupação registada",
+        "finalizada": "Ocupação finalizada",
+        "eliminado": "Ocupação eliminada"
+      }
+    },
+    "inventario": {
+      "title": "Inventário",
+      "new": "Adicionar Item",
+      "nombre": "Nome",
+      "categoria": "Categoria",
+      "quantidade": "Quantidade",
+      "estado": "Estado",
+      "valor": "Valor (€)",
+      "habitacion": "Habitación",
+      "categorias": {
+        "mobiliario": "Mobiliário",
+        "electrodomestico": "Eletrodoméstico",
+        "ropa_cama": "Roupa de cama",
+        "otra": "Outra"
+      },
+      "estados": {
+        "novo": "Novo",
+        "bom": "Bom",
+        "desgastado": "Desgastado",
+        "danificado": "Danificado"
+      },
+      "noData": "Nenhum item de inventário",
+      "confirmDelete": "Eliminar este item?",
+      "actions": {
+        "delete": "Eliminar"
+      },
+      "messages": {
+        "requiredNombre": "O nome é obrigatório",
+        "criado": "Item adicionado",
+        "eliminado": "Item eliminado"
+      }
+    },
+    "fotografias": {
+      "title": "Fotografias",
+      "new": "Carregar fotografia",
+      "descripcion": "Descrição",
+      "habitacion": "Habitación",
+      "semFoto": "Nenhuma fotografia carregada",
+      "confirmDelete": "Eliminar esta fotografia?",
+      "actions": {
+        "delete": "Eliminar"
+      },
+      "messages": {
+        "criado": "Fotografia carregada",
+        "eliminado": "Fotografia eliminada"
+      }
+    },
+    "incidencias": {
+      "title": "Incidências",
+      "new": "Registar Incidência",
+      "tipo": "Tipo",
+      "descripcion": "Descrição",
+      "prioridad": "Prioridade",
+      "estado": "Estado",
+      "fecha": "Data",
+      "resolucion": "Resolução",
+      "habitacion": "Habitación",
+      "tipos": {
+        "mantenimiento": "Manutenção",
+        "limpieza": "Limpeza",
+        "otra": "Outra"
+      },
+      "prioridades": {
+        "baja": "Baixa",
+        "media": "Média",
+        "alta": "Alta"
+      },
+      "estados": {
+        "abierta": "Aberta",
+        "en_proceso": "Em curso",
+        "resuelta": "Resolvida"
+      },
+      "noData": "Nenhuma incidência registada",
+      "resolver": "Resolver",
+      "confirmDelete": "Eliminar esta incidência?",
+      "actions": {
+        "delete": "Eliminar"
+      },
+      "messages": {
+        "requiredDescripcion": "A descrição é obrigatória",
+        "criado": "Incidência registada",
+        "resolvida": "Incidência resolvida",
+        "eliminado": "Incidência eliminada"
+      }
+    },
+    "contratos": {
+      "title": "Contratos",
+      "new": "Novo Contrato",
+      "codigo": "Código",
+      "colaborador": "Titular",
+      "habitacion": "Habitación",
+      "dataInicio": "Data de início",
+      "dataFim": "Data de fim",
+      "renda": "Renda (€)",
+      "estado": "Estado",
+      "estados": {
+        "ativo": "Ativo",
+        "vencido": "Vencido",
+        "rescindido": "Rescindido"
+      },
+      "noData": "Nenhum contrato registado",
+      "finalizar": "Finalizar",
+      "confirmDelete": "Eliminar este contrato?",
+      "actions": {
+        "delete": "Eliminar"
+      },
+      "messages": {
+        "requiredColaborador": "Selecione o titular",
+        "criado": "Contrato criado",
+        "finalizado": "Contrato finalizado",
+        "eliminado": "Contrato eliminado"
+      }
+    },
+    "consumos": {
+      "title": "Consumos",
+      "new": "Registar Consumo",
+      "tipo": "Tipo",
+      "data": "Data",
+      "leituraAnterior": "Leitura anterior",
+      "leituraAtual": "Leitura atual",
+      "consumo": "Consumo",
+      "importe": "Importe (€)",
+      "fornecedor": "Fornecedor",
+      "tipos": {
+        "agua": "Água",
+        "luz": "Luz",
+        "gas": "Gás",
+        "otros": "Outros"
+      },
+      "noData": "Nenhum consumo registado",
+      "confirmDelete": "Eliminar este consumo?",
+      "actions": {
+        "delete": "Eliminar"
+      },
+      "messages": {
+        "criado": "Consumo registado",
+        "eliminado": "Consumo eliminado"
+      }
+    },
+    "actions": {
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "edit": "Editar"
+    },
+    "messages": {
+      "criado": "Alojamento criado com sucesso",
+      "atualizado": "Alojamento atualizado",
+      "eliminado": "Alojamento eliminado",
+      "confirmDelete": "Eliminar este alojamento?"
     }
   },
   "Utilizadores": {
