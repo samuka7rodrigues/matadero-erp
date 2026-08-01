@@ -16,6 +16,7 @@
   },
   "Nav": {
     "dashboard": "Panel",
+    "empresa": "Empresa",
     "rh": "Recursos Humanos",
     "colaboradores": "Colaboradores",
     "contratos": "Contratos",
@@ -143,6 +144,54 @@
     "codigo": "Código",
     "nombre": "Nombre",
     "descripcion": "Descripción"
+  },
+  "Empresa": {
+    "title": "Registro de Empresa",
+    "new": "Nueva Empresa",
+    "edit": "Editar Empresa",
+    "details": "Detalles de la Empresa",
+    "list": "Lista de Empresas",
+    "noData": "Ninguna empresa registrada",
+    "sections": {
+      "identificacion": "Identificación",
+      "contacto": "Contacto",
+      "banca": "Banca",
+      "responsables": "Responsables"
+    },
+    "fields": {
+      "nombre": "Nombre de la empresa",
+      "nombreComercial": "Nombre comercial",
+      "cifNif": "CIF/NIF",
+      "iva": "IVA (%)",
+      "direccion": "Dirección",
+      "ciudad": "Ciudad",
+      "codigoPostal": "Código postal",
+      "pais": "País",
+      "telefono": "Teléfono",
+      "correo": "Correo electrónico",
+      "web": "Sitio web",
+      "logotipo": "Logotipo",
+      "banco": "Banco",
+      "iban": "IBAN",
+      "swift": "SWIFT/BIC",
+      "responsableDireccion": "Dirección",
+      "responsableRrhh": "Recursos Humanos",
+      "responsableFinanzas": "Finanzas",
+      "responsableOperaciones": "Operaciones"
+    },
+    "actions": {
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "uploadLogotipo": "Subir logotipo"
+    },
+    "messages": {
+      "criado": "Empresa creada con éxito",
+      "atualizado": "Empresa actualizada",
+      "eliminado": "Empresa eliminada",
+      "confirmDelete": "¿Eliminar esta empresa?"
+    }
   },
   "Utilizadores": {
     "title": "Usuarios",

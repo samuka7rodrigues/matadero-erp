@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select } from '@/components/ui/select';
-import { Search, ChevronLeft, ChevronRight, Mail, Phone, Pencil } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, Mail, Phone, Pencil, Users } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { formatCurrency, formatDate } from '@/lib/utils';
@@ -18,9 +18,11 @@ interface Props {
   page: number;
   pageSize: number;
   totalPages: number;
+  showAll: boolean;
+  hasFilter: boolean;
 }
 
-export function ColaboradoresList({ colaboradores, total, page, totalPages }: Props) {
+export function ColaboradoresList({ colaboradores, total, page, totalPages, showAll, hasFilter }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [search, setSearch] = useState(searchParams.get('search') || '');
@@ -32,6 +34,12 @@ export function ColaboradoresList({ colaboradores, total, page, totalPages }: Pr
     if (estado) params.set('estado', estado);
     router.push(`/colaboradores?${params.toString()}`);
   }
+
+  function showAllRows() {
+    router.push('/colaboradores?todos=1');
+  }
+
+  const showEmptyInitial = !showAll && !hasFilter;
 
   return (
     <div className="space-y-4">
@@ -56,115 +64,136 @@ export function ColaboradoresList({ colaboradores, total, page, totalPages }: Pr
             <option value="inativo">Inativo</option>
           </Select>
           <Button onClick={applyFilter}>Filtrar</Button>
-        </div>
-      </div>
-
-      {/* Tabela */}
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Colaborador</TableHead>
-            <TableHead>NIF</TableHead>
-            <TableHead>Departamento</TableHead>
-            <TableHead>Categoria</TableHead>
-            <TableHead>Contrato</TableHead>
-            <TableHead>Salário</TableHead>
-            <TableHead>Admissão</TableHead>
-            <TableHead>Estado</TableHead>
-            <TableHead className="text-right">Ações</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {colaboradores.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
-                Nenhum colaborador encontrado
-              </TableCell>
-            </TableRow>
-          ) : (
-            colaboradores.map((f) => (
-              <TableRow key={f.id}>
-                <TableCell>
-                  <Link href={`/colaboradores/${f.id}`} className="font-medium hover:underline">
-                    {f.apellido1}, {f.nombre}
-                  </Link>
-                  <div className="flex gap-2 mt-1 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Mail className="h-3 w-3" /> {f.email}
-                    </span>
-                    {f.telefono && (
-                      <span className="flex items-center gap-1">
-                        <Phone className="h-3 w-3" /> {f.telefono}
-                      </span>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell className="font-mono text-xs">{f.nif}</TableCell>
-                <TableCell>{f.departamentos?.nombre || '—'}</TableCell>
-                <TableCell>{f.categoria_profesional || '—'}</TableCell>
-                <TableCell>
-                  <Badge variant="outline">{f.tipo_contrato}</Badge>
-                </TableCell>
-                <TableCell>{formatCurrency(f.salario_base)}</TableCell>
-                <TableCell>{formatDate(f.fecha_admision)}</TableCell>
-                <TableCell>
-                  <Badge
-                    variant={
-                      f.estado === 'ativo' ? 'success' :
-                      f.estado === 'inativo' ? 'secondary' :
-                      'warning'
-                    }
-                  >
-                    {f.estado}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-right">
-                  <Button variant="ghost" size="icon" asChild title="Editar">
-                    <Link href={`/colaboradores/${f.id}/edit`}>
-                      <Pencil className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))
+          {!showAll && (
+            <Button variant="outline" onClick={showAllRows}>
+              Mostrar todos
+            </Button>
           )}
-        </TableBody>
-      </Table>
-
-      {/* Paginação */}
-      <div className="flex flex-col gap-3 p-4 border-t text-sm sm:flex-row sm:items-center sm:justify-between">
-        <span className="text-muted-foreground">
-          {total} {total === 1 ? 'colaborador' : 'colaboradores'} · Página {page} de {totalPages || 1}
-        </span>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={page <= 1}
-            onClick={() => {
-              const params = new URLSearchParams(searchParams);
-              params.set('page', String(page - 1));
-              router.push(`/colaboradores?${params.toString()}`);
-            }}
-          >
-            <ChevronLeft className="h-4 w-4" />
-            Anterior
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={page >= totalPages}
-            onClick={() => {
-              const params = new URLSearchParams(searchParams);
-              params.set('page', String(page + 1));
-              router.push(`/colaboradores?${params.toString()}`);
-            }}
-          >
-            Seguinte
-            <ChevronRight className="h-4 w-4" />
-          </Button>
         </div>
       </div>
+
+      {showEmptyInitial ? (
+        <div className="flex flex-col items-center justify-center gap-3 p-12 text-center">
+          <Users className="h-10 w-10 text-muted-foreground/40" />
+          <p className="text-sm text-muted-foreground max-w-md">
+            O quadro está vazio. Utilize a pesquisa acima por nome, NIF ou
+            e-mail, ou clique em &quot;Mostrar todos&quot; para ver todos os colaboradores.
+          </p>
+          <Button variant="outline" size="sm" onClick={showAllRows}>
+            <Users className="mr-2 h-4 w-4" />
+            Mostrar todos
+          </Button>
+        </div>
+      ) : (
+        <>
+          {/* Tabela */}
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Colaborador</TableHead>
+                <TableHead>NIF</TableHead>
+                <TableHead>Departamento</TableHead>
+                <TableHead>Categoria</TableHead>
+                <TableHead>Contrato</TableHead>
+                <TableHead>Salário</TableHead>
+                <TableHead>Admissão</TableHead>
+                <TableHead>Estado</TableHead>
+                <TableHead className="text-right">Ações</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {colaboradores.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
+                    Nenhum colaborador encontrado
+                  </TableCell>
+                </TableRow>
+              ) : (
+                colaboradores.map((f) => (
+                  <TableRow key={f.id}>
+                    <TableCell>
+                      <Link href={`/colaboradores/${f.id}`} className="font-medium hover:underline">
+                        {f.apellido1}, {f.nombre}
+                      </Link>
+                      <div className="flex gap-2 mt-1 text-xs text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <Mail className="h-3 w-3" /> {f.email}
+                        </span>
+                        {f.telefono && (
+                          <span className="flex items-center gap-1">
+                            <Phone className="h-3 w-3" /> {f.telefono}
+                          </span>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell className="font-mono text-xs">{f.nif}</TableCell>
+                    <TableCell>{f.departamentos?.nombre || '—'}</TableCell>
+                    <TableCell>{f.categoria_profesional || '—'}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline">{f.tipo_contrato}</Badge>
+                    </TableCell>
+                    <TableCell>{formatCurrency(f.salario_base)}</TableCell>
+                    <TableCell>{formatDate(f.fecha_admision)}</TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          f.estado === 'ativo' ? 'success' :
+                          f.estado === 'inativo' ? 'secondary' :
+                          'warning'
+                        }
+                      >
+                        {f.estado}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="ghost" size="icon" asChild title="Editar">
+                        <Link href={`/colaboradores/${f.id}/edit`}>
+                          <Pencil className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+
+          {/* Paginação */}
+          <div className="flex flex-col gap-3 p-4 border-t text-sm sm:flex-row sm:items-center sm:justify-between">
+            <span className="text-muted-foreground">
+              {total} {total === 1 ? 'colaborador' : 'colaboradores'} · Página {page} de {totalPages || 1}
+            </span>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={page <= 1}
+                onClick={() => {
+                  const params = new URLSearchParams(searchParams);
+                  params.set('page', String(page - 1));
+                  router.push(`/colaboradores?${params.toString()}`);
+                }}
+              >
+                <ChevronLeft className="h-4 w-4" />
+                Anterior
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={page >= totalPages}
+                onClick={() => {
+                  const params = new URLSearchParams(searchParams);
+                  params.set('page', String(page + 1));
+                  router.push(`/colaboradores?${params.toString()}`);
+                }}
+              >
+                Seguinte
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

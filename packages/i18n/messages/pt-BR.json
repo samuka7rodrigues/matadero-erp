@@ -16,6 +16,7 @@
   },
   "Nav": {
     "dashboard": "Painel",
+    "empresa": "Empresa",
     "rh": "Recursos Humanos",
     "colaboradores": "Colaboradores",
     "contratos": "Contratos",
@@ -143,6 +144,54 @@
     "codigo": "Código",
     "nombre": "Nome",
     "descripcion": "Descrição"
+  },
+  "Empresa": {
+    "title": "Cadastro de Empresa",
+    "new": "Nova Empresa",
+    "edit": "Editar Empresa",
+    "details": "Detalhes da Empresa",
+    "list": "Lista de Empresas",
+    "noData": "Nenhuma empresa cadastrada",
+    "sections": {
+      "identificacion": "Identificação",
+      "contacto": "Contacto",
+      "banca": "Banca",
+      "responsables": "Responsáveis"
+    },
+    "fields": {
+      "nombre": "Nome da empresa",
+      "nombreComercial": "Nome comercial",
+      "cifNif": "CIF/NIF",
+      "iva": "IVA (%)",
+      "direccion": "Morada",
+      "ciudad": "Cidade",
+      "codigoPostal": "Código postal",
+      "pais": "País",
+      "telefono": "Telefone",
+      "correo": "E-mail",
+      "web": "Site",
+      "logotipo": "Logotipo",
+      "banco": "Banco",
+      "iban": "IBAN",
+      "swift": "SWIFT/BIC",
+      "responsableDireccion": "Direção",
+      "responsableRrhh": "Recursos Humanos",
+      "responsableFinanzas": "Finanças",
+      "responsableOperaciones": "Operações"
+    },
+    "actions": {
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "edit": "Editar",
+      "uploadLogotipo": "Carregar logotipo"
+    },
+    "messages": {
+      "criado": "Empresa criada com sucesso",
+      "atualizado": "Empresa atualizada",
+      "eliminado": "Empresa eliminada",
+      "confirmDelete": "Eliminar esta empresa?"
+    }
   },
   "Utilizadores": {
     "title": "Utilizadores",

@@ -29,6 +29,38 @@ export interface Departamento {
   updated_at: string;
 }
 
+export interface Empresa {
+  id: string;
+  // Identificação
+  nombre: string;
+  nombre_comercial: string | null;
+  cif_nif: string | null;
+  iva: number | null;
+  // Contacto
+  direccion: string | null;
+  ciudad: string | null;
+  codigo_postal: string | null;
+  pais: string;
+  telefono: string | null;
+  correo: string | null;
+  web: string | null;
+  // Logotipo
+  logotipo_url: string | null;
+  // Banca
+  banco: string | null;
+  iban: string | null;
+  swift: string | null;
+  // Responsáveis
+  responsable_direccion: string | null;
+  responsable_rrhh: string | null;
+  responsable_finanzas: string | null;
+  responsable_operaciones: string | null;
+  // Auditoria
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
 export interface Colaborador {
   id: string;
   // Pessoais
