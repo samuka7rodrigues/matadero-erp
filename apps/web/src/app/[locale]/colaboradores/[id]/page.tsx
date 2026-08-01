@@ -25,32 +25,35 @@ export default async function ColaboradorDetalhePage({ params }: Props) {
   return (
     <AppShell>
       <div className="space-y-6">
-        <div className="flex items-center gap-4">
-          <Button variant="outline" size="icon" asChild>
-            <Link href="/colaboradores">
-              <ArrowLeft className="h-4 w-4" />
-            </Link>
-          </Button>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">
-              {f.nombre} {f.apellido1} {f.apellido2}
-            </h1>
-            <p className="text-muted-foreground">
-              {f.categoria_profesional} · {f.departamentos?.nombre || 'Sem departamento'}
-            </p>
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-4">
+          <div className="flex items-center gap-4">
+            <Button variant="outline" size="icon" asChild>
+              <Link href="/colaboradores">
+                <ArrowLeft className="h-4 w-4" />
+              </Link>
+            </Button>
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                {f.nombre} {f.apellido1} {f.apellido2}
+              </h1>
+              <p className="text-muted-foreground">
+                {f.categoria_profesional} · {f.departamentos?.nombre || 'Sem departamento'}
+              </p>
+            </div>
           </div>
-          <Badge
-            variant={f.estado === 'ativo' ? 'success' : 'secondary'}
-            className="ml-auto"
-          >
-            {f.estado}
-          </Badge>
-          <Button variant="outline" asChild>
-            <Link href={`/colaboradores/${id}/edit`}>
-              <Pencil className="mr-2 h-4 w-4" />
-              Editar
-            </Link>
-          </Button>
+          <div className="flex items-center gap-2 lg:ml-auto">
+            <Badge
+              variant={f.estado === 'ativo' ? 'success' : 'secondary'}
+            >
+              {f.estado}
+            </Badge>
+            <Button variant="outline" asChild>
+              <Link href={`/colaboradores/${id}/edit`}>
+                <Pencil className="mr-2 h-4 w-4" />
+                Editar
+              </Link>
+            </Button>
+          </div>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">

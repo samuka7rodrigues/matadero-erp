@@ -164,6 +164,7 @@
   "Dashboard": {
     "title": "Painel",
     "welcome": "Bem-vindo, {name}",
+    "subtitle": "Visão geral da operação do matadouro",
     "kpis": {
       "totalColaboradores": "Total de Colaboradores",
       "admitidosMes": "Admitidos este mês",

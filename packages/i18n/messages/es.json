@@ -164,6 +164,7 @@
   "Dashboard": {
     "title": "Panel",
     "welcome": "Bienvenido, {name}",
+    "subtitle": "Visión general de la operación del matadero",
     "kpis": {
       "totalColaboradores": "Total de Colaboradores",
       "admitidosMes": "Ingresados este mes",

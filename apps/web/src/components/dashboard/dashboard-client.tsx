@@ -47,30 +47,34 @@ export function DashboardClient({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
+      {/* Hero azul */}
+      <div className="rounded-xl bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 p-6 text-white shadow-sm">
+        <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
+        <p className="mt-1 text-blue-100">{t('subtitle')}</p>
+      </div>
 
       {/* KPIs */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           title={t('kpis.totalColaboradores')}
           value={totalAtivos}
-          icon={<Users className="h-4 w-4 text-muted-foreground" />}
+          icon={<Users className="h-4 w-4" />}
         />
         <KpiCard
           title={t('kpis.admitidosMes')}
           value={admitidosMes}
-          icon={<UserPlus className="h-4 w-4 text-muted-foreground" />}
+          icon={<UserPlus className="h-4 w-4" />}
         />
         <KpiCard
           title={t('kpis.contratosFim')}
           value={contratosExpirar.length}
-          icon={<FileX className="h-4 w-4 text-muted-foreground" />}
+          icon={<FileX className="h-4 w-4" />}
           variant={contratosExpirar.length > 0 ? 'warning' : 'default'}
         />
         <KpiCard
           title={t('kpis.examesVencer')}
           value={examesVencer.length}
-          icon={<HeartPulse className="h-4 w-4 text-muted-foreground" />}
+          icon={<HeartPulse className="h-4 w-4" />}
           variant={examesVencer.length > 0 ? 'warning' : 'default'}
         />
       </div>
@@ -78,11 +82,11 @@ export function DashboardClient({
       {/* Alertas */}
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Contratos a expirar (60 días)</CardTitle>
+          <CardHeader className="border-b border-blue-100 bg-blue-50/60">
+            <CardTitle className="text-base text-blue-800">Contratos a expirar (60 días)</CardTitle>
             <CardDescription>Colaboradores com contrato a terminar</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-4">
             {contratosExpirar.length === 0 ? (
               <p className="text-sm text-muted-foreground">Sem contratos a expirar</p>
             ) : (
@@ -110,11 +114,11 @@ export function DashboardClient({
         </Card>
 
         <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Exames médicos a vencer</CardTitle>
+          <CardHeader className="border-b border-blue-100 bg-blue-50/60">
+            <CardTitle className="text-base text-blue-800">Exames médicos a vencer</CardTitle>
             <CardDescription>Próximos 30 días</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-4">
             {examesVencer.length === 0 ? (
               <p className="text-sm text-muted-foreground">Todos os exames em dia</p>
             ) : (
@@ -148,7 +152,7 @@ export function DashboardClient({
 }
 
 // =====================================================
-// KPI Card (subcomponente)
+// KPI Card (subcomponente) — tema azul
 // =====================================================
 
 function KpiCard({
@@ -163,15 +167,17 @@ function KpiCard({
   variant?: 'default' | 'warning';
 }) {
   return (
-    <Card>
+    <Card className="border-blue-100">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        {icon}
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
+          {icon}
+        </div>
       </CardHeader>
       <CardContent>
         <div
           className={`text-3xl font-bold ${
-            variant === 'warning' ? 'text-amber-600' : ''
+            variant === 'warning' ? 'text-amber-600' : 'text-blue-700'
           }`}
         >
           {value}

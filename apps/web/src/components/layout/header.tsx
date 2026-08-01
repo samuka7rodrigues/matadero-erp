@@ -5,26 +5,32 @@ import { LogOut } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { LocaleSwitcher } from './locale-switcher';
+import { MobileNav } from './sidebar';
 import { logoutAction } from '@/actions/auth';
+import type { RoleUtilizador } from '@/types/database';
 
 interface HeaderProps {
   user: User;
+  role: RoleUtilizador;
 }
 
-export function Header({ user }: HeaderProps) {
+export function Header({ user, role }: HeaderProps) {
   const t = useTranslations('Auth');
 
   return (
-    <header className="flex h-16 items-center justify-between border-b bg-card px-6">
-      <div className="flex items-center gap-4">
-        <span className="text-sm text-muted-foreground">{user.email}</span>
-      </div>
+    <header className="flex h-16 items-center justify-between gap-3 border-b bg-card px-4 lg:px-6">
       <div className="flex items-center gap-3">
+        <MobileNav role={role} />
+        <span className="hidden text-sm text-muted-foreground sm:block">
+          {user.email}
+        </span>
+      </div>
+      <div className="flex items-center gap-2 lg:gap-3">
         <LocaleSwitcher />
         <form action={logoutAction}>
           <Button variant="ghost" size="sm" type="submit">
-            <LogOut className="mr-2 h-4 w-4" />
-            {t('logout')}
+            <LogOut className="h-4 w-4 lg:mr-2" />
+            <span className="hidden lg:inline">{t('logout')}</span>
           </Button>
         </form>
       </div>

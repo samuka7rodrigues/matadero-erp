@@ -22,8 +22,8 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen w-full bg-muted/30">
       <Sidebar role={utilizador?.role || 'colaborador'} />
       <div className="flex flex-1 flex-col">
-        <Header user={user} />
-        <main className="flex-1 p-6">
+        <Header user={user} role={utilizador?.role || 'colaborador'} />
+        <main className="flex-1 p-4 lg:p-6">
           {children}
         </main>
       </div>

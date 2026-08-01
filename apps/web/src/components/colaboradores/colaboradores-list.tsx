@@ -36,7 +36,7 @@ export function ColaboradoresList({ colaboradores, total, page, totalPages }: Pr
   return (
     <div className="space-y-4">
       {/* Filtros */}
-      <div className="flex gap-2 p-4 border-b">
+      <div className="flex flex-col gap-2 p-4 border-b sm:flex-row">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
@@ -47,14 +47,16 @@ export function ColaboradoresList({ colaboradores, total, page, totalPages }: Pr
             className="pl-9"
           />
         </div>
-        <Select defaultValue={searchParams.get('estado') || ''} className="w-40">
-          <option value="">Todos os estados</option>
-          <option value="ativo">Ativo</option>
-          <option value="baixa">Baixa</option>
-          <option value="ferias">Férias</option>
-          <option value="inativo">Inativo</option>
-        </Select>
-        <Button onClick={applyFilter}>Filtrar</Button>
+        <div className="flex gap-2">
+          <Select defaultValue={searchParams.get('estado') || ''} className="w-full sm:w-40">
+            <option value="">Todos os estados</option>
+            <option value="ativo">Ativo</option>
+            <option value="baixa">Baixa</option>
+            <option value="ferias">Férias</option>
+            <option value="inativo">Inativo</option>
+          </Select>
+          <Button onClick={applyFilter}>Filtrar</Button>
+        </div>
       </div>
 
       {/* Tabela */}
@@ -130,7 +132,7 @@ export function ColaboradoresList({ colaboradores, total, page, totalPages }: Pr
       </Table>
 
       {/* Paginação */}
-      <div className="flex items-center justify-between p-4 border-t text-sm">
+      <div className="flex flex-col gap-3 p-4 border-t text-sm sm:flex-row sm:items-center sm:justify-between">
         <span className="text-muted-foreground">
           {total} {total === 1 ? 'colaborador' : 'colaboradores'} · Página {page} de {totalPages || 1}
         </span>

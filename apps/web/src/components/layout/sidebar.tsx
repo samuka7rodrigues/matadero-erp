@@ -1,9 +1,13 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/config';
 import { cn, isNavItemActive } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 import {
+  Menu,
+  X,
   LayoutDashboard,
   Users,
   FileText,
@@ -38,38 +42,98 @@ const navItems: NavItem[] = [
   { href: '/configuracoes', labelKey: 'Nav.configuracoes', icon: Settings, roles: ['admin'] },
 ];
 
-export function Sidebar({ role }: { role: RoleUtilizador }) {
+function NavLink({
+  item,
+  onNavigate,
+}: {
+  item: NavItem;
+  onNavigate?: () => void;
+}) {
   const t = useTranslations();
   const pathname = usePathname();
+  const Icon = item.icon;
+  const isActive = isNavItemActive(pathname, item.href);
 
+  return (
+    <Link
+      href={item.href}
+      onClick={onNavigate}
+      className={cn(
+        'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+        isActive
+          ? 'bg-primary text-primary-foreground'
+          : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+      )}
+    >
+      <Icon className="h-5 w-5" />
+      {t(item.labelKey)}
+    </Link>
+  );
+}
+
+export function Sidebar({ role }: { role: RoleUtilizador }) {
   const filteredNav = navItems.filter((item) => item.roles.includes(role));
 
   return (
-    <aside className="w-64 border-r bg-card">
+    <aside className="hidden w-64 border-r bg-card lg:block">
       <div className="flex h-16 items-center border-b px-6">
         <h1 className="text-xl font-bold text-primary">ERP Matadero</h1>
       </div>
       <nav className="flex flex-col gap-1 p-4">
-        {filteredNav.map((item) => {
-          const Icon = item.icon;
-          const isActive = isNavItemActive(pathname, item.href);
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
-                isActive
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-              )}
-            >
-              <Icon className="h-5 w-5" />
-              {t(item.labelKey)}
-            </Link>
-          );
-        })}
+        {filteredNav.map((item) => (
+          <NavLink key={item.href} item={item} />
+        ))}
       </nav>
     </aside>
+  );
+}
+
+export function MobileNav({ role }: { role: RoleUtilizador }) {
+  const [open, setOpen] = useState(false);
+  const filteredNav = navItems.filter((item) => item.roles.includes(role));
+
+  return (
+    <>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="lg:hidden"
+        onClick={() => setOpen(true)}
+        aria-label="Abrir menu"
+      >
+        <Menu className="h-5 w-5" />
+      </Button>
+
+      {open && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setOpen(false)}
+          />
+          <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85%] flex-col border-r bg-card shadow-xl">
+            <div className="flex h-16 items-center justify-between border-b px-4">
+              <h1 className="text-xl font-bold text-primary">ERP Matadero</h1>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setOpen(false)}
+                aria-label="Fechar menu"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
+            <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-4">
+              {filteredNav.map((item) => (
+                <NavLink
+                  key={item.href}
+                  item={item}
+                  onNavigate={() => setOpen(false)}
+                />
+              ))}
+            </nav>
+          </aside>
+        </div>
+      )}
+    </>
   );
 }
