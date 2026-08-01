@@ -685,6 +685,90 @@
       }
     }
   },
+  "Contratos": {
+    "title": "Contratos",
+    "new": "Nuevo Contrato",
+    "edit": "Editar Contrato",
+    "noData": "Ningún contrato registrado",
+    "numero": "Número",
+    "empresa": "Empresa",
+    "cliente": "Cliente",
+    "colaborador": "Colaborador / Empleado",
+    "dataInicio": "Fecha de inicio",
+    "dataFim": "Fecha de fin",
+    "renovaciones": "Renovaciones",
+    "renovacionAutomatica": "Renovación automática",
+    "estado": "Estado",
+    "periodo": "Período",
+    "observacoes": "Observaciones",
+    "estados": {
+      "borrador": "Borrador",
+      "ativo": "Activo",
+      "vencido": "Vencido",
+      "rescindido": "Rescindido",
+      "anulado": "Anulado"
+    },
+    "marcarAtivo": "Activar contrato",
+    "finalizar": "Finalizar contrato",
+    "rescindir": "Rescindir contrato",
+    "confirmDelete": "¿Eliminar este contrato?",
+    "dados": {
+      "title": "Datos del contrato"
+    },
+    "documentos": {
+      "title": "Documentos",
+      "noData": "Ningún documento adjuntado",
+      "send": "Enviar documento",
+      "categoria": "Categoría",
+      "descripcion": "Descripción (opcional)",
+      "descripcionPlaceholder": "Ej.: Contrato firmado 2026",
+      "file": "Archivo",
+      "validUntil": "Válido hasta",
+      "view": "Ver documento",
+      "delete": "Eliminar",
+      "confirmDelete": "Eliminar el documento",
+      "selectFile": "Selecciona un archivo para subir",
+      "uploadSuccess": "Documento enviado correctamente",
+      "uploadError": "Error al enviar documento",
+      "deleteError": "Error al eliminar documento",
+      "categorias": {
+        "contrato": "Contrato",
+        "anexo": "Anexo",
+        "clausula": "Cláusula",
+        "comprovativo": "Comprobante",
+        "outro": "Otro"
+      }
+    },
+    "firmas": {
+      "title": "Firmas y firmas",
+      "noData": "Ninguna firma registrada",
+      "add": "Añadir firma",
+      "tipo": "Tipo de firmante",
+      "nombre": "Nombre",
+      "nombrePlaceholder": "Nombre del firmante",
+      "cargo": "Cargo",
+      "cargoPlaceholder": "Ej.: Administrador",
+      "dni": "DNI / NIF",
+      "dataFirma": "Fecha de la firma",
+      "firmadoEm": "Firmado el",
+      "marcarAssinada": "Marcar firmada",
+      "delete": "Eliminar",
+      "confirmDelete": "¿Eliminar esta firma?",
+      "requiredNombre": "El nombre del firmante es obligatorio",
+      "addError": "Error al añadir firma",
+      "updateError": "Error al actualizar firma",
+      "deleteError": "Error al eliminar firma",
+      "estados": {
+        "pendente": "Pendiente",
+        "assinado": "Firmado"
+      },
+      "tipos": {
+        "empresa": "Empresa",
+        "cliente": "Cliente",
+        "colaborador": "Colaborador"
+      }
+    }
+  },
   "Dashboard": {
     "title": "Panel",
     "welcome": "Bienvenido, {name}",

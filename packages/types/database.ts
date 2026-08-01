@@ -639,3 +639,56 @@ export interface DocumentoFinanzas {
   expires_at: string | null;
   created_at: string;
 }
+
+export type EstadoContrato = 'borrador' | 'ativo' | 'vencido' | 'rescindido' | 'anulado';
+
+export interface ContratoGeral {
+  id: string;
+  numero: string;
+  empresa_id: string | null;
+  cliente_id: string | null;
+  colaborador_id: string | null;
+  data_inicio: string;
+  data_fim: string | null;
+  renovaciones: number | null;
+  renovacion_automatica: boolean | null;
+  estado: EstadoContrato;
+  observacoes: string | null;
+  deleted_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ContratoGeralCompleto extends ContratoGeral {
+  empresas?: { nombre: string | null; nombre_comercial: string | null } | null;
+  clientes?: { nombre: string | null } | null;
+  colaboradores?: { nombre: string | null; apellido1: string | null; apellido2: string | null } | null;
+}
+
+export interface ContratoDocumento {
+  id: string;
+  contrato_id: string;
+  categoria: string;
+  nombre: string;
+  descripcion: string | null;
+  archivo_url: string;
+  archivo_size: number | null;
+  mime_type: string | null;
+  uploaded_at: string;
+  uploaded_by: string | null;
+  expires_at: string | null;
+  created_at: string;
+}
+
+export interface ContratoFirma {
+  id: string;
+  contrato_id: string;
+  tipo: string;
+  nombre: string;
+  cargo: string | null;
+  dni: string | null;
+  data_firma: string | null;
+  estado: string;
+  created_at: string;
+  updated_at: string;
+}

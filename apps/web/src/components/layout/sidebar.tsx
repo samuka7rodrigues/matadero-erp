@@ -25,6 +25,7 @@ import {
   TrendingDown,
   Calculator,
   ChartPie,
+  FileSignature,
 } from 'lucide-react';
 import type { RoleUtilizador } from '@/types/database';
 
@@ -49,7 +50,7 @@ const navItems: NavItem[] = [
   { href: '/empresas', labelKey: 'Nav.empresa', icon: Building2, roles: ['admin', 'rh', 'financeiro', 'auditor'] },
   { href: '/alojamientos', labelKey: 'Nav.alojamentos', icon: Home, roles: ['admin', 'rh', 'auditor'] },
   { href: '/colaboradores', labelKey: 'Nav.colaboradores', icon: Users, roles: ['admin', 'rh', 'encarregado', 'auditor'] },
-  { href: '/contratos', labelKey: 'Nav.contratos', icon: FileText, roles: ['admin', 'rh', 'auditor'] },
+  { href: '/contratos', labelKey: 'Nav.contratos', icon: FileSignature, roles: ['admin', 'rh', 'auditor'] },
   { href: '/ponto', labelKey: 'Nav.ponto', icon: Clock, roles: ['admin', 'rh', 'encarregado', 'colaborador', 'auditor'] },
   { href: '/turnos', labelKey: 'Nav.turnos', icon: Calendar, roles: ['admin', 'rh', 'encarregado', 'auditor'] },
   { href: '/departamentos', labelKey: 'Nav.rh', icon: Building2, roles: ['admin', 'rh', 'auditor'] },
