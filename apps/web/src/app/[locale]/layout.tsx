@@ -10,6 +10,11 @@ export const metadata: Metadata = {
   description: 'Sistema de Gestión Integral para Matadero',
 };
 
+// Páginas com AppShell dependem da sessão (cookies).
+// Forçar rendering dinâmico evita que o build as pré-renderize
+// sem sessão (SSG), o que quebrava o login em produção.
+export const dynamic = 'force-dynamic';
+
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }

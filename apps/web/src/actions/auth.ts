@@ -8,7 +8,6 @@ import { getLocale } from 'next-intl/server';
 export async function loginAction(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
-  const locale = await getLocale();
 
   if (!email || !password) {
     return { error: 'Email e password obrigatórios' };
@@ -26,7 +25,7 @@ export async function loginAction(formData: FormData) {
   }
 
   revalidatePath('/', 'layout');
-  redirect(`/${locale}/dashboard`);
+  return { success: true };
 }
 
 export async function logoutAction() {

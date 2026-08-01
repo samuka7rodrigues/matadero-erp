@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { useRouter } from '@/i18n/config';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,6 +11,7 @@ import { Eye, EyeOff } from 'lucide-react';
 
 export function LoginForm() {
   const t = useTranslations();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +23,10 @@ export function LoginForm() {
     if (result?.error) {
       setError(result.error);
       setLoading(false);
+      return;
     }
+    router.push('/dashboard');
+    router.refresh();
   }
 
   return (
