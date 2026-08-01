@@ -5,25 +5,25 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Plus, TrendingDown } from 'lucide-react';
-import { listDespesas, deleteDespesa } from '@/actions/finanzas';
+import { Plus, ArrowUpFromLine } from 'lucide-react';
+import { listPagos, deletePago } from '@/actions/finanzas';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { DeleteButton } from '@/components/finanzas/delete-button';
 
-export default async function DespesasPage() {
+export default async function PagosPage() {
   const t = await getTranslations('Finanzas');
   const locale = await getLocale();
-  const { data: despesas, error } = await listDespesas();
+  const { data: pagos, error } = await listPagos();
 
   return (
     <AppShell>
       <div className="space-y-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{t('despesas.title')}</h1>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{t('pagos.title')}</h1>
           <Button asChild>
-            <Link href="/despesas/new">
+            <Link href="/pagos/new">
               <Plus className="mr-2 h-4 w-4" />
-              {t('despesas.new')}
+              {t('pagos.new')}
             </Link>
           </Button>
         </div>
@@ -31,16 +31,16 @@ export default async function DespesasPage() {
         <Card>
           {error ? (
             <div className="p-6 text-sm text-destructive">Erro: {error}</div>
-          ) : despesas.length === 0 ? (
+          ) : pagos.length === 0 ? (
             <div className="flex flex-col items-center justify-center gap-3 p-12 text-center">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-                <TrendingDown className="h-6 w-6 text-muted-foreground" />
+                <ArrowUpFromLine className="h-6 w-6 text-muted-foreground" />
               </div>
-              <p className="text-sm text-muted-foreground">{t('despesas.noData')}</p>
+              <p className="text-sm text-muted-foreground">{t('pagos.noData')}</p>
               <Button asChild variant="outline" size="sm">
-                <Link href="/despesas/new">
+                <Link href="/pagos/new">
                   <Plus className="mr-2 h-4 w-4" />
-                  {t('despesas.new')}
+                  {t('pagos.new')}
                 </Link>
               </Button>
             </div>
@@ -48,34 +48,32 @@ export default async function DespesasPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>{t('despesas.concepto')}</TableHead>
-                  <TableHead>{t('despesas.cliente')}</TableHead>
-                  <TableHead>{t('despesas.categoria')}</TableHead>
-                  <TableHead>{t('despesas.data')}</TableHead>
-                  <TableHead>{t('despesas.fornecedor')}</TableHead>
-                  <TableHead>{t('despesas.estado')}</TableHead>
-                  <TableHead className="text-right">{t('despesas.importe')}</TableHead>
+                  <TableHead>{t('pagos.concepto')}</TableHead>
+                  <TableHead>{t('pagos.data')}</TableHead>
+                  <TableHead>{t('pagos.categoria')}</TableHead>
+                  <TableHead>{t('pagos.metodoPago')}</TableHead>
+                  <TableHead>{t('pagos.estado')}</TableHead>
+                  <TableHead className="text-right">{t('pagos.importe')}</TableHead>
                   <TableHead className="text-right">{t('Common.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {despesas.map((d) => (
-                  <TableRow key={d.id}>
-                    <TableCell className="font-medium">{d.concepto}</TableCell>
-                    <TableCell>{d.clientes?.nombre || '—'}</TableCell>
-                    <TableCell className="capitalize">{d.categoria}</TableCell>
-                    <TableCell>{formatDate(d.data, locale)}</TableCell>
-                    <TableCell>{d.fornecedor || '—'}</TableCell>
+                {pagos.map((p) => (
+                  <TableRow key={p.id}>
+                    <TableCell className="font-medium">{p.concepto}</TableCell>
+                    <TableCell>{formatDate(p.data, locale)}</TableCell>
+                    <TableCell className="capitalize">{p.categoria}</TableCell>
+                    <TableCell className="capitalize">{p.metodo_pago}</TableCell>
                     <TableCell>
-                      <Badge variant={d.estado === 'registrado' ? 'success' : 'secondary'}>
-                        {d.estado === 'registrado' ? t('horasExtras.estados.registrada') : t('faturas.estados.anulada')}
+                      <Badge variant={p.estado === 'registrado' ? 'success' : 'secondary'}>
+                        {p.estado === 'registrado' ? t('horasExtras.estados.registrada') : t('faturas.estados.anulada')}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right font-semibold text-destructive">
-                      {formatCurrency(Number(d.importe), locale)}
+                      {formatCurrency(Number(p.importe), locale)}
                     </TableCell>
                     <TableCell>
-                      <DeleteButton id={d.id} confirmMessage={t('despesas.confirmDelete')} onDelete={deleteDespesa} />
+                      <DeleteButton id={p.id} confirmMessage={t('pagos.confirmDelete')} onDelete={deletePago} />
                     </TableCell>
                   </TableRow>
                 ))}

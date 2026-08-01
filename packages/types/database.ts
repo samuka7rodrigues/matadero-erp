@@ -414,3 +414,214 @@ export interface AuditLog {
   user_agent: string | null;
   created_at: string;
 }
+
+/* ============================================================
+ * Finanzas
+ * ============================================================ */
+
+export interface Cliente {
+  id: string;
+  nombre: string;
+  cif_nif: string | null;
+  email: string | null;
+  telefono: string | null;
+  direccion: string | null;
+  ciudad: string | null;
+  codigo_postal: string | null;
+  pais: string;
+  estado: string;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+export interface Fatura {
+  id: string;
+  numero: string;
+  cliente_id: string;
+  empresa_id: string | null;
+  fecha_emision: string;
+  fecha_vencimiento: string | null;
+  estado: string;
+  base_imponible: number;
+  iva: number;
+  total: number;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+export interface FaturaCompleto extends Fatura {
+  clientes?: { nombre: string | null } | null;
+}
+
+export interface FaturaItem {
+  id: string;
+  fatura_id: string;
+  descricao: string;
+  quantidade: number;
+  preco_unitario: number;
+  iva_pct: number;
+  importe: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Cobro {
+  id: string;
+  fatura_id: string;
+  data: string;
+  importe: number;
+  metodo_pago: string;
+  referencia: string | null;
+  estado: string;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+export interface CobroCompleto extends Cobro {
+  faturas?: { numero: string | null } | null;
+}
+
+export interface Pago {
+  id: string;
+  empresa_id: string | null;
+  concepto: string;
+  data: string;
+  importe: number;
+  categoria: string;
+  metodo_pago: string;
+  referencia: string | null;
+  estado: string;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+export interface Despesa {
+  id: string;
+  empresa_id: string | null;
+  cliente_id: string | null;
+  categoria: string;
+  concepto: string;
+  data: string;
+  importe: number;
+  iva: number;
+  fornecedor: string | null;
+  forma_pago: string;
+  estado: string;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+export interface DespesaCompleto extends Despesa {
+  clientes?: { nombre: string | null } | null;
+}
+
+export interface Presupuesto {
+  id: string;
+  numero: string;
+  cliente_id: string | null;
+  titulo: string;
+  data: string;
+  validade: string | null;
+  estado: string;
+  base_imponible: number;
+  iva: number;
+  total: number;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+export interface PresupuestoCompleto extends Presupuesto {
+  clientes?: { nombre: string | null } | null;
+}
+
+export interface PresupuestoItem {
+  id: string;
+  presupuesto_id: string;
+  descricao: string;
+  quantidade: number;
+  preco_unitario: number;
+  iva_pct: number;
+  importe: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Nomina {
+  id: string;
+  colaborador_id: string;
+  mes: number;
+  ano: number;
+  salario_base: number;
+  horas_extra_importe: number;
+  complementos: number;
+  irpf: number;
+  seguranca_social: number;
+  outras_deducoes: number;
+  liquido: number;
+  estado: string;
+  fecha_pago: string | null;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+export interface NominaCompleto extends Nomina {
+  colaboradores?: {
+    nombre: string | null;
+    apellido1: string | null;
+    apellido2: string | null;
+  } | null;
+}
+
+export interface HoraExtra {
+  id: string;
+  colaborador_id: string;
+  data: string;
+  horas: number;
+  tipo: string;
+  valor_hora: number;
+  importe: number;
+  estado: string;
+  observacoes: string | null;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+export interface HoraExtraCompleto extends HoraExtra {
+  colaboradores?: {
+    nombre: string | null;
+    apellido1: string | null;
+    apellido2: string | null;
+  } | null;
+}
+
+export interface FlujoCajaRow {
+  data: string;
+  tipo: 'entrada' | 'salida';
+  concepto: string;
+  importe: number;
+  referencia: string | null;
+}
+
+export interface RentabilidadCliente {
+  cliente_id: string;
+  cliente: string;
+  facturado: number;
+  cobrado: number;
+  costes: number;
+  beneficio: number;
+}
