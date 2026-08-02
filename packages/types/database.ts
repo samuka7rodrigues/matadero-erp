@@ -147,6 +147,8 @@ export interface Fotografia {
   alojamiento_id: string;
   habitacion_id: string | null;
   url: string;
+  nombre: string | null;
+  mime_type: string | null;
   descripcion: string | null;
   created_at: string;
   updated_at: string;

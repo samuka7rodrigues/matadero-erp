@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { getLocale } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
+import { fixFilenameEncoding } from '@/lib/utils';
 import { requireAdminOrRh } from '@/actions/alojamiento';
 import {
   inventarioSchema,
@@ -134,18 +135,18 @@ export async function uploadFotografia(
   if (!file || file.size === 0) {
     return { success: false, error: 'Seleciona um ficheiro para carregar' };
   }
-  if (file.size > 5 * 1024 * 1024) {
-    return { success: false, error: 'Ficheiro demasiado grande (máximo 5 MB)' };
+  if (file.size > 10 * 1024 * 1024) {
+    return { success: false, error: 'Ficheiro demasiado grande (máximo 10 MB)' };
   }
-  if (!file.type.startsWith('image/')) {
-    return { success: false, error: 'O ficheiro deve ser uma imagem' };
+  if (!file.type.startsWith('image/') && file.type !== 'application/pdf') {
+    return { success: false, error: 'O ficheiro deve ser uma imagem ou PDF' };
   }
 
   const supabase = createClient();
   const user = await requireAdminOrRh(supabase);
   if (!user) return { success: false, error: 'Sem permissão para carregar fotografias' };
 
-  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+  const safeName = fixFilenameEncoding(file.name).replace(/[^a-zA-Z0-9._-]/g, '_');
   const path = `${alojamientoId}/${Date.now()}-${safeName}`;
 
   const { error: uploadError } = await supabase.storage
@@ -161,6 +162,8 @@ export async function uploadFotografia(
     alojamiento_id: alojamientoId,
     habitacion_id: habitacionId || null,
     url: path,
+    nombre: fixFilenameEncoding(file.name),
+    mime_type: file.type || null,
     descripcion,
   });
 

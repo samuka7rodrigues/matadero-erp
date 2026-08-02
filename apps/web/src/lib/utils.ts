@@ -17,6 +17,26 @@ export function formatCurrency(value: number, locale: string = 'pt-BR'): string 
   }).format(value);
 }
 
+/**
+ * Corrige nomes de ficheiros que chegam com mojibake: quando um nome com
+ * acentos/ç é transferido (multipart), os bytes UTF-8 podem ser interpretados
+ * como Latin-1, produzindo "Título" -> "TÃ­tulo". Esta função converte de volta.
+ * Se o nome já estiver correto (bytes inválidos como UTF-8), devolve o original.
+ */
+export function fixFilenameEncoding(name: string): string {
+  const bytes: number[] = [];
+  for (let i = 0; i < name.length; i++) {
+    const code = name.charCodeAt(i);
+    if (code > 0xff) return name;
+    bytes.push(code);
+  }
+  try {
+    return new TextDecoder('utf-8', { fatal: true }).decode(new Uint8Array(bytes));
+  } catch {
+    return name;
+  }
+}
+
 export function isValidNIF(nif: string): boolean {
   if (!/^[0-9XYZ][0-9]{6,7}[A-Z]$/.test(nif)) return false;
   const letters = 'TRWAGMYFPDXBNJZSQVHLCKE';

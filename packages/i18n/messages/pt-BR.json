@@ -359,18 +359,19 @@
       }
     },
     "fotografias": {
-      "title": "Fotografias",
-      "new": "Carregar fotografia",
+      "title": "Fotografias e documentos",
+      "new": "Carregar fotografia ou documento",
       "descripcion": "Descrição",
       "habitacion": "Habitación",
-      "semFoto": "Nenhuma fotografia carregada",
-      "confirmDelete": "Eliminar esta fotografia?",
+      "formato": "PNG, JPG, WEBP ou PDF · máx. 10 MB",
+      "semFoto": "Nenhuma fotografia ou documento carregado",
+      "confirmDelete": "Eliminar este ficheiro?",
       "actions": {
         "delete": "Eliminar"
       },
       "messages": {
-        "criado": "Fotografia carregada",
-        "eliminado": "Fotografia eliminada"
+        "criado": "Ficheiro carregado",
+        "eliminado": "Ficheiro eliminado"
       }
     },
     "incidencias": {

@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { getLocale } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
+import { fixFilenameEncoding } from '@/lib/utils';
 import { empresaSchema, type EmpresaFormData } from '@/types/empresa';
 import type { Empresa } from '@/types/database';
 
@@ -193,7 +194,7 @@ export async function uploadLogotipo(
     .eq('id', empresaId)
     .single();
 
-  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+  const safeName = fixFilenameEncoding(file.name).replace(/[^a-zA-Z0-9._-]/g, '_');
   const path = `${empresaId}/logo-${Date.now()}-${safeName}`;
 
   const { error: uploadError } = await supabase.storage

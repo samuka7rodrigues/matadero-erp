@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { getLocale } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
+import { fixFilenameEncoding } from '@/lib/utils';
 import type { z } from 'zod';
 import {
   clienteSchema,
@@ -1021,7 +1022,7 @@ export async function listDocumentosFinanzas(): Promise<{
       const { data: signed } = await supabase.storage
         .from(DOCUMENTOS_BUCKET)
         .createSignedUrl(doc.archivo_url, 3600);
-      return { ...doc, url: signed?.signedUrl || null };
+      return { ...doc, nombre: fixFilenameEncoding(doc.nombre), url: signed?.signedUrl || null };
     })
   );
 
@@ -1051,7 +1052,7 @@ export async function uploadDocumentoFinanzas(
     return { success: false, error: 'Ficheiro demasiado grande (máximo 20 MB)' };
   }
 
-  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+  const safeName = fixFilenameEncoding(file.name).replace(/[^a-zA-Z0-9._-]/g, '_');
   const path = `global/${Date.now()}-${safeName}`;
 
   const { error: uploadError } = await supabase.storage
@@ -1067,7 +1068,7 @@ export async function uploadDocumentoFinanzas(
     .from('documentos_finanzas')
     .insert({
       categoria,
-      nombre: file.name,
+      nombre: fixFilenameEncoding(file.name),
       descripcion,
       archivo_url: path,
       archivo_size: file.size,

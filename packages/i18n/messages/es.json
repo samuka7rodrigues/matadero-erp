@@ -359,18 +359,19 @@
       }
     },
     "fotografias": {
-      "title": "Fotografías",
-      "new": "Subir fotografía",
+      "title": "Fotografías y documentos",
+      "new": "Subir fotografía o documento",
       "descripcion": "Descripción",
       "habitacion": "Habitación",
-      "semFoto": "Ninguna fotografía subida",
-      "confirmDelete": "¿Eliminar esta fotografía?",
+      "formato": "PNG, JPG, WEBP o PDF · máx. 10 MB",
+      "semFoto": "Ninguna fotografía o documento subido",
+      "confirmDelete": "¿Eliminar este archivo?",
       "actions": {
         "delete": "Eliminar"
       },
       "messages": {
-        "criado": "Fotografía subida",
-        "eliminado": "Fotografía eliminada"
+        "criado": "Archivo subido",
+        "eliminado": "Archivo eliminado"
       }
     },
     "incidencias": {

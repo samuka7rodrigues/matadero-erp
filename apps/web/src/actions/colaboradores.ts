@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { getLocale } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { fixFilenameEncoding } from '@/lib/utils';
 import { colaboradorSchema, type ColaboradorFormData } from '@/types/colaboradores';
 import type {
   ColaboradorCompleto,
@@ -406,7 +407,7 @@ export async function listDocumentos(colaboradorId: string): Promise<{
       const { data: signed } = await supabase.storage
         .from(DOCUMENTOS_BUCKET)
         .createSignedUrl(doc.archivo_url, 3600);
-      return { ...doc, url: signed?.signedUrl || null };
+      return { ...doc, nombre: fixFilenameEncoding(doc.nombre), url: signed?.signedUrl || null };
     })
   );
 
@@ -440,7 +441,7 @@ export async function uploadDocumento(
     return { success: false, error: 'Ficheiro demasiado grande (máximo 20 MB)' };
   }
 
-  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+  const safeName = fixFilenameEncoding(file.name).replace(/[^a-zA-Z0-9._-]/g, '_');
   const path = `${colaboradorId}/${Date.now()}-${safeName}`;
 
   const { error: uploadError } = await supabase.storage
@@ -457,7 +458,7 @@ export async function uploadDocumento(
     .insert({
       colaborador_id: colaboradorId,
       tipo,
-      nombre: file.name,
+      nombre: fixFilenameEncoding(file.name),
       descripcion,
       archivo_url: path,
       archivo_size: file.size,
