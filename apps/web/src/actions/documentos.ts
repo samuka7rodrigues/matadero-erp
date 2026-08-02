@@ -21,7 +21,8 @@ export type EntidadeDocumento =
   | 'avaliacoes'
   | 'ferias'
   | 'exames'
-  | 'alojamientos';
+  | 'alojamientos'
+  | 'flota_vehiculos';
 
 /** Rota principal do módulo para revalidar após upload/eliminação. */
 const ROTA_ENTIDADE: Record<EntidadeDocumento, string> = {
@@ -33,6 +34,7 @@ const ROTA_ENTIDADE: Record<EntidadeDocumento, string> = {
   ferias: '/rh/ferias',
   exames: '/rh/exames',
   alojamientos: '/alojamientos',
+  flota_vehiculos: '/flota/vehiculos',
 };
 
 async function requireRoles(supabase: ReturnType<typeof createClient>, roles: string[]) {
