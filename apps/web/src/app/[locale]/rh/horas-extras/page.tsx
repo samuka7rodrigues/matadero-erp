@@ -10,11 +10,25 @@ import { listHorasExtras, deleteHoraExtra } from '@/actions/finanzas';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { DeleteButton } from '@/components/finanzas/delete-button';
 import { MostrarTodos } from '@/components/common/mostrar-todos';
+import { ExportarHorasExtras } from '@/components/finanzas/exportar-horas-extras';
 
 export default async function HorasExtrasPage() {
   const t = await getTranslations('Finanzas');
   const locale = await getLocale();
   const { data: horas, error } = await listHorasExtras();
+
+  const exportRows = horas.map((h) => ({
+    id: h.id,
+    colaborador: (() => {
+      const c = h.colaboradores;
+      return c ? [c.nombre, c.apellido1, c.apellido2].filter(Boolean).join(' ') : '—';
+    })(),
+    data: h.data,
+    horas: Number(h.horas),
+    tipo: h.tipo,
+    estado: h.estado,
+    importe: Number(h.importe),
+  }));
 
   function nomeColaborador(h: { colaboradores?: { nombre: string | null; apellido1: string | null; apellido2: string | null } | null }) {
     const c = h.colaboradores;
@@ -27,12 +41,15 @@ export default async function HorasExtrasPage() {
       <div className="space-y-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{t('horasExtras.title')}</h1>
-          <Button asChild>
-                <Link href="/rh/horas-extras/new">
-              <Plus className="mr-2 h-4 w-4" />
-              {t('horasExtras.new')}
-            </Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            {horas.length > 0 && <ExportarHorasExtras rows={exportRows} />}
+            <Button asChild>
+              <Link href="/rh/horas-extras/new">
+                <Plus className="mr-2 h-4 w-4" />
+                {t('horasExtras.new')}
+              </Link>
+            </Button>
+          </div>
         </div>
 
         <Card>

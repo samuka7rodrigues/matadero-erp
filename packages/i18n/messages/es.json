@@ -683,6 +683,10 @@
       "observacoes": "Observaciones",
       "noData": "Ninguna hora extra registrada",
       "confirmDelete": "¿Eliminar esta hora extra?",
+      "exportar": "Exportar Excel",
+      "partilharWhatsapp": "Compartir WhatsApp",
+      "exportOk": "Exportación completada con éxito",
+      "exportError": "Error al exportar",
       "tipos": {
         "normal": "Normal",
         "festivo": "Festivo",
