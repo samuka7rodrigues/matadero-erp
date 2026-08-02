@@ -71,7 +71,8 @@
     "flotaMantenimiento": "Manutenção",
     "flotaCombustible": "Combustível",
     "flotaKilometraje": "Quilometragem",
-    "flotaMultas": "Multas"
+    "flotaMultas": "Multas",
+    "documentos": "Documentos"
   },
   "Colaboradores": {
     "title": "Colaboradores",
@@ -477,6 +478,9 @@
       "atualizado": "Alojamento atualizado",
       "eliminado": "Alojamento eliminado",
       "confirmDelete": "Eliminar este alojamento?"
+    },
+    "documentos": {
+      "title": "Documentos"
     }
   },
   "Utilizadores": {
@@ -539,8 +543,9 @@
       "title": "Faturas",
       "new": "Nova Fatura",
       "numero": "Número",
-      "cliente": "Cliente",
-      "fechaEmision": "Data de emissão",
+    "cliente": "Cliente",
+    "empresa": "Empresa",
+    "fechaEmision": "Data de emissão",
       "fechaVencimiento": "Data de vencimento",
       "estado": "Estado",
       "baseImponible": "Base imponível",
@@ -1217,6 +1222,44 @@
       "atualizado": "Registo atualizado",
       "eliminado": "Registo eliminado",
       "erro": "Ocorreu um erro. Tente novamente."
+    }
+  },
+  "Documentos": {
+    "title": "Documentos",
+    "subtitle": "Visão geral dos documentos anexos de todos os módulos",
+    "noData": "Nenhum documento encontrado",
+    "noDataEntidade": "Sem documentos anexos",
+    "attach": "Anexar",
+    "send": "Enviar",
+    "categoria": "Categoria",
+    "file": "Ficheiro",
+    "selectFile": "Seleciona um ficheiro para carregar",
+    "uploadError": "Erro ao carregar o ficheiro",
+    "download": "Abrir",
+    "confirmDelete": "Eliminar este documento?",
+    "eliminado": "Documento eliminado",
+    "size": "Tamanho",
+    "uploadedAt": "Carregado em",
+    "referencia": "Referência",
+    "modulo": "Módulo",
+    "documento": "Documento",
+    "categorias": {
+      "documento": "Documento",
+      "certificado": "Certificado",
+      "informe": "Informe",
+      "recibo": "Recibo",
+      "comprovativo": "Comprovativo",
+      "outro": "Outro"
+    },
+    "entidades": {
+      "faturas": "Faturas",
+      "nominas": "Recibos",
+      "epis": "EPIs",
+      "advertencias": "Advertências",
+      "avaliacoes": "Avaliações",
+      "ferias": "Férias",
+      "exames": "Exames Médicos",
+      "alojamientos": "Alojamentos"
     }
   },
   "Perfil": {

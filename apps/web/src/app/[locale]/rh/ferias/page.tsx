@@ -2,12 +2,14 @@ import { getTranslations } from 'next-intl/server';
 import { AppShell } from '@/components/app-shell';
 import { FeriasList } from '@/components/rh/ferias-list';
 import { listFerias, listColaboradoresAtivos } from '@/actions/rh';
+import { countDocumentos } from '@/actions/documentos';
 
 export default async function FeriasPage() {
   const t = await getTranslations('RH.ferias');
-  const [feriasResult, colaboradores] = await Promise.all([
+  const [feriasResult, colaboradores, { documentos }] = await Promise.all([
     listFerias(),
     listColaboradoresAtivos(),
+    countDocumentos('ferias'),
   ]);
 
   return (
@@ -22,7 +24,7 @@ export default async function FeriasPage() {
             Erro: {feriasResult.error}
           </div>
         )}
-        <FeriasList items={feriasResult.data} colaboradores={colaboradores} />
+        <FeriasList items={feriasResult.data} colaboradores={colaboradores} documentosCount={documentos} />
       </div>
     </AppShell>
   );

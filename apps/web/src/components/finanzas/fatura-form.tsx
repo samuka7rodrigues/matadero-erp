@@ -10,16 +10,17 @@ import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { faturaSchema, type FaturaFormData } from '@/types/finanzas';
-import type { Cliente } from '@/types/database';
+import type { Cliente, Empresa } from '@/types/database';
 import { createFatura } from '@/actions/finanzas';
 import { useTranslations } from 'next-intl';
 import { AlertCircle, Plus, Trash2 } from 'lucide-react';
 
 interface Props {
   clientes: Cliente[];
+  empresas: Empresa[];
 }
 
-export function FaturaForm({ clientes }: Props) {
+export function FaturaForm({ clientes, empresas }: Props) {
   const t = useTranslations('Finanzas');
   const tc = useTranslations('Common');
   const router = useRouter();
@@ -96,6 +97,18 @@ export function FaturaForm({ clientes }: Props) {
               ))}
             </Select>
             {errors.cliente_id && <p className="text-xs text-destructive">{errors.cliente_id.message}</p>}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="empresa_id">{t('faturas.empresa')}</Label>
+            <Select id="empresa_id" {...register('empresa_id')}>
+              <option value="">—</option>
+              {empresas.map((e) => (
+                <option key={e.id} value={e.id}>
+                  {e.nombre_comercial || e.nombre}
+                </option>
+              ))}
+            </Select>
           </div>
 
           <div className="space-y-2">

@@ -2,12 +2,14 @@ import { getTranslations } from 'next-intl/server';
 import { AppShell } from '@/components/app-shell';
 import { EpisList } from '@/components/rh/epis-list';
 import { listEntregasEPI, listColaboradoresAtivos } from '@/actions/rh';
+import { countDocumentos } from '@/actions/documentos';
 
 export default async function EpisPage() {
   const t = await getTranslations('RH.epis');
-  const [episResult, colaboradores] = await Promise.all([
+  const [episResult, colaboradores, { documentos }] = await Promise.all([
     listEntregasEPI(),
     listColaboradoresAtivos(),
+    countDocumentos('epis'),
   ]);
 
   return (
@@ -22,7 +24,7 @@ export default async function EpisPage() {
             Erro: {episResult.error}
           </div>
         )}
-        <EpisList items={episResult.data} colaboradores={colaboradores} />
+        <EpisList items={episResult.data} colaboradores={colaboradores} documentosCount={documentos} />
       </div>
     </AppShell>
   );

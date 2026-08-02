@@ -9,11 +9,15 @@ import { Plus, Receipt } from 'lucide-react';
 import { listFaturas } from '@/actions/finanzas';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { FaturaActions } from '@/components/finanzas/fatura-actions';
+import { countDocumentos } from '@/actions/documentos';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 export default async function FaturasPage() {
   const t = await getTranslations('Finanzas');
+  const td = await getTranslations('Documentos');
   const locale = await getLocale();
   const { data: faturas, error } = await listFaturas();
+  const { documentos } = await countDocumentos('faturas');
 
   return (
     <AppShell>
@@ -50,10 +54,12 @@ export default async function FaturasPage() {
                 <TableRow>
                   <TableHead>{t('faturas.numero')}</TableHead>
                   <TableHead>{t('faturas.cliente')}</TableHead>
+                  <TableHead>{t('faturas.empresa')}</TableHead>
                   <TableHead>{t('faturas.fechaEmision')}</TableHead>
                   <TableHead>{t('faturas.fechaVencimiento')}</TableHead>
                   <TableHead>{t('faturas.estado')}</TableHead>
                   <TableHead className="text-right">{t('faturas.total')}</TableHead>
+                  <TableHead className="text-center">{td('title')}</TableHead>
                   <TableHead className="text-right">{t('Common.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
@@ -66,6 +72,7 @@ export default async function FaturasPage() {
                       </Link>
                     </TableCell>
                     <TableCell>{f.clientes?.nombre || '—'}</TableCell>
+                    <TableCell>{f.empresas?.nombre_comercial || f.empresas?.nombre || '—'}</TableCell>
                     <TableCell>{formatDate(f.fecha_emision, locale)}</TableCell>
                     <TableCell>{f.fecha_vencimiento ? formatDate(f.fecha_vencimiento, locale) : '—'}</TableCell>
                     <TableCell>
@@ -74,6 +81,17 @@ export default async function FaturasPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right font-semibold">{formatCurrency(Number(f.total), locale)}</TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex justify-center">
+                        <DocumentoAnexo
+                          entidade="faturas"
+                          entidadeId={f.id}
+                          referencia={`Fatura ${f.numero}`}
+                          count={documentos[f.id] || 0}
+                          iconOnly
+                        />
+                      </div>
+                    </TableCell>
                     <TableCell>
                       <FaturaActions id={f.id} estado={f.estado} />
                     </TableCell>

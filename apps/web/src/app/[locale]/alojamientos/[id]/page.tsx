@@ -18,6 +18,7 @@ import {
   listarContratos,
   listarConsumos,
 } from '@/actions/alojamiento-fase2';
+import { listDocumentos } from '@/actions/documentos';
 import { SectionTabs } from '@/components/alojamientos/section-tabs';
 import { HabitacionesSection } from '@/components/alojamientos/habitaciones-section';
 import { OcupacionSection } from '@/components/alojamientos/ocupacion-section';
@@ -26,6 +27,7 @@ import { FotografiasSection } from '@/components/alojamientos/fotografias-sectio
 import { IncidenciasSection } from '@/components/alojamientos/incidencias-section';
 import { ContratosSection } from '@/components/alojamientos/contratos-section';
 import { ConsumosSection } from '@/components/alojamientos/consumos-section';
+import { DocumentosSecao } from '@/components/documentos/documentos-secao';
 import {
   ArrowLeft,
   Pencil,
@@ -39,6 +41,7 @@ import {
   TriangleAlert,
   FileSignature,
   Gauge,
+  FolderOpen,
 } from 'lucide-react';
 
 interface Props {
@@ -59,6 +62,7 @@ export default async function AlojamientoDetalhePage({ params }: Props) {
     { data: incidencias },
     { data: contratos },
     { data: consumos },
+    { data: documentos },
   ] = await Promise.all([
     getAlojamiento(id),
     listarHabitaciones(id),
@@ -69,6 +73,7 @@ export default async function AlojamientoDetalhePage({ params }: Props) {
     listarIncidencias(id),
     listarContratos(id),
     listarConsumos(id),
+    listDocumentos('alojamientos', id),
   ]);
 
   if (!a) notFound();
@@ -192,6 +197,7 @@ export default async function AlojamientoDetalhePage({ params }: Props) {
             { id: 'incidencias', label: t('incidencias.title'), icon: <TriangleAlert className="h-4 w-4" /> },
             { id: 'contratos', label: t('contratos.title'), icon: <FileSignature className="h-4 w-4" /> },
             { id: 'consumos', label: t('consumos.title'), icon: <Gauge className="h-4 w-4" /> },
+            { id: 'documentos', label: t('documentos.title'), icon: <FolderOpen className="h-4 w-4" /> },
           ]}
         >
           <HabitacionesSection alojamientoId={id} habitaciones={habitaciones} />
@@ -211,6 +217,7 @@ export default async function AlojamientoDetalhePage({ params }: Props) {
             colaboradores={colaboradores}
           />
           <ConsumosSection alojamientoId={id} consumos={consumos} />
+          <DocumentosSecao entidade="alojamientos" entidadeId={id} referencia={a.nombre} items={documentos} />
         </SectionTabs>
       </div>
     </AppShell>

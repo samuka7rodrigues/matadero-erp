@@ -193,7 +193,7 @@ export async function listFaturas() {
   const supabase = createClient();
   const { data, error } = await supabase
     .from('faturas')
-    .select('*, clientes (nombre)')
+    .select('*, clientes (nombre), empresas (nombre, nombre_comercial)')
     .is('deleted_at', null)
     .order('fecha_emision', { ascending: false });
 

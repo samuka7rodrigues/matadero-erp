@@ -20,6 +20,7 @@ import {
 import { Plus, CalendarDays, Check, X, Trash2, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { createFerias, updateFeriasEstado, deleteFerias } from '@/actions/rh';
 import { formatDate } from '@/lib/utils';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 interface ColaboradorOpt {
   id?: string;
@@ -44,12 +45,14 @@ interface FeriasRow {
 interface Props {
   items: FeriasRow[];
   colaboradores: ColaboradorOpt[];
+  documentosCount?: Record<string, number>;
 }
 
-export function FeriasList({ items, colaboradores }: Props) {
+export function FeriasList({ items, colaboradores, documentosCount }: Props) {
   const t = useTranslations('RH.ferias');
   const tm = useTranslations('RH.messages');
   const tc = useTranslations('Common');
+  const td = useTranslations('Documentos');
   const router = useRouter();
 
   const [showForm, setShowForm] = useState(false);
@@ -214,6 +217,7 @@ export function FeriasList({ items, colaboradores }: Props) {
                 <TableHead>{t('dias')}</TableHead>
                 <TableHead>{t('tipo')}</TableHead>
                 <TableHead>{t('estado')}</TableHead>
+                <TableHead className="text-center">{td('title')}</TableHead>
                 <TableHead className="text-right">{tc('actions')}</TableHead>
               </TableRow>
             </TableHeader>
@@ -236,6 +240,17 @@ export function FeriasList({ items, colaboradores }: Props) {
                     >
                       {estados[f.estado] || f.estado}
                     </Badge>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex justify-center">
+                      <DocumentoAnexo
+                        entidade="ferias"
+                        entidadeId={f.id}
+                        referencia={nomeColaborador(f.colaboradores)}
+                        count={documentosCount?.[f.id] || 0}
+                        iconOnly
+                      />
+                    </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-end gap-1">

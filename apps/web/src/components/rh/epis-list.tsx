@@ -20,6 +20,7 @@ import {
 import { Plus, ShieldCheck, Trash2, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { createEntregaEPI, deleteEntregaEPI } from '@/actions/rh';
 import { formatDate } from '@/lib/utils';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 interface ColaboradorOpt {
   id?: string;
@@ -47,12 +48,14 @@ interface EpiRow {
 interface Props {
   items: EpiRow[];
   colaboradores: ColaboradorOpt[];
+  documentosCount?: Record<string, number>;
 }
 
-export function EpisList({ items, colaboradores }: Props) {
+export function EpisList({ items, colaboradores, documentosCount }: Props) {
   const t = useTranslations('RH.epis');
   const tm = useTranslations('RH.messages');
   const tc = useTranslations('Common');
+  const td = useTranslations('Documentos');
   const router = useRouter();
 
   const [showForm, setShowForm] = useState(false);
@@ -248,6 +251,7 @@ export function EpisList({ items, colaboradores }: Props) {
                 <TableHead>{t('fechaEntrega')}</TableHead>
                 <TableHead>{t('fechaValidez')}</TableHead>
                 <TableHead>{t('estado')}</TableHead>
+                <TableHead className="text-center">{td('title')}</TableHead>
                 <TableHead className="text-right">{tc('actions')}</TableHead>
               </TableRow>
             </TableHeader>
@@ -270,6 +274,17 @@ export function EpisList({ items, colaboradores }: Props) {
                     >
                       {estados[x.estado] || x.estado}
                     </Badge>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex justify-center">
+                      <DocumentoAnexo
+                        entidade="epis"
+                        entidadeId={x.id}
+                        referencia={nomeColaborador(x.colaboradores)}
+                        count={documentosCount?.[x.id] || 0}
+                        iconOnly
+                      />
+                    </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-end gap-1">

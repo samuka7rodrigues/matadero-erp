@@ -10,13 +10,17 @@ import { listNominas, deleteNomina } from '@/actions/finanzas';
 import { formatCurrency } from '@/lib/utils';
 import { DeleteButton } from '@/components/finanzas/delete-button';
 import { NominaEstadoActions } from '@/components/finanzas/nomina-estado-actions';
+import { countDocumentos } from '@/actions/documentos';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 const NOMES_MES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
 export default async function NominasPage() {
   const t = await getTranslations('Finanzas');
+  const td = await getTranslations('Documentos');
   const locale = await getLocale();
   const { data: nominas, error } = await listNominas();
+  const { documentos } = await countDocumentos('nominas');
 
   function nomeColaborador(n: { colaboradores?: { nombre: string | null; apellido1: string | null; apellido2: string | null } | null }) {
     const c = n.colaboradores;
@@ -63,6 +67,7 @@ export default async function NominasPage() {
                   <TableHead>{t('nominas.salarioBase')}</TableHead>
                   <TableHead className="text-right">{t('nominas.liquido')}</TableHead>
                   <TableHead>{t('nominas.estado')}</TableHead>
+                  <TableHead className="text-center">{td('title')}</TableHead>
                   <TableHead className="text-right">{t('Common.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
@@ -78,6 +83,17 @@ export default async function NominasPage() {
                       <Badge variant={n.estado === 'pagada' ? 'success' : n.estado === 'anulada' ? 'destructive' : 'default'}>
                         {t(`nominas.estados.${n.estado}`)}
                       </Badge>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex justify-center">
+                        <DocumentoAnexo
+                          entidade="nominas"
+                          entidadeId={n.id}
+                          referencia={`Nomina ${NOMES_MES[n.mes - 1]} ${n.ano}`}
+                          count={documentos[n.id] || 0}
+                          iconOnly
+                        />
+                      </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center justify-end gap-1">

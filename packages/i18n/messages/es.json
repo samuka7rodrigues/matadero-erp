@@ -71,7 +71,8 @@
     "flotaMantenimiento": "Mantenimiento",
     "flotaCombustible": "Combustible",
     "flotaKilometraje": "Kilometraje",
-    "flotaMultas": "Multas"
+    "flotaMultas": "Multas",
+    "documentos": "Documentos"
   },
   "Colaboradores": {
     "title": "Colaboradores",
@@ -477,6 +478,9 @@
       "atualizado": "Alojamiento actualizado",
       "eliminado": "Alojamiento eliminado",
       "confirmDelete": "¿Eliminar este alojamiento?"
+    },
+    "documentos": {
+      "title": "Documentos"
     }
   },
   "Utilizadores": {
@@ -539,8 +543,9 @@
       "title": "Facturas",
       "new": "Nueva Factura",
       "numero": "Número",
-      "cliente": "Cliente",
-      "fechaEmision": "Fecha de emisión",
+    "cliente": "Cliente",
+    "empresa": "Empresa",
+    "fechaEmision": "Fecha de emisión",
       "fechaVencimiento": "Fecha de vencimiento",
       "estado": "Estado",
       "baseImponible": "Base imponible",
@@ -1217,6 +1222,44 @@
       "atualizado": "Registro actualizado",
       "eliminado": "Registro eliminado",
       "erro": "Ocurrió un error. Inténtalo de nuevo."
+    }
+  },
+  "Documentos": {
+    "title": "Documentos",
+    "subtitle": "Visión general de los documentos adjuntos de todos los módulos",
+    "noData": "Ningún documento encontrado",
+    "noDataEntidade": "Sin documentos adjuntos",
+    "attach": "Adjuntar",
+    "send": "Enviar",
+    "categoria": "Categoría",
+    "file": "Archivo",
+    "selectFile": "Selecciona un archivo para subir",
+    "uploadError": "Error al subir el archivo",
+    "download": "Abrir",
+    "confirmDelete": "¿Eliminar este documento?",
+    "eliminado": "Documento eliminado",
+    "size": "Tamaño",
+    "uploadedAt": "Subido el",
+    "referencia": "Referencia",
+    "modulo": "Módulo",
+    "documento": "Documento",
+    "categorias": {
+      "documento": "Documento",
+      "certificado": "Certificado",
+      "informe": "Informe",
+      "recibo": "Recibo",
+      "comprovativo": "Comprobante",
+      "outro": "Otro"
+    },
+    "entidades": {
+      "faturas": "Facturas",
+      "nominas": "Nóminas",
+      "epis": "EPIs",
+      "advertencias": "Advertencias",
+      "avaliacoes": "Evaluaciones",
+      "ferias": "Vacaciones",
+      "exames": "Exámenes Médicos",
+      "alojamientos": "Alojamientos"
     }
   },
   "Perfil": {

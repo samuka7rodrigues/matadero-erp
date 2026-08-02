@@ -2,12 +2,14 @@ import { getTranslations } from 'next-intl/server';
 import { AppShell } from '@/components/app-shell';
 import { ExamesList } from '@/components/rh/exames-list';
 import { listExamesMedicos, listColaboradoresAtivos } from '@/actions/rh';
+import { countDocumentos } from '@/actions/documentos';
 
 export default async function ExamesPage() {
   const t = await getTranslations('RH.exames');
-  const [examesResult, colaboradores] = await Promise.all([
+  const [examesResult, colaboradores, { documentos }] = await Promise.all([
     listExamesMedicos(),
     listColaboradoresAtivos(),
+    countDocumentos('exames'),
   ]);
 
   return (
@@ -22,7 +24,7 @@ export default async function ExamesPage() {
             Erro: {examesResult.error}
           </div>
         )}
-        <ExamesList items={examesResult.data} colaboradores={colaboradores} />
+        <ExamesList items={examesResult.data} colaboradores={colaboradores} documentosCount={documentos} />
       </div>
     </AppShell>
   );

@@ -465,6 +465,7 @@ export interface Fatura {
 
 export interface FaturaCompleto extends Fatura {
   clientes?: { nombre: string | null } | null;
+  empresas?: { nombre: string | null; nombre_comercial: string | null } | null;
 }
 
 export interface FaturaItem {

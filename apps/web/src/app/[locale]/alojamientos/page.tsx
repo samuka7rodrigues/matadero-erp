@@ -8,10 +8,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Home, Plus, MapPin } from 'lucide-react';
 import { listAlojamientos } from '@/actions/alojamiento';
 import { AlojamientoActions } from '@/components/alojamientos/alojamiento-actions';
+import { countDocumentos } from '@/actions/documentos';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 export default async function AlojamientosPage() {
   const t = await getTranslations('Alojamiento');
+  const td = await getTranslations('Documentos');
   const { data: alojamientos, error } = await listAlojamientos();
+  const { documentos } = await countDocumentos('alojamientos');
 
   return (
     <AppShell>
@@ -52,6 +56,7 @@ export default async function AlojamientosPage() {
                   <TableHead>Capacidade</TableHead>
                   <TableHead>Empresa</TableHead>
                   <TableHead>Estado</TableHead>
+                  <TableHead className="text-center">{td('title')}</TableHead>
                   <TableHead className="text-right">Ações</TableHead>
                 </TableRow>
               </TableHeader>
@@ -77,6 +82,17 @@ export default async function AlojamientosPage() {
                       <Badge variant={a.estado === 'ativo' ? 'success' : 'secondary'}>
                         {t(`estados.${a.estado}`)}
                       </Badge>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex justify-center">
+                        <DocumentoAnexo
+                          entidade="alojamientos"
+                          entidadeId={a.id}
+                          referencia={a.nombre}
+                          count={documentos[a.id] || 0}
+                          iconOnly
+                        />
+                      </div>
                     </TableCell>
                     <TableCell>
                       <AlojamientoActions id={a.id} />

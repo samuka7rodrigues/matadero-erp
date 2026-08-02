@@ -2,12 +2,14 @@ import { getTranslations } from 'next-intl/server';
 import { AppShell } from '@/components/app-shell';
 import { AdvertenciasList } from '@/components/rh/advertencias-list';
 import { listAdvertencias, listColaboradoresAtivos } from '@/actions/rh';
+import { countDocumentos } from '@/actions/documentos';
 
 export default async function AdvertenciasPage() {
   const t = await getTranslations('RH.advertencias');
-  const [advertenciasResult, colaboradores] = await Promise.all([
+  const [advertenciasResult, colaboradores, { documentos }] = await Promise.all([
     listAdvertencias(),
     listColaboradoresAtivos(),
+    countDocumentos('advertencias'),
   ]);
 
   return (
@@ -22,7 +24,7 @@ export default async function AdvertenciasPage() {
             Erro: {advertenciasResult.error}
           </div>
         )}
-        <AdvertenciasList items={advertenciasResult.data} colaboradores={colaboradores} />
+        <AdvertenciasList items={advertenciasResult.data} colaboradores={colaboradores} documentosCount={documentos} />
       </div>
     </AppShell>
   );

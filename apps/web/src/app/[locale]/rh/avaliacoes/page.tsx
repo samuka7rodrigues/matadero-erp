@@ -2,12 +2,14 @@ import { getTranslations } from 'next-intl/server';
 import { AppShell } from '@/components/app-shell';
 import { AvaliacoesList } from '@/components/rh/avaliacoes-list';
 import { listAvaliacoes, listColaboradoresAtivos } from '@/actions/rh';
+import { countDocumentos } from '@/actions/documentos';
 
 export default async function AvaliacoesPage() {
   const t = await getTranslations('RH.avaliacoes');
-  const [avaliacoesResult, colaboradores] = await Promise.all([
+  const [avaliacoesResult, colaboradores, { documentos }] = await Promise.all([
     listAvaliacoes(),
     listColaboradoresAtivos(),
+    countDocumentos('avaliacoes'),
   ]);
 
   return (
@@ -22,7 +24,7 @@ export default async function AvaliacoesPage() {
             Erro: {avaliacoesResult.error}
           </div>
         )}
-        <AvaliacoesList items={avaliacoesResult.data} colaboradores={colaboradores} />
+        <AvaliacoesList items={avaliacoesResult.data} colaboradores={colaboradores} documentosCount={documentos} />
       </div>
     </AppShell>
   );

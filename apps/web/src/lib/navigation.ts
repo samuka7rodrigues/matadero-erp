@@ -33,6 +33,7 @@ import {
   AlertOctagon,
   FileCheck2,
   UserCog,
+  FolderOpen,
 } from 'lucide-react';
 
 export interface NavItem {
@@ -56,6 +57,7 @@ export const navItems: NavItem[] = [
   { href: '/perfil', labelKey: 'Nav.perfil', icon: UserCircle, roles: ['admin', 'rh', 'financeiro', 'encarregado', 'colaborador', 'auditor'] },
   { href: '/empresas', labelKey: 'Nav.empresa', icon: Building2, roles: ['admin', 'rh', 'financeiro', 'auditor'] },
   { href: '/alojamientos', labelKey: 'Nav.alojamentos', icon: Home, roles: ['admin', 'rh', 'auditor'] },
+  { href: '/documentos', labelKey: 'Nav.documentos', icon: FolderOpen, roles: ['admin', 'rh', 'financeiro', 'auditor'] },
   { href: '/utilizadores', labelKey: 'Nav.utilizadores', icon: Shield, roles: ['admin'] },
   { href: '/configuracoes', labelKey: 'Nav.configuracoes', icon: Settings, roles: ['admin'] },
 ];

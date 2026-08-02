@@ -20,6 +20,7 @@ import {
 import { Plus, AlertTriangle, Trash2, Lock, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { createAdvertencia, updateAdvertenciaEstado, deleteAdvertencia } from '@/actions/rh';
 import { formatDate } from '@/lib/utils';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 interface ColaboradorOpt {
   id?: string;
@@ -43,12 +44,14 @@ interface AdvertenciaRow {
 interface Props {
   items: AdvertenciaRow[];
   colaboradores: ColaboradorOpt[];
+  documentosCount?: Record<string, number>;
 }
 
-export function AdvertenciasList({ items, colaboradores }: Props) {
+export function AdvertenciasList({ items, colaboradores, documentosCount }: Props) {
   const t = useTranslations('RH.advertencias');
   const tm = useTranslations('RH.messages');
   const tc = useTranslations('Common');
+  const td = useTranslations('Documentos');
   const router = useRouter();
 
   const [showForm, setShowForm] = useState(false);
@@ -228,6 +231,7 @@ export function AdvertenciasList({ items, colaboradores }: Props) {
                 <TableHead>{t('motivo')}</TableHead>
                 <TableHead>{t('data')}</TableHead>
                 <TableHead>{t('estado')}</TableHead>
+                <TableHead className="text-center">{td('title')}</TableHead>
                 <TableHead className="text-right">{tc('actions')}</TableHead>
               </TableRow>
             </TableHeader>
@@ -253,6 +257,17 @@ export function AdvertenciasList({ items, colaboradores }: Props) {
                     <Badge variant={a.estado === 'cerrada' ? 'outline' : 'destructive'}>
                       {estados[a.estado] || a.estado}
                     </Badge>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex justify-center">
+                      <DocumentoAnexo
+                        entidade="advertencias"
+                        entidadeId={a.id}
+                        referencia={nomeColaborador(a.colaboradores)}
+                        count={documentosCount?.[a.id] || 0}
+                        iconOnly
+                      />
+                    </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-end gap-1">

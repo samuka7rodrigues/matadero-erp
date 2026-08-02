@@ -20,6 +20,7 @@ import {
 import { Plus, ClipboardCheck, Trash2, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { createAvaliacao, deleteAvaliacao } from '@/actions/rh';
 import { formatDate } from '@/lib/utils';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 interface ColaboradorOpt {
   id?: string;
@@ -46,12 +47,14 @@ interface AvaliacaoRow {
 interface Props {
   items: AvaliacaoRow[];
   colaboradores: ColaboradorOpt[];
+  documentosCount?: Record<string, number>;
 }
 
-export function AvaliacoesList({ items, colaboradores }: Props) {
+export function AvaliacoesList({ items, colaboradores, documentosCount }: Props) {
   const t = useTranslations('RH.avaliacoes');
   const tm = useTranslations('RH.messages');
   const tc = useTranslations('Common');
+  const td = useTranslations('Documentos');
   const router = useRouter();
 
   const [showForm, setShowForm] = useState(false);
@@ -239,6 +242,7 @@ export function AvaliacoesList({ items, colaboradores }: Props) {
                 <TableHead>{t('data')}</TableHead>
                 <TableHead>{t('pontuacao')}</TableHead>
                 <TableHead>{t('avaliador')}</TableHead>
+                <TableHead className="text-center">{td('title')}</TableHead>
                 <TableHead className="text-right">{tc('actions')}</TableHead>
               </TableRow>
             </TableHeader>
@@ -265,6 +269,17 @@ export function AvaliacoesList({ items, colaboradores }: Props) {
                     )}
                   </TableCell>
                   <TableCell>{nomeColaborador(a.avaliadores)}</TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex justify-center">
+                      <DocumentoAnexo
+                        entidade="avaliacoes"
+                        entidadeId={a.id}
+                        referencia={nomeColaborador(a.colaboradores)}
+                        count={documentosCount?.[a.id] || 0}
+                        iconOnly
+                      />
+                    </div>
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-end gap-1">
                       <Button
