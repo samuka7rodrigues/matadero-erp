@@ -21,6 +21,7 @@ import { Plus, CalendarDays, Check, X, Trash2, AlertCircle, CheckCircle2 } from 
 import { createFerias, updateFeriasEstado, deleteFerias } from '@/actions/rh';
 import { formatDate } from '@/lib/utils';
 import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 interface ColaboradorOpt {
   id?: string;
@@ -208,7 +209,8 @@ export function FeriasList({ items, colaboradores, documentosCount }: Props) {
         {items.length === 0 ? (
           <p className="text-sm text-muted-foreground py-4 text-center">{t('noData')}</p>
         ) : (
-          <Table>
+          <MostrarTodos count={items.length}>
+            <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>{t('colaborador')}</TableHead>
@@ -288,7 +290,8 @@ export function FeriasList({ items, colaboradores, documentosCount }: Props) {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+            </Table>
+          </MostrarTodos>
         )}
       </CardContent>
     </Card>

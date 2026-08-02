@@ -32,6 +32,7 @@ import {
 } from '@/actions/utilizadores';
 import { menuKeysForRole, menuOptions, ALWAYS_MENUS, type MenuOption } from '@/lib/navigation';
 import type { RoleUtilizador } from '@/types/database';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 interface Props {
   items: UtilizadorComColaborador[];
@@ -182,7 +183,8 @@ export function UtilizadoresList({ items }: Props) {
       {items.length === 0 ? (
         <p className="text-sm text-muted-foreground py-8 text-center">{t('noData')}</p>
       ) : (
-        <Table>
+        <MostrarTodos count={items.length}>
+          <Table>
           <TableHeader>
             <TableRow>
               <TableHead>{t('nome')}</TableHead>
@@ -272,6 +274,7 @@ export function UtilizadoresList({ items }: Props) {
             })}
           </TableBody>
         </Table>
+        </MostrarTodos>
       )}
 
       {permUser && (

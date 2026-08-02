@@ -9,6 +9,7 @@ import { Plus, TrendingDown } from 'lucide-react';
 import { listDespesas, deleteDespesa } from '@/actions/finanzas';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { DeleteButton } from '@/components/finanzas/delete-button';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 export default async function DespesasPage() {
   const t = await getTranslations('Finanzas');
@@ -45,7 +46,8 @@ export default async function DespesasPage() {
               </Button>
             </div>
           ) : (
-            <Table>
+            <MostrarTodos count={despesas.length}>
+              <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>{t('despesas.concepto')}</TableHead>
@@ -80,7 +82,8 @@ export default async function DespesasPage() {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </MostrarTodos>
           )}
         </Card>
       </div>

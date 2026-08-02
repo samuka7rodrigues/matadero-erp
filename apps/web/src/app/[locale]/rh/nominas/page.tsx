@@ -12,6 +12,7 @@ import { DeleteButton } from '@/components/finanzas/delete-button';
 import { NominaEstadoActions } from '@/components/finanzas/nomina-estado-actions';
 import { countDocumentos } from '@/actions/documentos';
 import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 const NOMES_MES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
@@ -58,7 +59,8 @@ export default async function NominasPage() {
               </Button>
             </div>
           ) : (
-            <Table>
+            <MostrarTodos count={nominas.length}>
+              <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>{t('nominas.colaborador')}</TableHead>
@@ -104,7 +106,8 @@ export default async function NominasPage() {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </MostrarTodos>
           )}
         </Card>
       </div>

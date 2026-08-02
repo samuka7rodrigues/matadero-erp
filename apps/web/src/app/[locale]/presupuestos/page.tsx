@@ -9,6 +9,7 @@ import { Plus, FileText } from 'lucide-react';
 import { listPresupuestos, deletePresupuesto } from '@/actions/finanzas';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { DeleteButton } from '@/components/finanzas/delete-button';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 export default async function PresupuestosPage() {
   const t = await getTranslations('Finanzas');
@@ -45,7 +46,8 @@ export default async function PresupuestosPage() {
               </Button>
             </div>
           ) : (
-            <Table>
+            <MostrarTodos count={presupuestos.length}>
+              <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>{t('presupuestos.numero')}</TableHead>
@@ -80,7 +82,8 @@ export default async function PresupuestosPage() {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </MostrarTodos>
           )}
         </Card>
       </div>

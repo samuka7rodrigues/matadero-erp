@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Plus, Users, Pencil } from 'lucide-react';
 import { listClientes, deleteCliente } from '@/actions/finanzas';
 import { DeleteButton } from '@/components/finanzas/delete-button';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 export default async function ClientesPage() {
   const t = await getTranslations('Finanzas');
@@ -44,7 +45,8 @@ export default async function ClientesPage() {
               </Button>
             </div>
           ) : (
-            <Table>
+            <MostrarTodos count={clientes.length}>
+              <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>{t('clientes.nombre')}</TableHead>
@@ -86,7 +88,8 @@ export default async function ClientesPage() {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </MostrarTodos>
           )}
         </Card>
       </div>

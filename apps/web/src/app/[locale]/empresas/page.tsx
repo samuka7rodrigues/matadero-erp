@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Building2, Plus, Mail, Phone } from 'lucide-react';
 import { listEmpresas } from '@/actions/empresa';
 import { EmpresaActions } from '@/components/empresa/empresa-actions';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 export default async function EmpresasPage() {
   const t = await getTranslations('Empresa');
@@ -43,7 +44,8 @@ export default async function EmpresasPage() {
               </Button>
             </div>
           ) : (
-            <Table>
+            <MostrarTodos count={empresas.length}>
+              <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Empresa</TableHead>
@@ -92,7 +94,8 @@ export default async function EmpresasPage() {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </MostrarTodos>
           )}
         </Card>
       </div>

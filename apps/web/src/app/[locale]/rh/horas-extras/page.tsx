@@ -9,6 +9,7 @@ import { Plus, Clock } from 'lucide-react';
 import { listHorasExtras, deleteHoraExtra } from '@/actions/finanzas';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { DeleteButton } from '@/components/finanzas/delete-button';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 export default async function HorasExtrasPage() {
   const t = await getTranslations('Finanzas');
@@ -51,7 +52,8 @@ export default async function HorasExtrasPage() {
               </Button>
             </div>
           ) : (
-            <Table>
+            <MostrarTodos count={horas.length}>
+              <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>{t('horasExtras.colaborador')}</TableHead>
@@ -82,7 +84,8 @@ export default async function HorasExtrasPage() {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </MostrarTodos>
           )}
         </Card>
       </div>

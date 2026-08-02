@@ -43,6 +43,7 @@
     "finanzas": "Finanzas",
     "finanzasResumen": "Resumen",
     "faturas": "Facturas",
+    "clientes": "Clientes",
     "cobros": "Cobros",
     "pagos": "Pagos",
     "despesas": "Gastos",
@@ -154,7 +155,9 @@
     "required": "Obligatorio",
     "optional": "Opcional",
     "soon": "Próximamente",
-    "underDevelopment": "Funcionalidad en desarrollo"
+    "underDevelopment": "Funcionalidad en desarrollo",
+    "mostrarTodo": "Mostrar todo",
+    "registosGuardados": "{count} registros guardados"
   },
   "Ponto": {
     "title": "Fichaje",
@@ -536,6 +539,8 @@
       "estado": "Estado",
       "observacoes": "Observaciones",
       "noData": "Ningún cliente registrado",
+      "noRegistrados": "Todavía no hay clientes registrados. Crea un cliente primero.",
+      "criarPrimeiro": "Crear cliente",
       "contacto": "Contacto",
       "confirmDelete": "¿Eliminar este cliente?"
     },

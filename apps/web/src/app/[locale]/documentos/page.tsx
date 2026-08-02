@@ -7,6 +7,7 @@ import { FolderOpen, FileText, ExternalLink } from 'lucide-react';
 import { listDocumentosGlobal } from '@/actions/documentos';
 import { formatDate } from '@/lib/utils';
 import { DocumentoEliminar } from '@/components/documentos/documento-eliminar';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 export default async function DocumentosPage() {
   const t = await getTranslations('Documentos');
@@ -50,7 +51,8 @@ export default async function DocumentosPage() {
               <p className="text-sm text-muted-foreground">{t('noData')}</p>
             </div>
           ) : (
-            <Table>
+            <MostrarTodos count={docs.length}>
+              <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>{t('documento')}</TableHead>
@@ -99,7 +101,8 @@ export default async function DocumentosPage() {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </MostrarTodos>
           )}
         </Card>
       </div>

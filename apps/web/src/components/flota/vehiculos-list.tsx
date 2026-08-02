@@ -20,6 +20,7 @@ import {
 import { Plus, Trash2, Pencil, AlertCircle, CheckCircle2, Truck } from 'lucide-react';
 import { createVehiculo, updateVehiculo, deleteVehiculo } from '@/actions/flota';
 import type { FlotaVehiculo } from '@/types/database';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 interface Props {
   items: FlotaVehiculo[];
@@ -217,7 +218,8 @@ export function VehiculosList({ items }: Props) {
         {items.length === 0 ? (
           <p className="text-sm text-muted-foreground py-4 text-center">{t('noData')}</p>
         ) : (
-          <Table>
+          <MostrarTodos count={items.length}>
+            <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>{t('matricula')}</TableHead>
@@ -268,7 +270,8 @@ export function VehiculosList({ items }: Props) {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+            </Table>
+          </MostrarTodos>
         )}
       </CardContent>
     </Card>

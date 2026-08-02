@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { AppShell } from '@/components/app-shell';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 interface Departamento {
   id: string;
@@ -48,7 +49,8 @@ export default async function DepartamentosPage() {
             <CardTitle>{t('list')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <MostrarTodos count={(departamentos as Departamento[] || []).length}>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {(departamentos as Departamento[] || []).map((d) => (
                 <Card key={d.id} className="border">
                   <CardHeader className="pb-2">
@@ -73,6 +75,7 @@ export default async function DepartamentosPage() {
                 </Card>
               ))}
             </div>
+            </MostrarTodos>
           </CardContent>
         </Card>
       </div>

@@ -22,6 +22,7 @@ import type { FlotaKilometrajeCompleto } from '@/actions/flota';
 import type { FlotaVehiculo } from '@/types/database';
 import { formatDate } from '@/lib/utils';
 import { formatKm, nomeColaborador, vehiculoLabel, type ColaboradorOpt } from './utils';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 interface Props {
   items: FlotaKilometrajeCompleto[];
@@ -168,7 +169,8 @@ export function KilometrajeList({ items, vehiculos, colaboradores }: Props) {
         {items.length === 0 ? (
           <p className="text-sm text-muted-foreground py-4 text-center">{t('noData')}</p>
         ) : (
-          <Table>
+          <MostrarTodos count={items.length}>
+            <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>{t('vehiculo')}</TableHead>
@@ -201,7 +203,8 @@ export function KilometrajeList({ items, vehiculos, colaboradores }: Props) {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+            </Table>
+          </MostrarTodos>
         )}
       </CardContent>
     </Card>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from '@/i18n/config';
+import { useRouter, Link } from '@/i18n/config';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -90,12 +90,24 @@ export function FaturaForm({ clientes, empresas }: Props) {
 
           <div className="space-y-2">
             <Label htmlFor="cliente_id">{t('faturas.cliente')} *</Label>
-            <Select id="cliente_id" {...register('cliente_id')}>
-              <option value="">—</option>
-              {clientes.map((c) => (
-                <option key={c.id} value={c.id}>{c.nombre}</option>
-              ))}
-            </Select>
+            {clientes.length === 0 ? (
+              <div className="rounded-md border border-dashed p-3 text-sm">
+                <p className="text-muted-foreground">{t('clientes.noRegistrados')}</p>
+                <Button asChild variant="outline" size="sm" className="mt-2">
+                  <Link href="/finanzas/clientes/new">
+                    <Plus className="mr-1 h-4 w-4" />
+                    {t('clientes.criarPrimeiro')}
+                  </Link>
+                </Button>
+              </div>
+            ) : (
+              <Select id="cliente_id" {...register('cliente_id')}>
+                <option value="">—</option>
+                {clientes.map((c) => (
+                  <option key={c.id} value={c.id}>{c.nombre}</option>
+                ))}
+              </Select>
+            )}
             {errors.cliente_id && <p className="text-xs text-destructive">{errors.cliente_id.message}</p>}
           </div>
 

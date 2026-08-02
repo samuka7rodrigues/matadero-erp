@@ -92,6 +92,7 @@ export const finanzasGroup: NavGroup = {
   items: [
     { href: '/finanzas', labelKey: 'Nav.finanzasResumen', icon: ChartPie, roles: ['admin', 'financeiro', 'auditor'] },
     { href: '/faturas', labelKey: 'Nav.faturas', icon: Receipt, roles: ['admin', 'financeiro', 'auditor'] },
+    { href: '/finanzas/clientes', labelKey: 'Nav.clientes', icon: Users, roles: ['admin', 'financeiro', 'auditor'] },
     { href: '/cobros', labelKey: 'Nav.cobros', icon: ArrowDownToLine, roles: ['admin', 'financeiro', 'auditor'] },
     { href: '/pagos', labelKey: 'Nav.pagos', icon: ArrowUpFromLine, roles: ['admin', 'financeiro', 'auditor'] },
     { href: '/despesas', labelKey: 'Nav.despesas', icon: TrendingDown, roles: ['admin', 'financeiro', 'auditor'] },

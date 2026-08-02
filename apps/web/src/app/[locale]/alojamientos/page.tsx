@@ -10,6 +10,7 @@ import { listAlojamientos } from '@/actions/alojamiento';
 import { AlojamientoActions } from '@/components/alojamientos/alojamiento-actions';
 import { countDocumentos } from '@/actions/documentos';
 import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 export default async function AlojamientosPage() {
   const t = await getTranslations('Alojamiento');
@@ -47,7 +48,8 @@ export default async function AlojamientosPage() {
               </Button>
             </div>
           ) : (
-            <Table>
+            <MostrarTodos count={alojamientos.length}>
+              <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Vivienda</TableHead>
@@ -100,7 +102,8 @@ export default async function AlojamientosPage() {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </MostrarTodos>
           )}
         </Card>
       </div>

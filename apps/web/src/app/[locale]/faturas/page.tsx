@@ -11,6 +11,7 @@ import { formatCurrency, formatDate } from '@/lib/utils';
 import { FaturaActions } from '@/components/finanzas/fatura-actions';
 import { countDocumentos } from '@/actions/documentos';
 import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 export default async function FaturasPage() {
   const t = await getTranslations('Finanzas');
@@ -49,56 +50,58 @@ export default async function FaturasPage() {
               </Button>
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>{t('faturas.numero')}</TableHead>
-                  <TableHead>{t('faturas.cliente')}</TableHead>
-                  <TableHead>{t('faturas.empresa')}</TableHead>
-                  <TableHead>{t('faturas.fechaEmision')}</TableHead>
-                  <TableHead>{t('faturas.fechaVencimiento')}</TableHead>
-                  <TableHead>{t('faturas.estado')}</TableHead>
-                  <TableHead className="text-right">{t('faturas.total')}</TableHead>
-                  <TableHead className="text-center">{td('title')}</TableHead>
-                  <TableHead className="text-right">{t('Common.actions')}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {faturas.map((f) => (
-                  <TableRow key={f.id}>
-                    <TableCell>
-                      <Link href={`/faturas/${f.id}`} className="font-medium font-mono text-xs hover:underline">
-                        {f.numero}
-                      </Link>
-                    </TableCell>
-                    <TableCell>{f.clientes?.nombre || '—'}</TableCell>
-                    <TableCell>{f.empresas?.nombre_comercial || f.empresas?.nombre || '—'}</TableCell>
-                    <TableCell>{formatDate(f.fecha_emision, locale)}</TableCell>
-                    <TableCell>{f.fecha_vencimiento ? formatDate(f.fecha_vencimiento, locale) : '—'}</TableCell>
-                    <TableCell>
-                      <Badge variant={f.estado === 'pagada' ? 'success' : f.estado === 'emitida' ? 'default' : 'secondary'}>
-                        {t(`faturas.estados.${f.estado}`)}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right font-semibold">{formatCurrency(Number(f.total), locale)}</TableCell>
-                    <TableCell className="text-center">
-                      <div className="flex justify-center">
-                        <DocumentoAnexo
-                          entidade="faturas"
-                          entidadeId={f.id}
-                          referencia={`Fatura ${f.numero}`}
-                          count={documentos[f.id] || 0}
-                          iconOnly
-                        />
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <FaturaActions id={f.id} estado={f.estado} />
-                    </TableCell>
+            <MostrarTodos count={faturas.length}>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>{t('faturas.numero')}</TableHead>
+                    <TableHead>{t('faturas.cliente')}</TableHead>
+                    <TableHead>{t('faturas.empresa')}</TableHead>
+                    <TableHead>{t('faturas.fechaEmision')}</TableHead>
+                    <TableHead>{t('faturas.fechaVencimiento')}</TableHead>
+                    <TableHead>{t('faturas.estado')}</TableHead>
+                    <TableHead className="text-right">{t('faturas.total')}</TableHead>
+                    <TableHead className="text-center">{td('title')}</TableHead>
+                    <TableHead className="text-right">{t('Common.actions')}</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {faturas.map((f) => (
+                    <TableRow key={f.id}>
+                      <TableCell>
+                        <Link href={`/faturas/${f.id}`} className="font-medium font-mono text-xs hover:underline">
+                          {f.numero}
+                        </Link>
+                      </TableCell>
+                      <TableCell>{f.clientes?.nombre || '—'}</TableCell>
+                      <TableCell>{f.empresas?.nombre_comercial || f.empresas?.nombre || '—'}</TableCell>
+                      <TableCell>{formatDate(f.fecha_emision, locale)}</TableCell>
+                      <TableCell>{f.fecha_vencimiento ? formatDate(f.fecha_vencimiento, locale) : '—'}</TableCell>
+                      <TableCell>
+                        <Badge variant={f.estado === 'pagada' ? 'success' : f.estado === 'emitida' ? 'default' : 'secondary'}>
+                          {t(`faturas.estados.${f.estado}`)}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right font-semibold">{formatCurrency(Number(f.total), locale)}</TableCell>
+                      <TableCell className="text-center">
+                        <div className="flex justify-center">
+                          <DocumentoAnexo
+                            entidade="faturas"
+                            entidadeId={f.id}
+                            referencia={`Fatura ${f.numero}`}
+                            count={documentos[f.id] || 0}
+                            iconOnly
+                          />
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <FaturaActions id={f.id} estado={f.estado} />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </MostrarTodos>
           )}
         </Card>
       </div>

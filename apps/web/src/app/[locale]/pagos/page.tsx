@@ -9,6 +9,7 @@ import { Plus, ArrowUpFromLine } from 'lucide-react';
 import { listPagos, deletePago } from '@/actions/finanzas';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { DeleteButton } from '@/components/finanzas/delete-button';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 export default async function PagosPage() {
   const t = await getTranslations('Finanzas');
@@ -45,7 +46,8 @@ export default async function PagosPage() {
               </Button>
             </div>
           ) : (
-            <Table>
+            <MostrarTodos count={pagos.length}>
+              <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>{t('pagos.concepto')}</TableHead>
@@ -78,7 +80,8 @@ export default async function PagosPage() {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </MostrarTodos>
           )}
         </Card>
       </div>

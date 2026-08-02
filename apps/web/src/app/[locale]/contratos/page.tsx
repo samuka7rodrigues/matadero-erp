@@ -8,6 +8,7 @@ import { Building2, CalendarDays, FileSignature, Paperclip, PenLine, Plus, User,
 import { listContratos, getContratoCounts } from '@/actions/contratos';
 import { formatDate } from '@/lib/utils';
 import { ContratoAnexo } from '@/components/contratos/contrato-anexo';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 function badgeVariant(estado: string) {
   if (estado === 'ativo') return 'success';
@@ -52,7 +53,8 @@ export default async function ContratosPage() {
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <MostrarTodos count={contratos.length}>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {contratos.map((c) => (
               <Card key={c.id} className="flex flex-col">
                 <CardContent className="flex flex-1 flex-col gap-4 p-5">
@@ -130,7 +132,8 @@ export default async function ContratosPage() {
                 </CardFooter>
               </Card>
             ))}
-          </div>
+            </div>
+          </MostrarTodos>
         )}
       </div>
     </AppShell>

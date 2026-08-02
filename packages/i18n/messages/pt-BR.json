@@ -43,6 +43,7 @@
     "finanzas": "Finanzas",
     "finanzasResumen": "Resumo",
     "faturas": "Faturas",
+    "clientes": "Clientes",
     "cobros": "Cobros",
     "pagos": "Pagos",
     "despesas": "Despesas",
@@ -154,7 +155,9 @@
     "required": "Obrigatório",
     "optional": "Opcional",
     "soon": "Em breve",
-    "underDevelopment": "Funcionalidade em desenvolvimento"
+    "underDevelopment": "Funcionalidade em desenvolvimento",
+    "mostrarTodo": "Mostrar todo",
+    "registosGuardados": "{count} registos guardados"
   },
   "Ponto": {
     "title": "Marcação de Ponto",
@@ -536,6 +539,8 @@
       "estado": "Estado",
       "observacoes": "Observações",
       "noData": "Nenhum cliente cadastrado",
+      "noRegistrados": "Ainda não há clientes registados. Cria um cliente primeiro.",
+      "criarPrimeiro": "Criar cliente",
       "contacto": "Contacto",
       "confirmDelete": "Eliminar este cliente?"
     },

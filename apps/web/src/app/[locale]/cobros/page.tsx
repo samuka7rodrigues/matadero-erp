@@ -9,6 +9,7 @@ import { Plus, ArrowDownToLine } from 'lucide-react';
 import { listCobros } from '@/actions/finanzas';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { DeleteButton } from '@/components/finanzas/delete-button';
+import { MostrarTodos } from '@/components/common/mostrar-todos';
 import { deleteCobro } from '@/actions/finanzas';
 
 export default async function CobrosPage() {
@@ -46,7 +47,8 @@ export default async function CobrosPage() {
               </Button>
             </div>
           ) : (
-            <Table>
+            <MostrarTodos count={cobros.length}>
+              <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>{t('cobros.fatura')}</TableHead>
@@ -77,7 +79,8 @@ export default async function CobrosPage() {
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+              </Table>
+            </MostrarTodos>
           )}
         </Card>
       </div>
