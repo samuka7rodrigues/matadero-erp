@@ -212,6 +212,57 @@
       "confirmDelete": "¿Eliminar este departamento?"
     }
   },
+  "Configuracao": {
+    "title": "Configuración",
+    "save": "Guardar cambios",
+    "saved": "Configuración guardada correctamente",
+    "sections": {
+      "empresa": "Empresa",
+      "rh": "Recursos Humanos",
+      "finanzas": "Finanzas",
+      "alertas": "Alertas de expiración",
+      "dados": "Datos"
+    },
+    "fields": {
+      "nomeEmpresa": "Nombre de la empresa",
+      "cifNif": "CIF/NIF",
+      "moeda": "Moneda",
+      "idiomaDefault": "Idioma por defecto",
+      "smiMensal": "Salario mínimo (SMI) mensual (€)",
+      "jornadaDefault": "Jornada por defecto",
+      "baseHoraExtra": "Valor hora extra por defecto (€)",
+      "diasFeriasAno": "Días de vacaciones al año",
+      "ivaDefault": "IVA por defecto (%)",
+      "faturaSerie": "Serie de facturas",
+      "faturaVencimentoDias": "Vencimiento de facturas (días)",
+      "cobroVencimentoDias": "Vencimiento de cobros (días)",
+      "pagoVencimentoDias": "Vencimiento de pagos (días)",
+      "alertaItv": "Avisar expiración de ITV",
+      "alertaSeguro": "Avisar expiración de seguros",
+      "alertaContrato": "Avisar expiración de contratos",
+      "alertaAlojamiento": "Avisar expiración de alojamientos",
+      "alertaDias": "Días de antelación"
+    },
+    "feriados": {
+      "title": "Festivos",
+      "fecha": "Fecha",
+      "nombre": "Nombre",
+      "add": "Añadir",
+      "empty": "Sin festivos registrados",
+      "confirmDelete": "¿Eliminar este festivo?"
+    },
+    "dados": {
+      "exportTitle": "Exportar / Backup",
+      "exportDesc": "Descarga una copia JSON de todos los datos del sistema.",
+      "exportar": "Exportar datos",
+      "cleanTitle": "Limpiar datos de prueba",
+      "cleanDesc": "Elimina registros de prueba (colaboradores/clientes con 'teste' en nombre o correo). No afecta a usuarios reales.",
+      "limpar": "Limpiar datos de prueba",
+      "confirmClean": "¿Seguro? Esta acción elimina los registros de prueba del sistema.",
+      "cleaned": "Datos de prueba eliminados",
+      "nothing": "No se encontraron datos de prueba"
+    }
+  },
   "Empresa": {
     "title": "Registro de Empresa",
     "new": "Nueva Empresa",

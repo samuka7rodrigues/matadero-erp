@@ -212,6 +212,57 @@
       "confirmDelete": "Eliminar este departamento?"
     }
   },
+  "Configuracao": {
+    "title": "Configurações",
+    "save": "Guardar alterações",
+    "saved": "Configurações guardadas com sucesso",
+    "sections": {
+      "empresa": "Empresa",
+      "rh": "Recursos Humanos",
+      "finanzas": "Finanças",
+      "alertas": "Alertas de expiração",
+      "dados": "Dados"
+    },
+    "fields": {
+      "nomeEmpresa": "Nome da empresa",
+      "cifNif": "CIF/NIF",
+      "moeda": "Moeda",
+      "idiomaDefault": "Idioma por defeito",
+      "smiMensal": "Salário mínimo (SMI) mensal (€)",
+      "jornadaDefault": "Jornada por defeito",
+      "baseHoraExtra": "Valor hora extra por defeito (€)",
+      "diasFeriasAno": "Dias de férias por ano",
+      "ivaDefault": "IVA por defeito (%)",
+      "faturaSerie": "Série de faturas",
+      "faturaVencimentoDias": "Vencimento de faturas (dias)",
+      "cobroVencimentoDias": "Vencimento de cobros (dias)",
+      "pagoVencimentoDias": "Vencimento de pagos (dias)",
+      "alertaItv": "Avisar expiração de ITV",
+      "alertaSeguro": "Avisar expiração de seguros",
+      "alertaContrato": "Avisar expiração de contratos",
+      "alertaAlojamiento": "Avisar expiração de alojamentos",
+      "alertaDias": "Dias de antecedência"
+    },
+    "feriados": {
+      "title": "Feriados",
+      "fecha": "Data",
+      "nombre": "Nome",
+      "add": "Adicionar",
+      "empty": "Sem feriados registados",
+      "confirmDelete": "Eliminar este feriado?"
+    },
+    "dados": {
+      "exportTitle": "Exportar / Backup",
+      "exportDesc": "Descarrega uma cópia JSON de todos os dados do sistema.",
+      "exportar": "Exportar dados",
+      "cleanTitle": "Limpar dados de teste",
+      "cleanDesc": "Elimina registos de teste (colaboradores/clientes com 'teste' no nome ou e-mail). Não afeta utilizadores reais.",
+      "limpar": "Limpar dados de teste",
+      "confirmClean": "Tens a certeza? Esta ação elimina os registos de teste do sistema.",
+      "cleaned": "Dados de teste eliminados",
+      "nothing": "Não foram encontrados dados de teste"
+    }
+  },
   "Empresa": {
     "title": "Cadastro de Empresa",
     "new": "Nova Empresa",
