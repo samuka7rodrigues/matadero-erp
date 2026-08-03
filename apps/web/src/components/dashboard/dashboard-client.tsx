@@ -47,10 +47,10 @@ export function DashboardClient({
 
   return (
     <div className="space-y-6">
-      {/* Hero azul */}
-      <div className="rounded-xl bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 p-6 text-white shadow-sm">
+      {/* Hero */}
+      <div className="rounded-2xl bg-gradient-to-br from-primary via-[hsl(351_70%_38%)] to-[hsl(351_60%_48%)] p-6 text-white shadow-card">
         <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
-        <p className="mt-1 text-blue-100">{t('subtitle')}</p>
+        <p className="mt-1 text-white/80">{t('subtitle')}</p>
       </div>
 
       {/* KPIs */}
@@ -82,8 +82,8 @@ export function DashboardClient({
       {/* Alertas */}
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
-          <CardHeader className="border-b border-blue-100 bg-blue-50/60">
-            <CardTitle className="text-base text-blue-800">Contratos a expirar (60 días)</CardTitle>
+          <CardHeader className="border-b bg-muted/40">
+            <CardTitle className="text-base">Contratos a expirar (60 días)</CardTitle>
             <CardDescription>Colaboradores com contrato a terminar</CardDescription>
           </CardHeader>
           <CardContent className="pt-4">
@@ -114,8 +114,8 @@ export function DashboardClient({
         </Card>
 
         <Card>
-          <CardHeader className="border-b border-blue-100 bg-blue-50/60">
-            <CardTitle className="text-base text-blue-800">Exames médicos a vencer</CardTitle>
+          <CardHeader className="border-b bg-muted/40">
+            <CardTitle className="text-base">Exames médicos a vencer</CardTitle>
             <CardDescription>Próximos 30 días</CardDescription>
           </CardHeader>
           <CardContent className="pt-4">
@@ -152,7 +152,7 @@ export function DashboardClient({
 }
 
 // =====================================================
-// KPI Card (subcomponente) — tema azul
+// KPI Card (subcomponente)
 // =====================================================
 
 function KpiCard({
@@ -167,17 +167,17 @@ function KpiCard({
   variant?: 'default' | 'warning';
 }) {
   return (
-    <Card className="border-blue-100">
+    <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
           {icon}
         </div>
       </CardHeader>
       <CardContent>
         <div
-          className={`text-3xl font-bold ${
-            variant === 'warning' ? 'text-amber-600' : 'text-blue-700'
+          className={`text-3xl font-bold tracking-tight ${
+            variant === 'warning' ? 'text-amber-600' : 'text-foreground'
           }`}
         >
           {value}

@@ -15,9 +15,10 @@ interface HeaderProps {
 
 export function Header({ user, allowedMenus }: HeaderProps) {
   const t = useTranslations('Auth');
+  const initial = (user.email || '?').charAt(0).toUpperCase();
 
   return (
-    <header className="flex h-16 items-center justify-between gap-3 border-b bg-card px-4 lg:px-6">
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-3 border-b bg-background/80 px-4 backdrop-blur lg:px-6">
       <div className="flex items-center gap-3">
         <MobileNav allowedMenus={allowedMenus} />
         <span className="hidden text-sm text-muted-foreground sm:block">
@@ -26,6 +27,9 @@ export function Header({ user, allowedMenus }: HeaderProps) {
       </div>
       <div className="flex items-center gap-2 lg:gap-3">
         <LocaleSwitcher />
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+          {initial}
+        </div>
         <form action={logoutAction}>
           <Button variant="ghost" size="sm" type="submit">
             <LogOut className="h-4 w-4 lg:mr-2" />

@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/config';
 import { cn, isNavItemActive } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown, Beef } from 'lucide-react';
 import {
   navEntries,
   type NavItem,
@@ -29,13 +29,21 @@ function NavLink({
       href={item.href}
       onClick={onNavigate}
       className={cn(
-        'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+        'group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
         isActive
-          ? 'bg-primary text-primary-foreground'
-          : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+          ? 'bg-primary/10 font-semibold text-primary'
+          : 'text-muted-foreground hover:bg-sidebar-muted hover:text-foreground'
       )}
     >
-      <Icon className="h-5 w-5" />
+      {isActive && (
+        <span className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-primary" />
+      )}
+      <Icon
+        className={cn(
+          'h-[18px] w-[18px] shrink-0 transition-colors',
+          isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'
+        )}
+      />
       {t(item.labelKey)}
     </Link>
   );
@@ -53,13 +61,20 @@ function NavGroupMenu({ group, onNavigate }: { group: NavGroup; onNavigate?: () 
       <Button
         variant="ghost"
         className={cn(
-          'flex w-full items-center justify-between gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
-          isActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+          'flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+          isActive
+            ? 'bg-primary/10 font-semibold text-primary'
+            : 'text-muted-foreground hover:bg-sidebar-muted hover:text-foreground'
         )}
         onClick={() => setOpen((o) => !o)}
       >
         <span className="flex items-center gap-3">
-          <Icon className="h-5 w-5" />
+          <Icon
+            className={cn(
+              'h-[18px] w-[18px] shrink-0 transition-colors',
+              isActive ? 'text-primary' : 'text-muted-foreground'
+            )}
+          />
           {t(group.labelKey)}
         </span>
         <ChevronDown
@@ -67,7 +82,7 @@ function NavGroupMenu({ group, onNavigate }: { group: NavGroup; onNavigate?: () 
         />
       </Button>
       {open && (
-        <div className="ml-3 flex flex-col gap-0.5 border-l pl-3">
+        <div className="ml-3 flex flex-col gap-0.5 border-l border-sidebar-border pl-3">
           {group.items.map((item) => (
             <NavLink key={item.href} item={item} onNavigate={onNavigate} />
           ))}
@@ -79,7 +94,10 @@ function NavGroupMenu({ group, onNavigate }: { group: NavGroup; onNavigate?: () 
 
 function SidebarNav({ allowedMenus, onNavigate }: { allowedMenus: string[]; onNavigate?: () => void }) {
   return (
-    <nav className="flex flex-col gap-1 p-4">
+    <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-4">
+      <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/70">
+        Menu
+      </p>
       {navEntries.map((entry) => {
         if (entry.type === 'item') {
           if (!allowedMenus.includes(entry.item.href)) return null;
@@ -93,12 +111,34 @@ function SidebarNav({ allowedMenus, onNavigate }: { allowedMenus: string[]; onNa
   );
 }
 
+function Brand({ className, hideBorder = false }: { className?: string; hideBorder?: boolean }) {
+  return (
+    <div
+      className={cn(
+        'flex h-16 items-center gap-3 px-5',
+        !hideBorder && 'border-b border-sidebar-border',
+        className
+      )}
+    >
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-card">
+        <Beef className="h-5 w-5" />
+      </div>
+      <div className="flex min-w-0 flex-col leading-tight">
+        <span className="truncate text-[15px] font-bold tracking-tight text-sidebar-foreground">
+          Matadero ERP
+        </span>
+        <span className="text-[11px] font-medium text-muted-foreground">
+          Gestão integral
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export function Sidebar({ allowedMenus }: { allowedMenus: string[] }) {
   return (
-    <aside className="hidden w-64 border-r bg-card lg:block">
-      <div className="flex h-16 items-center border-b px-6">
-        <h1 className="text-xl font-bold text-primary">ERP Matadero</h1>
-      </div>
+    <aside className="hidden w-64 flex-col border-r border-sidebar-border bg-sidebar lg:flex">
+      <Brand />
       <SidebarNav allowedMenus={allowedMenus} />
     </aside>
   );
@@ -125,9 +165,9 @@ export function MobileNav({ allowedMenus }: { allowedMenus: string[] }) {
             className="absolute inset-0 bg-black/50"
             onClick={() => setOpen(false)}
           />
-          <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85%] flex-col border-r bg-card shadow-xl">
-            <div className="flex h-16 items-center justify-between border-b px-4">
-              <h1 className="text-xl font-bold text-primary">ERP Matadero</h1>
+          <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85%] flex-col border-r border-sidebar-border bg-sidebar shadow-xl">
+            <div className="flex items-center justify-between border-b border-sidebar-border pr-2">
+              <Brand hideBorder className="flex-1" />
               <Button
                 variant="ghost"
                 size="icon"

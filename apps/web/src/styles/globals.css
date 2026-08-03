@@ -4,24 +4,30 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --background: 240 10% 96.5%;
+    --foreground: 240 10% 6%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --primary: 0 72% 35%;          /* vermelho-matadouro */
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 0 72% 35%;
-    --radius: 0.5rem;
+    --card-foreground: 240 10% 6%;
+    --primary: 351 72% 32%;          /* vermelho-matadouro (crimson refinado) */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 6% 94%;
+    --secondary-foreground: 240 6% 12%;
+    --muted: 240 8% 95%;
+    --muted-foreground: 240 5% 40%;
+    --accent: 240 6% 93%;
+    --accent-foreground: 240 6% 12%;
+    --destructive: 0 84% 58%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 7% 89%;
+    --input: 240 7% 87%;
+    --ring: 351 72% 40%;
+    --radius: 0.75rem;
+
+    /* Superfícies da sidebar */
+    --sidebar: 0 0% 100%;
+    --sidebar-foreground: 240 10% 6%;
+    --sidebar-muted: 240 6% 96%;
+    --sidebar-border: 240 7% 90%;
   }
 
   .dark {
@@ -42,6 +48,11 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 0 72% 45%;
+
+    --sidebar: 240 9% 5%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-muted: 240 4% 13%;
+    --sidebar-border: 240 4% 15%;
   }
 }
 

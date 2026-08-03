@@ -33,7 +33,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
   const menus = allowedMenuKeys(role, perms?.menus);
 
   return (
-    <div className="flex min-h-screen w-full bg-muted/30">
+    <div className="flex min-h-screen w-full bg-background">
       <Sidebar allowedMenus={menus} />
       <div className="flex flex-1 flex-col">
         <Header user={user} allowedMenus={menus} />
