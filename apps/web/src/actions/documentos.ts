@@ -25,7 +25,18 @@ export type EntidadeDocumento =
   | 'ferias'
   | 'exames'
   | 'alojamientos'
-  | 'flota_vehiculos';
+  | 'flota_vehiculos'
+  | 'flota_itv'
+  | 'flota_seguros'
+  | 'flota_mantenimiento'
+  | 'flota_combustible'
+  | 'flota_kilometraje'
+  | 'flota_multas'
+  | 'horas_extras'
+  | 'presupuestos'
+  | 'cobros'
+  | 'pagos'
+  | 'despesas';
 
 /** Rota principal do módulo para revalidar após upload/eliminação. */
 const ROTA_ENTIDADE: Record<EntidadeDocumento, string> = {
@@ -38,6 +49,17 @@ const ROTA_ENTIDADE: Record<EntidadeDocumento, string> = {
   exames: '/rh/exames',
   alojamientos: '/alojamientos',
   flota_vehiculos: '/flota/vehiculos',
+  flota_itv: '/flota/itv',
+  flota_seguros: '/flota/seguros',
+  flota_mantenimiento: '/flota/mantenimiento',
+  flota_combustible: '/flota/combustible',
+  flota_kilometraje: '/flota/kilometraje',
+  flota_multas: '/flota/multas',
+  horas_extras: '/rh/horas-extras',
+  presupuestos: '/presupuestos',
+  cobros: '/cobros',
+  pagos: '/pagos',
+  despesas: '/despesas',
 };
 
 async function requireRoles(supabase: ReturnType<typeof createClient>, roles: string[]) {

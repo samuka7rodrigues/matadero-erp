@@ -11,11 +11,15 @@ import { formatCurrency, formatDate } from '@/lib/utils';
 import { DeleteButton } from '@/components/finanzas/delete-button';
 import { MostrarTodos } from '@/components/common/mostrar-todos';
 import { ExportarHorasExtras } from '@/components/finanzas/exportar-horas-extras';
+import { countDocumentos } from '@/actions/documentos';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 export default async function HorasExtrasPage() {
   const t = await getTranslations('Finanzas');
+  const td = await getTranslations('Documentos');
   const locale = await getLocale();
   const { data: horas, error } = await listHorasExtras();
+  const { documentos } = await countDocumentos('horas_extras');
 
   const exportRows = horas.map((h) => ({
     id: h.id,
@@ -79,6 +83,7 @@ export default async function HorasExtrasPage() {
                   <TableHead>{t('horasExtras.tipo')}</TableHead>
                   <TableHead>{t('horasExtras.estado')}</TableHead>
                   <TableHead className="text-right">{t('horasExtras.importe')}</TableHead>
+                  <TableHead className="text-center">{td('title')}</TableHead>
                   <TableHead className="text-right">{t('Common.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
@@ -95,6 +100,17 @@ export default async function HorasExtrasPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right font-semibold">{formatCurrency(Number(h.importe), locale)}</TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex justify-center">
+                        <DocumentoAnexo
+                          entidade="horas_extras"
+                          entidadeId={h.id}
+                          referencia={`Hora extra ${formatDate(h.data, locale)}`}
+                          count={documentos[h.id] || 0}
+                          iconOnly
+                        />
+                      </div>
+                    </TableCell>
                     <TableCell>
                       <DeleteButton id={h.id} confirmMessage={t('horasExtras.confirmDelete')} onDelete={deleteHoraExtra} />
                     </TableCell>

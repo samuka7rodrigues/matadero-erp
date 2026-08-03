@@ -10,11 +10,15 @@ import { listPresupuestos, deletePresupuesto } from '@/actions/finanzas';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { DeleteButton } from '@/components/finanzas/delete-button';
 import { MostrarTodos } from '@/components/common/mostrar-todos';
+import { countDocumentos } from '@/actions/documentos';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 export default async function PresupuestosPage() {
   const t = await getTranslations('Finanzas');
+  const td = await getTranslations('Documentos');
   const locale = await getLocale();
   const { data: presupuestos, error } = await listPresupuestos();
+  const { documentos } = await countDocumentos('presupuestos');
 
   return (
     <AppShell>
@@ -56,6 +60,7 @@ export default async function PresupuestosPage() {
                   <TableHead>{t('presupuestos.data')}</TableHead>
                   <TableHead>{t('presupuestos.estado')}</TableHead>
                   <TableHead className="text-right">{t('presupuestos.total')}</TableHead>
+                  <TableHead className="text-center">{td('title')}</TableHead>
                   <TableHead className="text-right">{t('Common.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
@@ -76,6 +81,17 @@ export default async function PresupuestosPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right font-semibold">{formatCurrency(Number(p.total), locale)}</TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex justify-center">
+                        <DocumentoAnexo
+                          entidade="presupuestos"
+                          entidadeId={p.id}
+                          referencia={`Presupuesto ${p.numero}`}
+                          count={documentos[p.id] || 0}
+                          iconOnly
+                        />
+                      </div>
+                    </TableCell>
                     <TableCell>
                       <DeleteButton id={p.id} confirmMessage={t('presupuestos.confirmDelete')} onDelete={deletePresupuesto} />
                     </TableCell>
