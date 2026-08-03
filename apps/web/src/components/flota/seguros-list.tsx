@@ -24,19 +24,22 @@ import type { FlotaVehiculo } from '@/types/database';
 import { formatDate } from '@/lib/utils';
 import { formatImporte, vehiculoLabel } from './utils';
 import { MostrarTodos } from '@/components/common/mostrar-todos';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 interface Props {
   items: FlotaSeguroCompleto[];
   vehiculos: FlotaVehiculo[];
+  documentosCount?: Record<string, number>;
 }
 
 const TIPOS = ['basico', 'terceros', 'todo_riesgo', 'otro'];
 const ESTADOS = ['activo', 'vencido', 'cancelado'];
 
-export function SegurosList({ items, vehiculos }: Props) {
+export function SegurosList({ items, vehiculos, documentosCount }: Props) {
   const t = useTranslations('Flota.seguros');
   const tm = useTranslations('Flota.messages');
   const tc = useTranslations('Common');
+  const td = useTranslations('Documentos');
   const router = useRouter();
 
   const [showForm, setShowForm] = useState(false);
@@ -231,6 +234,7 @@ export function SegurosList({ items, vehiculos }: Props) {
                 <TableHead>{t('fechaFin')}</TableHead>
                 <TableHead>{t('importe')}</TableHead>
                 <TableHead>{t('estado')}</TableHead>
+                <TableHead className="text-center">{td('title')}</TableHead>
                 <TableHead className="text-right">{tc('actions')}</TableHead>
               </TableRow>
             </TableHeader>
@@ -246,6 +250,17 @@ export function SegurosList({ items, vehiculos }: Props) {
                   <TableCell>{formatImporte(s.importe)}</TableCell>
                   <TableCell>
                     <Badge variant={badgeVariant(s.estado)}>{t(`estados.${s.estado}`) || s.estado}</Badge>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex justify-center">
+                      <DocumentoAnexo
+                        entidade="flota_seguros"
+                        entidadeId={s.id}
+                        referencia={vehiculoLabel(s.vehiculos)}
+                        count={documentosCount?.[s.id] || 0}
+                        iconOnly
+                      />
+                    </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-end gap-1">

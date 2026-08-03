@@ -23,18 +23,21 @@ import type { FlotaVehiculo } from '@/types/database';
 import { formatDate } from '@/lib/utils';
 import { formatImporte, formatKm, vehiculoLabel } from './utils';
 import { MostrarTodos } from '@/components/common/mostrar-todos';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 interface Props {
   items: FlotaMantenimientoCompleto[];
   vehiculos: FlotaVehiculo[];
+  documentosCount?: Record<string, number>;
 }
 
 const TIPOS = ['correctivo', 'preventivo', 'neumaticos', 'frenos', 'revision', 'otro'];
 
-export function MantenimientoList({ items, vehiculos }: Props) {
+export function MantenimientoList({ items, vehiculos, documentosCount }: Props) {
   const t = useTranslations('Flota.mantenimiento');
   const tm = useTranslations('Flota.messages');
   const tc = useTranslations('Common');
+  const td = useTranslations('Documentos');
   const router = useRouter();
 
   const [showForm, setShowForm] = useState(false);
@@ -201,6 +204,7 @@ export function MantenimientoList({ items, vehiculos }: Props) {
                 <TableHead>{t('km')}</TableHead>
                 <TableHead>{t('importe')}</TableHead>
                 <TableHead>{t('proveedor')}</TableHead>
+                <TableHead className="text-center">{td('title')}</TableHead>
                 <TableHead className="text-right">{tc('actions')}</TableHead>
               </TableRow>
             </TableHeader>
@@ -214,6 +218,17 @@ export function MantenimientoList({ items, vehiculos }: Props) {
                   <TableCell>{formatKm(m.km)}</TableCell>
                   <TableCell>{formatImporte(m.importe)}</TableCell>
                   <TableCell>{m.proveedor || '—'}</TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex justify-center">
+                      <DocumentoAnexo
+                        entidade="flota_mantenimiento"
+                        entidadeId={m.id}
+                        referencia={vehiculoLabel(m.vehiculos)}
+                        count={documentosCount?.[m.id] || 0}
+                        iconOnly
+                      />
+                    </div>
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-end">
                       <Button

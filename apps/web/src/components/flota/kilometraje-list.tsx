@@ -23,17 +23,20 @@ import type { FlotaVehiculo } from '@/types/database';
 import { formatDate } from '@/lib/utils';
 import { formatKm, nomeColaborador, vehiculoLabel, type ColaboradorOpt } from './utils';
 import { MostrarTodos } from '@/components/common/mostrar-todos';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 interface Props {
   items: FlotaKilometrajeCompleto[];
   vehiculos: FlotaVehiculo[];
   colaboradores: ColaboradorOpt[];
+  documentosCount?: Record<string, number>;
 }
 
-export function KilometrajeList({ items, vehiculos, colaboradores }: Props) {
+export function KilometrajeList({ items, vehiculos, colaboradores, documentosCount }: Props) {
   const t = useTranslations('Flota.kilometraje');
   const tm = useTranslations('Flota.messages');
   const tc = useTranslations('Common');
+  const td = useTranslations('Documentos');
   const router = useRouter();
 
   const [showForm, setShowForm] = useState(false);
@@ -177,6 +180,7 @@ export function KilometrajeList({ items, vehiculos, colaboradores }: Props) {
                 <TableHead>{t('fecha')}</TableHead>
                 <TableHead>{t('km')}</TableHead>
                 <TableHead>{t('colaborador')}</TableHead>
+                <TableHead className="text-center">{td('title')}</TableHead>
                 <TableHead className="text-right">{tc('actions')}</TableHead>
               </TableRow>
             </TableHeader>
@@ -187,6 +191,17 @@ export function KilometrajeList({ items, vehiculos, colaboradores }: Props) {
                   <TableCell>{k.fecha ? formatDate(k.fecha) : '—'}</TableCell>
                   <TableCell>{formatKm(k.km)}</TableCell>
                   <TableCell>{nomeColaborador(k.colaboradores)}</TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex justify-center">
+                      <DocumentoAnexo
+                        entidade="flota_kilometraje"
+                        entidadeId={k.id}
+                        referencia={vehiculoLabel(k.vehiculos)}
+                        count={documentosCount?.[k.id] || 0}
+                        iconOnly
+                      />
+                    </div>
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-end">
                       <Button

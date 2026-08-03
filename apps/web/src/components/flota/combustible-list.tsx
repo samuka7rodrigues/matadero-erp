@@ -23,19 +23,22 @@ import type { FlotaVehiculo } from '@/types/database';
 import { formatDate } from '@/lib/utils';
 import { formatImporte, formatKm, nomeColaborador, vehiculoLabel, type ColaboradorOpt } from './utils';
 import { MostrarTodos } from '@/components/common/mostrar-todos';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 interface Props {
   items: FlotaCombustibleCompleto[];
   vehiculos: FlotaVehiculo[];
   colaboradores: ColaboradorOpt[];
+  documentosCount?: Record<string, number>;
 }
 
 const TIPOS = ['diesel', 'gasolina', 'electrico', 'otro'];
 
-export function CombustibleList({ items, vehiculos, colaboradores }: Props) {
+export function CombustibleList({ items, vehiculos, colaboradores, documentosCount }: Props) {
   const t = useTranslations('Flota.combustible');
   const tm = useTranslations('Flota.messages');
   const tc = useTranslations('Common');
+  const td = useTranslations('Documentos');
   const router = useRouter();
 
   const [showForm, setShowForm] = useState(false);
@@ -207,6 +210,7 @@ export function CombustibleList({ items, vehiculos, colaboradores }: Props) {
                 <TableHead>{t('km')}</TableHead>
                 <TableHead>{t('tipo')}</TableHead>
                 <TableHead>{t('colaborador')}</TableHead>
+                <TableHead className="text-center">{td('title')}</TableHead>
                 <TableHead className="text-right">{tc('actions')}</TableHead>
               </TableRow>
             </TableHeader>
@@ -220,6 +224,17 @@ export function CombustibleList({ items, vehiculos, colaboradores }: Props) {
                   <TableCell>{formatKm(c.km)}</TableCell>
                   <TableCell>{t(`tipos.${c.tipo}`) || c.tipo}</TableCell>
                   <TableCell>{nomeColaborador(c.colaboradores)}</TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex justify-center">
+                      <DocumentoAnexo
+                        entidade="flota_combustible"
+                        entidadeId={c.id}
+                        referencia={vehiculoLabel(c.vehiculos)}
+                        count={documentosCount?.[c.id] || 0}
+                        iconOnly
+                      />
+                    </div>
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-end">
                       <Button

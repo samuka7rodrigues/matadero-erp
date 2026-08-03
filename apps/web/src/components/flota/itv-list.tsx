@@ -23,18 +23,21 @@ import type { FlotaVehiculo } from '@/types/database';
 import { formatDate } from '@/lib/utils';
 import { vehiculoLabel } from './utils';
 import { MostrarTodos } from '@/components/common/mostrar-todos';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 interface Props {
   items: FlotaITVCompleto[];
   vehiculos: FlotaVehiculo[];
+  documentosCount?: Record<string, number>;
 }
 
 const RESULTADOS = ['pendiente', 'favorable', 'desfavorable', 'no_presentado'];
 
-export function ITVList({ items, vehiculos }: Props) {
+export function ITVList({ items, vehiculos, documentosCount }: Props) {
   const t = useTranslations('Flota.itv');
   const tm = useTranslations('Flota.messages');
   const tc = useTranslations('Common');
+  const td = useTranslations('Documentos');
   const router = useRouter();
 
   const [showForm, setShowForm] = useState(false);
@@ -195,6 +198,7 @@ export function ITVList({ items, vehiculos }: Props) {
                 <TableHead>{t('fechaValidez')}</TableHead>
                 <TableHead>{t('resultado')}</TableHead>
                 <TableHead>{t('centro')}</TableHead>
+                <TableHead className="text-center">{td('title')}</TableHead>
                 <TableHead className="text-right">{tc('actions')}</TableHead>
               </TableRow>
             </TableHeader>
@@ -216,6 +220,17 @@ export function ITVList({ items, vehiculos }: Props) {
                     </Select>
                   </TableCell>
                   <TableCell>{i.centro || '—'}</TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex justify-center">
+                      <DocumentoAnexo
+                        entidade="flota_itv"
+                        entidadeId={i.id}
+                        referencia={vehiculoLabel(i.vehiculos)}
+                        count={documentosCount?.[i.id] || 0}
+                        iconOnly
+                      />
+                    </div>
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-end">
                       <Button

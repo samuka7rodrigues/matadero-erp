@@ -24,19 +24,22 @@ import type { FlotaVehiculo } from '@/types/database';
 import { formatDate } from '@/lib/utils';
 import { formatImporte, nomeColaborador, vehiculoLabel, type ColaboradorOpt } from './utils';
 import { MostrarTodos } from '@/components/common/mostrar-todos';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 interface Props {
   items: FlotaMultaCompleto[];
   vehiculos: FlotaVehiculo[];
   colaboradores: ColaboradorOpt[];
+  documentosCount?: Record<string, number>;
 }
 
 const ESTADOS = ['pendiente', 'pagada', 'recurrida', 'anulada'];
 
-export function MultasList({ items, vehiculos, colaboradores }: Props) {
+export function MultasList({ items, vehiculos, colaboradores, documentosCount }: Props) {
   const t = useTranslations('Flota.multas');
   const tm = useTranslations('Flota.messages');
   const tc = useTranslations('Common');
+  const td = useTranslations('Documentos');
   const router = useRouter();
 
   const [showForm, setShowForm] = useState(false);
@@ -225,6 +228,7 @@ export function MultasList({ items, vehiculos, colaboradores }: Props) {
                 <TableHead>{t('descricao')}</TableHead>
                 <TableHead>{t('lugar')}</TableHead>
                 <TableHead>{t('estado')}</TableHead>
+                <TableHead className="text-center">{td('title')}</TableHead>
                 <TableHead className="text-right">{tc('actions')}</TableHead>
               </TableRow>
             </TableHeader>
@@ -239,6 +243,17 @@ export function MultasList({ items, vehiculos, colaboradores }: Props) {
                   <TableCell>{m.lugar || '—'}</TableCell>
                   <TableCell>
                     <Badge variant={badgeVariant(m.estado)}>{t(`estados.${m.estado}`) || m.estado}</Badge>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex justify-center">
+                      <DocumentoAnexo
+                        entidade="flota_multas"
+                        entidadeId={m.id}
+                        referencia={vehiculoLabel(m.vehiculos)}
+                        count={documentosCount?.[m.id] || 0}
+                        iconOnly
+                      />
+                    </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-end gap-1">
