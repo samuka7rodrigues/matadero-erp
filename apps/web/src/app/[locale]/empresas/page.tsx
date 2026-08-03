@@ -9,10 +9,14 @@ import { Building2, Plus, Mail, Phone } from 'lucide-react';
 import { listEmpresas } from '@/actions/empresa';
 import { EmpresaActions } from '@/components/empresa/empresa-actions';
 import { MostrarTodos } from '@/components/common/mostrar-todos';
+import { countDocumentos } from '@/actions/documentos';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 export default async function EmpresasPage() {
   const t = await getTranslations('Empresa');
+  const td = await getTranslations('Documentos');
   const { data: empresas, error } = await listEmpresas();
+  const { documentos } = await countDocumentos('empresas');
 
   return (
     <AppShell>
@@ -52,6 +56,7 @@ export default async function EmpresasPage() {
                   <TableHead>CIF/NIF</TableHead>
                   <TableHead>Ciudad</TableHead>
                   <TableHead>Contacto</TableHead>
+                  <TableHead className="text-center">{td('title')}</TableHead>
                   <TableHead className="text-right">Ações</TableHead>
                 </TableRow>
               </TableHeader>
@@ -86,6 +91,17 @@ export default async function EmpresasPage() {
                           </span>
                         )}
                         {!e.correo && !e.telefono && <span className="text-muted-foreground">—</span>}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex justify-center">
+                        <DocumentoAnexo
+                          entidade="empresas"
+                          entidadeId={e.id}
+                          referencia={e.nombre}
+                          count={documentos[e.id] || 0}
+                          iconOnly
+                        />
                       </div>
                     </TableCell>
                     <TableCell>

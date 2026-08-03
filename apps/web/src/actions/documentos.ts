@@ -36,7 +36,8 @@ export type EntidadeDocumento =
   | 'presupuestos'
   | 'cobros'
   | 'pagos'
-  | 'despesas';
+  | 'despesas'
+  | 'empresas';
 
 /** Rota principal do módulo para revalidar após upload/eliminação. */
 const ROTA_ENTIDADE: Record<EntidadeDocumento, string> = {
@@ -60,6 +61,7 @@ const ROTA_ENTIDADE: Record<EntidadeDocumento, string> = {
   cobros: '/cobros',
   pagos: '/pagos',
   despesas: '/despesas',
+  empresas: '/empresas',
 };
 
 async function requireRoles(supabase: ReturnType<typeof createClient>, roles: string[]) {
