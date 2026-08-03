@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/config';
 import { cn, isNavItemActive } from '@/lib/utils';
@@ -159,30 +160,32 @@ export function MobileNav({ allowedMenus }: { allowedMenus: string[] }) {
         <Menu className="h-5 w-5" />
       </Button>
 
-      {open && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div
-            className="absolute inset-0 bg-black/50"
-            onClick={() => setOpen(false)}
-          />
-          <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85%] flex-col border-r border-sidebar-border bg-sidebar shadow-xl">
-            <div className="flex items-center justify-between border-b border-sidebar-border pr-2">
-              <Brand hideBorder className="flex-1" />
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setOpen(false)}
-                aria-label="Fechar menu"
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
-            <div className="flex flex-1 flex-col overflow-y-auto">
-              <SidebarNav allowedMenus={allowedMenus} onNavigate={() => setOpen(false)} />
-            </div>
-          </aside>
-        </div>
-      )}
+      {open &&
+        createPortal(
+          <div className="fixed inset-0 z-50 lg:hidden">
+            <div
+              className="absolute inset-0 bg-black/50"
+              onClick={() => setOpen(false)}
+            />
+            <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85%] flex-col border-r border-sidebar-border bg-sidebar shadow-xl">
+              <div className="flex items-center justify-between border-b border-sidebar-border pr-2">
+                <Brand hideBorder className="flex-1" />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setOpen(false)}
+                  aria-label="Fechar menu"
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+              <div className="flex flex-1 flex-col overflow-y-auto">
+                <SidebarNav allowedMenus={allowedMenus} onNavigate={() => setOpen(false)} />
+              </div>
+            </aside>
+          </div>,
+          document.body
+        )}
     </>
   );
 }
