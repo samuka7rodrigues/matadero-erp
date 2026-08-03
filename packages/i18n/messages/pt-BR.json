@@ -1269,7 +1269,10 @@
       "ferias": "Férias",
       "exames": "Exames Médicos",
       "alojamientos": "Alojamentos",
-      "flota_vehiculos": "Frota"
+      "flota_vehiculos": "Frota",
+      "contratos": "Contratos",
+      "colaboradores": "Colaboradores",
+      "finanzas": "Finanças"
     }
   },
   "Perfil": {

@@ -9,6 +9,8 @@ import { formatDate } from '@/lib/utils';
 import { DocumentoEliminar } from '@/components/documentos/documento-eliminar';
 import { MostrarTodos } from '@/components/common/mostrar-todos';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DocumentosPage() {
   const t = await getTranslations('Documentos');
   const tc = await getTranslations('Common');
@@ -95,7 +97,7 @@ export default async function DocumentosPage() {
                             <ExternalLink className="h-4 w-4" />
                           </a>
                         )}
-                        <DocumentoEliminar id={d.id} />
+                        <DocumentoEliminar id={d.id} origem={d.origem} />
                       </div>
                     </TableCell>
                   </TableRow>

@@ -5,9 +5,9 @@ import { useRouter } from '@/i18n/config';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Trash2, AlertCircle } from 'lucide-react';
-import { eliminarDocumento } from '@/actions/documentos';
+import { eliminarDocumentoMenu, type DocumentoOrigem } from '@/actions/documentos';
 
-export function DocumentoEliminar({ id }: { id: string }) {
+export function DocumentoEliminar({ id, origem = 'documentos' }: { id: string; origem?: DocumentoOrigem }) {
   const t = useTranslations('Documentos');
   const tc = useTranslations('Common');
   const router = useRouter();
@@ -16,7 +16,7 @@ export function DocumentoEliminar({ id }: { id: string }) {
   async function handleDelete() {
     if (!window.confirm(t('confirmDelete'))) return;
     setError(null);
-    const result = await eliminarDocumento(id);
+    const result = await eliminarDocumentoMenu(id, origem);
     if (!result.success) {
       setError(result.error || 'Erro');
       return;

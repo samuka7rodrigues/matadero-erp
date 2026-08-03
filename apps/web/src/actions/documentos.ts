@@ -4,6 +4,9 @@ import { revalidatePath } from 'next/cache';
 import { getLocale } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
 import { fixFilenameEncoding } from '@/lib/utils';
+import { eliminarDocumento as eliminarDocumentoColaborador } from '@/actions/colaboradores';
+import { eliminarContratoDocumento } from '@/actions/contratos';
+import { eliminarDocumentoFinanzas } from '@/actions/finanzas';
 
 /**
  * Server Actions para documentos anexos genéricos (por registo).
@@ -67,6 +70,20 @@ export interface DocumentoAnexo {
   created_at: string;
 }
 
+/** Sistemas de documentos existentes (cada um com a sua tabela/bucket). */
+export type DocumentoOrigem = 'documentos' | 'contratos' | 'colaboradores' | 'finanzas';
+
+/** Bucket de storage usado por cada origem. */
+const BUCKET_ORIGEM: Record<DocumentoOrigem, string> = {
+  documentos: 'documentos',
+  contratos: 'contratos-documentos',
+  colaboradores: 'documentos-colaboradores',
+  finanzas: 'documentos-finanzas',
+};
+
+/** Item unificado do menu global de Documentos. */
+export type DocumentoMenu = DocumentoAnexo & { url: string | null; origem: DocumentoOrigem };
+
 /* ============================================================
  * Listas
  * ============================================================ */
@@ -105,33 +122,147 @@ export async function listDocumentos(
 
 /**
  * Lista todos os documentos (para o menu global /documentos).
+ * Une os vários sistemas existentes: documentos (genéricos), contratos,
+ * colaboradores e finanzas.
  */
 export async function listDocumentosGlobal(): Promise<{
-  data: Array<DocumentoAnexo & { url: string | null }>;
+  data: DocumentoMenu[];
   error?: string;
 }> {
   const supabase = createClient();
 
-  const { data, error } = await supabase
-    .from('documentos')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(500);
+  const [genericos, contratos, colaboradores, finanzas] = await Promise.all([
+    supabase.from('documentos').select('*').order('created_at', { ascending: false }),
+    supabase
+      .from('contratos_documentos')
+      .select('*, contratos (numero)')
+      .order('created_at', { ascending: false }),
+    supabase
+      .from('documentos_colaborador')
+      .select('*, colaboradores (nombre, apellido1, apellido2)')
+      .order('created_at', { ascending: false }),
+    supabase.from('documentos_finanzas').select('*').order('created_at', { ascending: false }),
+  ]);
 
-  if (error) {
-    return { data: [], error: error.message };
+  const erro =
+    genericos.error?.message ||
+    contratos.error?.message ||
+    colaboradores.error?.message ||
+    finanzas.error?.message;
+  if (erro) {
+    return { data: [], error: erro };
   }
 
+  const itens: DocumentoMenu[] = [];
+
+  (genericos.data || []).forEach((d) => {
+    itens.push({
+      id: d.id,
+      entidade: d.entidade,
+      entidade_id: d.entidade_id,
+      categoria: d.categoria,
+      nombre: d.nombre,
+      descricao: d.descricao ?? null,
+      referencia: d.referencia,
+      archivo_url: d.archivo_url,
+      archivo_size: d.archivo_size ?? null,
+      mime_type: d.mime_type ?? null,
+      uploaded_by: d.uploaded_by ?? null,
+      expires_at: d.expires_at ? String(d.expires_at) : null,
+      created_at: d.created_at,
+      url: null,
+      origem: 'documentos',
+    });
+  });
+
+  (contratos.data || []).forEach((d) => {
+    itens.push({
+      id: d.id,
+      entidade: 'contratos',
+      entidade_id: d.contrato_id,
+      categoria: d.categoria || 'documento',
+      nombre: d.nombre,
+      descricao: d.descripcion ?? null,
+      referencia: d.contratos?.numero ? `Contrato ${d.contratos.numero}` : 'Contrato',
+      archivo_url: d.archivo_url,
+      archivo_size: d.archivo_size ?? null,
+      mime_type: d.mime_type ?? null,
+      uploaded_by: d.uploaded_by ?? null,
+      expires_at: d.expires_at ? String(d.expires_at) : null,
+      created_at: d.created_at,
+      url: null,
+      origem: 'contratos',
+    });
+  });
+
+  (colaboradores.data || []).forEach((d) => {
+    const c = d.colaboradores;
+    const nome = c ? [c.nombre, c.apellido1, c.apellido2].filter(Boolean).join(' ') : 'Colaborador';
+    itens.push({
+      id: d.id,
+      entidade: 'colaboradores',
+      entidade_id: d.colaborador_id,
+      categoria: d.tipo,
+      nombre: d.nombre,
+      descricao: d.descripcion ?? null,
+      referencia: nome,
+      archivo_url: d.archivo_url,
+      archivo_size: d.archivo_size ?? null,
+      mime_type: d.mime_type ?? null,
+      uploaded_by: d.uploaded_by ?? null,
+      expires_at: d.expires_at ? String(d.expires_at) : null,
+      created_at: d.created_at,
+      url: null,
+      origem: 'colaboradores',
+    });
+  });
+
+  (finanzas.data || []).forEach((d) => {
+    itens.push({
+      id: d.id,
+      entidade: 'finanzas',
+      entidade_id: d.id,
+      categoria: d.categoria || 'outro',
+      nombre: d.nombre,
+      descricao: d.descripcion ?? null,
+      referencia: d.descripcion || d.categoria || 'Finanzas',
+      archivo_url: d.archivo_url,
+      archivo_size: d.archivo_size ?? null,
+      mime_type: d.mime_type ?? null,
+      uploaded_by: d.uploaded_by ?? null,
+      expires_at: d.expires_at ? String(d.expires_at) : null,
+      created_at: d.created_at,
+      url: null,
+      origem: 'finanzas',
+    });
+  });
+
   const withUrl = await Promise.all(
-    (data || []).map(async (doc) => {
+    itens.map(async (doc) => {
       const { data: signed } = await supabase.storage
-        .from(DOCUMENTOS_BUCKET)
+        .from(BUCKET_ORIGEM[doc.origem])
         .createSignedUrl(doc.archivo_url, 3600);
       return { ...doc, nombre: fixFilenameEncoding(doc.nombre), url: signed?.signedUrl || null };
     })
   );
 
-  return { data: withUrl as Array<DocumentoAnexo & { url: string | null }> };
+  withUrl.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+  return { data: withUrl.slice(0, 500) };
+}
+
+/**
+ * Elimina um documento a partir do menu global, encaminhando para o
+ * sistema correto consoante a origem.
+ */
+export async function eliminarDocumentoMenu(
+  id: string,
+  origem: DocumentoOrigem
+): Promise<{ success: boolean; error?: string }> {
+  if (origem === 'contratos') return eliminarContratoDocumento(id);
+  if (origem === 'colaboradores') return eliminarDocumentoColaborador(id);
+  if (origem === 'finanzas') return eliminarDocumentoFinanzas(id);
+  return eliminarDocumento(id);
 }
 
 /**
