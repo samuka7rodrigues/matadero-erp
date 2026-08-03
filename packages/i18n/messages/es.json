@@ -190,9 +190,27 @@
   "Departamento": {
     "title": "Departamentos",
     "list": "Lista de Departamentos",
+    "new": "Nuevo Departamento",
+    "edit": "Editar Departamento",
     "codigo": "Código",
     "nombre": "Nombre",
-    "descripcion": "Descripción"
+    "descripcion": "Descripción",
+    "activo": "Activo",
+    "inactivo": "Inactivo",
+    "noData": "Ningún departamento registrado",
+    "colaboradores": "Colaboradores",
+    "actions": {
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "edit": "Editar"
+    },
+    "messages": {
+      "criado": "Departamento creado con éxito",
+      "atualizado": "Departamento actualizado",
+      "eliminado": "Departamento eliminado",
+      "confirmDelete": "¿Eliminar este departamento?"
+    }
   },
   "Empresa": {
     "title": "Registro de Empresa",
