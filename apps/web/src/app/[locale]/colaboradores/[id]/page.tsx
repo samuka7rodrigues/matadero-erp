@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { getTranslations } from 'next-intl/server';
 import { getColaborador, listDocumentos } from '@/actions/colaboradores';
 import { DocumentosCard } from '@/components/colaboradores/documentos-card';
-import { ArrowLeft, Pencil, Mail, Phone, MapPin, Calendar } from 'lucide-react';
+import { ArrowLeft, Pencil, Mail, Phone, MapPin, Calendar, FileDown } from 'lucide-react';
 import { Link } from '@/i18n/config';
 import { formatCurrency, formatDate, calculateAge } from '@/lib/utils';
 import { notFound } from 'next/navigation';
@@ -49,6 +49,12 @@ export default async function ColaboradorDetalhePage({ params }: Props) {
             >
               {f.estado}
             </Badge>
+            <Button variant="outline" asChild>
+              <Link href={`/colaboradores/${id}/print`}>
+                <FileDown className="mr-2 h-4 w-4" />
+                Exportar PDF
+              </Link>
+            </Button>
             <Button variant="outline" asChild>
               <Link href={`/colaboradores/${id}/edit`}>
                 <Pencil className="mr-2 h-4 w-4" />
