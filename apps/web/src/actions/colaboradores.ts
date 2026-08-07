@@ -367,7 +367,7 @@ export async function listDepartamentos() {
 /**
  * Verifica se o utilizador autenticado é RH ou admin.
  */
-async function requireRhOrAdmin(supabase: ReturnType<typeof createClient>) {
+async function requireDocumentosAcesso(supabase: ReturnType<typeof createClient>) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;
 
@@ -377,7 +377,7 @@ async function requireRhOrAdmin(supabase: ReturnType<typeof createClient>) {
     .eq('user_id', user.id)
     .single();
 
-  if (!utilizador || !['admin', 'rh'].includes(utilizador.role)) return null;
+  if (!utilizador || !['admin', 'rh', 'encarregado', 'auditor'].includes(utilizador.role)) return null;
   return user;
 }
 
@@ -423,7 +423,7 @@ export async function uploadDocumento(
   formData: FormData
 ): Promise<{ success: boolean; error?: string }> {
   const supabase = createClient();
-  const user = await requireRhOrAdmin(supabase);
+  const user = await requireDocumentosAcesso(supabase);
   if (!user) return { success: false, error: 'Sem permissão para gerir documentos' };
 
   const file = formData.get('file') as File | null;
@@ -488,7 +488,7 @@ export async function eliminarDocumento(
   id: string
 ): Promise<{ success: boolean; error?: string }> {
   const supabase = createClient();
-  const user = await requireRhOrAdmin(supabase);
+  const user = await requireDocumentosAcesso(supabase);
   if (!user) return { success: false, error: 'Sem permissão para gerir documentos' };
 
   const { data: doc } = await supabase
