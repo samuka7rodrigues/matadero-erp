@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select } from '@/components/ui/select';
-import { Search, ChevronLeft, ChevronRight, Mail, Phone, Pencil, Trash2, Users, Paperclip } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, Mail, Phone, Pencil, Trash2, Users, Paperclip, FileDown } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { formatCurrency, formatDate } from '@/lib/utils';
@@ -161,6 +161,11 @@ export function ColaboradoresList({ colaboradores, total, page, totalPages, show
                         <Button variant="ghost" size="icon" asChild title="Adicionar documento">
                           <Link href={`/colaboradores/${f.id}/edit#documentos`}>
                             <Paperclip className="h-4 w-4" />
+                          </Link>
+                        </Button>
+                        <Button variant="ghost" size="icon" asChild title="Exportar PDF">
+                          <Link href={`/colaboradores/${f.id}/print`}>
+                            <FileDown className="h-4 w-4" />
                           </Link>
                         </Button>
                         <Button variant="ghost" size="icon" asChild title="Editar">
