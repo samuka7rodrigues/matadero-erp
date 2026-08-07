@@ -16,7 +16,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Plus, Award, Trash2, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Plus, Award, Trash2, AlertCircle, CheckCircle2, Paperclip, FileDown, Pencil } from 'lucide-react';
+import { Link } from '@/i18n/config';
 import { createCertificado, deleteCertificado } from '@/actions/rh';
 import { formatDate } from '@/lib/utils';
 import { MostrarTodos } from '@/components/common/mostrar-todos';
@@ -234,8 +235,23 @@ export function CertificadosList({ items, colaboradores }: Props) {
                   <TableCell>{c.numero || '—'}</TableCell>
                   <TableCell>{formatDate(c.data_emision)}</TableCell>
                   <TableCell>{c.data_validez ? formatDate(c.data_validez) : '—'}</TableCell>
-                  <TableCell>
+                  <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1">
+                      <Button variant="ghost" size="icon" asChild title="Adicionar documento">
+                        <Link href={`/rh/certificados/${c.id}/edit#documentos`}>
+                          <Paperclip className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                      <Button variant="ghost" size="icon" asChild title="Exportar PDF">
+                        <Link href={`/rh/certificados/${c.id}/print`}>
+                          <FileDown className="h-4 w-4" />
+                        </Link>
+                      </Button>
+                      <Button variant="ghost" size="icon" asChild title="Editar">
+                        <Link href={`/rh/certificados/${c.id}/edit`}>
+                          <Pencil className="h-4 w-4" />
+                        </Link>
+                      </Button>
                       <Button
                         variant="ghost"
                         size="icon"
