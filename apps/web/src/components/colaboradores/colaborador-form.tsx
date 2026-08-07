@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations, useLocale } from 'next-intl';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from '@/i18n/config';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,9 +11,18 @@ import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { colaboradorSchema, type ColaboradorFormData } from '@/types/colaboradores';
-import { createColaborador, updateColaborador } from '@/actions/colaboradores';
+import { createColaborador, updateColaborador, uploadDocumento } from '@/actions/colaboradores';
 import type { ColaboradorCompleto } from '@/types/database';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, FileText, X } from 'lucide-react';
+
+const TIPO_DOCUMENTO_OPTIONS = [
+  { value: 'dni', label: 'DNI' },
+  { value: 'nie', label: 'NIE' },
+  { value: 'contrato', label: 'Contrato' },
+  { value: 'exame_medico', label: 'Exame médico' },
+  { value: 'epi', label: 'EPI' },
+  { value: 'outro', label: 'Outro' },
+];
 
 interface Props {
   departamentos: Array<{ id: string; nombre: string }>;
@@ -99,6 +108,29 @@ export function ColaboradorForm({ departamentos, initialData, isEditing = false 
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [documentos, setDocumentos] = useState<Array<{ file: File; tipo: string }>>([]);
+  const [docTipo, setDocTipo] = useState('outro');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function addDocumento(list: FileList | null) {
+    if (!list) return;
+    const novos = Array.from(list).map((file) => ({ file, tipo: docTipo }));
+    setDocumentos((prev) => [...prev, ...novos]);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  }
+
+  function removeDocumento(index: number) {
+    setDocumentos((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  async function uploadDocumentosPendentes(colaboradorId: string) {
+    for (const doc of documentos) {
+      const formData = new FormData();
+      formData.append('file', doc.file);
+      formData.append('tipo', doc.tipo);
+      await uploadDocumento(colaboradorId, formData);
+    }
+  }
 
   const {
     register,
@@ -146,6 +178,10 @@ export function ColaboradorForm({ departamentos, initialData, isEditing = false 
       setSubmitError(result.error || 'Erro desconhecido');
       setSubmitting(false);
       return;
+    }
+
+    if (documentos.length > 0) {
+      await uploadDocumentosPendentes(result.id);
     }
 
     router.push(`/colaboradores/${result.id}`);
@@ -446,6 +482,64 @@ export function ColaboradorForm({ departamentos, initialData, isEditing = false 
           </div>
         </CardContent>
       </Card>
+
+      {/* Documentação (só na criação — na edição usa a ficha de documentos) */}
+      {!isEditing && (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <FileText className="h-4 w-4" />
+            Documentação (opcional)
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {documentos.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              Anexa documentos (contrato, DNI, exames, EPI...) — são carregados após o colaborador ser criado.
+            </p>
+          ) : (
+            <ul className="space-y-2">
+              {documentos.map((doc, i) => (
+                <li key={i} className="flex items-center gap-2 rounded-md border p-2 text-sm">
+                  <FileText className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  <span className="min-w-0 flex-1 truncate">{doc.file.name}</span>
+                  <span className="shrink-0 text-xs text-muted-foreground uppercase">{doc.tipo}</span>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    onClick={() => removeDocumento(i)}
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="doc-tipo">Tipo de documento</Label>
+              <Select id="doc-tipo" value={docTipo} onChange={(e) => setDocTipo(e.target.value)}>
+                {TIPO_DOCUMENTO_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="doc-files">Ficheiros</Label>
+              <Input
+                id="doc-files"
+                ref={fileInputRef}
+                type="file"
+                multiple
+                onChange={(e) => addDocumento(e.target.files)}
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      )}
 
       {/* Acesso ao portal */}
       {!isEditing && (

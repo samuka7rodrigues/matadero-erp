@@ -2,7 +2,8 @@ import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { AppShell } from '@/components/app-shell';
 import { ColaboradorForm } from '@/components/colaboradores/colaborador-form';
-import { getColaborador, listDepartamentos } from '@/actions/colaboradores';
+import { DocumentosCard } from '@/components/colaboradores/documentos-card';
+import { getColaborador, listDepartamentos, listDocumentos } from '@/actions/colaboradores';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -11,9 +12,10 @@ interface Props {
 export default async function EditColaboradorPage({ params }: Props) {
   const { id } = await params;
   const t = await getTranslations('Colaboradores');
-  const [colaborador, departamentos] = await Promise.all([
+  const [colaborador, departamentos, docsResult] = await Promise.all([
     getColaborador(id),
     listDepartamentos(),
+    listDocumentos(id),
   ]);
 
   if (!colaborador) notFound();
@@ -27,6 +29,7 @@ export default async function EditColaboradorPage({ params }: Props) {
           initialData={colaborador}
           isEditing
         />
+        <DocumentosCard colaboradorId={id} documentos={docsResult.data} />
       </div>
     </AppShell>
   );
