@@ -5,15 +5,19 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Plus, Users, Pencil } from 'lucide-react';
+import { Plus, Users, Pencil, FileDown } from 'lucide-react';
 import { listClientes, deleteCliente } from '@/actions/finanzas';
 import { DeleteButton } from '@/components/finanzas/delete-button';
 import { MostrarTodos } from '@/components/common/mostrar-todos';
+import { countDocumentos } from '@/actions/documentos';
+import { DocumentoAnexo } from '@/components/documentos/documento-anexo';
 
 export default async function ClientesPage() {
   const t = await getTranslations('Finanzas');
   const tc = await getTranslations('Common');
+  const td = await getTranslations('Documentos');
   const { data: clientes, error } = await listClientes();
+  const { documentos } = await countDocumentos('clientes');
 
   return (
     <AppShell>
@@ -55,6 +59,7 @@ export default async function ClientesPage() {
                   <TableHead>{t('clientes.telefono')}</TableHead>
                   <TableHead>{t('clientes.ciudad')}</TableHead>
                   <TableHead>{t('clientes.estado')}</TableHead>
+                  <TableHead className="text-center">{td('title')}</TableHead>
                   <TableHead className="text-right">{tc('actions')}</TableHead>
                 </TableRow>
               </TableHeader>
@@ -76,7 +81,23 @@ export default async function ClientesPage() {
                       </Badge>
                     </TableCell>
                     <TableCell>
+                      <div className="flex items-center justify-center">
+                        <DocumentoAnexo
+                          entidade="clientes"
+                          entidadeId={c.id}
+                          referencia={c.nombre}
+                          count={documentos[c.id] || 0}
+                          iconOnly
+                        />
+                      </div>
+                    </TableCell>
+                    <TableCell>
                       <div className="flex items-center justify-end gap-1">
+                        <Button variant="ghost" size="icon" asChild title="Exportar PDF">
+                          <Link href={`/finanzas/clientes/${c.id}/print`}>
+                            <FileDown className="h-4 w-4" />
+                          </Link>
+                        </Button>
                         <Button variant="ghost" size="icon" asChild title={tc('edit')}>
                           <Link href={`/finanzas/clientes/${c.id}/edit`}>
                             <Pencil className="h-4 w-4" />

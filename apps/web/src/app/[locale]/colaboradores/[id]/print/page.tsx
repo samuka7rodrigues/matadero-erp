@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { getColaborador, listDocumentos } from '@/actions/colaboradores';
-import { AutoPrint } from '@/components/colaboradores/auto-print';
+import { AutoPrint } from '@/components/common/auto-print';
 import { formatCurrency, formatDate, calculateAge } from '@/lib/utils';
 import type { DocumentoColaborador } from '@/types/database';
 

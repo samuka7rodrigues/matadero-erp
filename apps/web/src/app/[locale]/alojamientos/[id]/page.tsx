@@ -42,6 +42,7 @@ import {
   FileSignature,
   Gauge,
   FolderOpen,
+  FileDown,
 } from 'lucide-react';
 
 interface Props {
@@ -102,6 +103,12 @@ export default async function AlojamientoDetalhePage({ params }: Props) {
             <Badge variant={a.estado === 'ativo' ? 'success' : 'secondary'}>
               {t(`estados.${a.estado}`)}
             </Badge>
+            <Button variant="outline" asChild>
+              <Link href={`/alojamientos/${id}/print`}>
+                <FileDown className="mr-2 h-4 w-4" />
+                Exportar PDF
+              </Link>
+            </Button>
             <Button variant="outline" asChild>
               <Link href={`/alojamientos/${id}/edit`}>
                 <Pencil className="mr-2 h-4 w-4" />

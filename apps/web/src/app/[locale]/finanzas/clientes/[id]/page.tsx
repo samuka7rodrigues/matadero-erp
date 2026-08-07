@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ArrowLeft, Pencil, Plus } from 'lucide-react';
+import { ArrowLeft, Pencil, Plus, FileDown } from 'lucide-react';
 import { getCliente, listFaturas } from '@/actions/finanzas';
+import { listDocumentos } from '@/actions/documentos';
+import { DocumentosSecao } from '@/components/documentos/documentos-secao';
 import { formatCurrency, formatDate } from '@/lib/utils';
 
 export default async function ClienteDetalhePage({ params }: { params: { id: string } }) {
@@ -23,6 +25,7 @@ export default async function ClienteDetalhePage({ params }: { params: { id: str
   const totalFacturado = faturasCliente
     .filter((f) => f.estado !== 'anulada')
     .reduce((s, f) => s + Number(f.total || 0), 0);
+  const { data: documentos } = await listDocumentos('clientes', cliente.id);
 
   return (
     <AppShell>
@@ -41,6 +44,12 @@ export default async function ClienteDetalhePage({ params }: { params: { id: str
               </Badge>
             </div>
           </div>
+          <Button asChild variant="outline">
+            <Link href={`/finanzas/clientes/${cliente.id}/print`}>
+              <FileDown className="mr-2 h-4 w-4" />
+              Exportar PDF
+            </Link>
+          </Button>
           <Button asChild variant="outline">
             <Link href={`/finanzas/clientes/${cliente.id}/edit`}>
               <Pencil className="mr-2 h-4 w-4" />
@@ -132,6 +141,8 @@ export default async function ClienteDetalhePage({ params }: { params: { id: str
             )}
           </CardContent>
         </Card>
+
+        <DocumentosSecao entidade="clientes" entidadeId={cliente.id} referencia={cliente.nombre} items={documentos} />
       </div>
     </AppShell>
   );

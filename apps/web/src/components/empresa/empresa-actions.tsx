@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react';
 import { useRouter } from '@/i18n/config';
 import { Button } from '@/components/ui/button';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2, FileDown } from 'lucide-react';
 import { deleteEmpresa } from '@/actions/empresa';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/config';
@@ -29,6 +29,11 @@ export function EmpresaActions({ id }: { id: string }) {
   return (
     <div className="flex items-center justify-end gap-1">
       {error && <span className="text-xs text-destructive mr-2">{error}</span>}
+      <Button variant="ghost" size="icon" asChild title="Exportar PDF">
+        <Link href={`/empresas/${id}/print`}>
+          <FileDown className="h-4 w-4" />
+        </Link>
+      </Button>
       <Button variant="ghost" size="icon" asChild title={t('actions.edit')}>
         <Link href={`/empresas/${id}/edit`}>
           <Pencil className="h-4 w-4" />

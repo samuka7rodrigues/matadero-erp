@@ -15,6 +15,7 @@ import {
   Globe,
   Building2,
   Landmark,
+  FileDown,
 } from 'lucide-react';
 
 interface Props {
@@ -47,6 +48,12 @@ export default async function EmpresaDetalhePage({ params }: Props) {
           </div>
           <div className="flex items-center gap-2 lg:ml-auto">
             {e.iva != null && <Badge variant="outline">IVA {e.iva}%</Badge>}
+            <Button variant="outline" asChild>
+              <Link href={`/empresas/${id}/print`}>
+                <FileDown className="mr-2 h-4 w-4" />
+                Exportar PDF
+              </Link>
+            </Button>
             <Button variant="outline" asChild>
               <Link href={`/empresas/${id}/edit`}>
                 <Pencil className="mr-2 h-4 w-4" />
