@@ -1427,14 +1427,19 @@
     "password": "Palavra-passe"
   },
   "Dashboard": {
-    "title": "Painel",
+    "title": "Painel de Controlo",
     "welcome": "Bem-vindo, {name}",
-    "subtitle": "Visão geral da operação do matadouro",
+    "subtitle": "Visão geral e agenda operacional do matadouro",
+    "agendaTitle": "Agenda Operacional (Hoje e Próximos Dias)",
+    "noAgenda": "Nenhum evento ou marcação na agenda para os próximos dias",
     "kpis": {
-      "totalColaboradores": "Total de Colaboradores",
+      "totalColaboradores": "Colaboradores Ativos",
       "admitidosMes": "Admitidos este mês",
       "contratosFim": "Contratos a expirar",
-      "examesVencer": "Exames médicos a vencer"
+      "examesVencer": "Exames médicos a vencer",
+      "alojamentosOcupados": "Ocupação Alojamentos",
+      "faturasPendentes": "Faturas Pendentes",
+      "flotaAtiva": "Veículos Ativos"
     }
   },
   "Errors": {

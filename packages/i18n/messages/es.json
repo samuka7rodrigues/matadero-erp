@@ -1427,14 +1427,19 @@
     "password": "Contraseña"
   },
   "Dashboard": {
-    "title": "Panel",
+    "title": "Panel de Control",
     "welcome": "Bienvenido, {name}",
-    "subtitle": "Visión general de la operación del matadero",
+    "subtitle": "Visión general y agenda operacional del matadero",
+    "agendaTitle": "Agenda Operacional (Hoy y Próximos Días)",
+    "noAgenda": "No hay eventos o citas en la agenda para los próximos días",
     "kpis": {
-      "totalColaboradores": "Total de Colaboradores",
+      "totalColaboradores": "Colaboradores Activos",
       "admitidosMes": "Ingresados este mes",
       "contratosFim": "Contratos por expirar",
-      "examesVencer": "Exámenes médicos por vencer"
+      "examesVencer": "Exámenes médicos por vencer",
+      "alojamentosOcupados": "Ocupación Alojamientos",
+      "faturasPendentes": "Facturas Pendientes",
+      "flotaAtiva": "Vehículos Activos"
     }
   },
   "Errors": {
