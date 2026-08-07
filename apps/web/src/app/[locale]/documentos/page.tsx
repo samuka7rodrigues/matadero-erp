@@ -7,14 +7,27 @@ import { FolderOpen, FileText, ExternalLink } from 'lucide-react';
 import { listDocumentosGlobal } from '@/actions/documentos';
 import { formatDate } from '@/lib/utils';
 import { DocumentoEliminar } from '@/components/documentos/documento-eliminar';
+import { DocumentosFiltros } from '@/components/documentos/documentos-filtros';
 import { MostrarTodos } from '@/components/common/mostrar-todos';
 
 export const dynamic = 'force-dynamic';
 
-export default async function DocumentosPage() {
+interface PageProps {
+  searchParams: {
+    search?: string;
+    referencia?: string;
+    data?: string;
+  };
+}
+
+export default async function DocumentosPage({ searchParams }: PageProps) {
   const t = await getTranslations('Documentos');
   const tc = await getTranslations('Common');
-  const { data: docs, error } = await listDocumentosGlobal();
+  const { data: docs, error } = await listDocumentosGlobal({
+    search: searchParams.search,
+    referencia: searchParams.referencia,
+    data: searchParams.data,
+  });
 
   const entidadeLabel = (entidade: string) => t(`entidades.${entidade}`) || entidade;
 
@@ -43,6 +56,7 @@ export default async function DocumentosPage() {
         )}
 
         <Card>
+          <DocumentosFiltros />
           {error ? (
             <div className="p-6 text-sm text-destructive">Erro: {error}</div>
           ) : docs.length === 0 ? (

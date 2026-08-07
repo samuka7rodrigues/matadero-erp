@@ -190,8 +190,13 @@ export async function listDocumentos(
  * Lista todos os documentos (para o menu global /documentos).
  * Une os vários sistemas existentes: documentos (genéricos), contratos,
  * colaboradores e finanzas.
+ * Filtros opcionais: search (nome), referencia e data (yyyy-mm-dd).
  */
-export async function listDocumentosGlobal(): Promise<{
+export async function listDocumentosGlobal(params?: {
+  search?: string;
+  referencia?: string;
+  data?: string;
+}): Promise<{
   data: DocumentoMenu[];
   error?: string;
 }> {
@@ -303,8 +308,19 @@ export async function listDocumentosGlobal(): Promise<{
     });
   });
 
+  const search = params?.search?.trim().toLowerCase() || '';
+  const referencia = params?.referencia?.trim().toLowerCase() || '';
+  const data = params?.data?.trim() || '';
+
+  const filtrados = itens.filter((d) => {
+    if (search && !fixFilenameEncoding(d.nombre).toLowerCase().includes(search)) return false;
+    if (referencia && !(d.referencia || '').toLowerCase().includes(referencia)) return false;
+    if (data && d.created_at && !d.created_at.startsWith(data)) return false;
+    return true;
+  });
+
   const withUrl = await Promise.all(
-    itens.map(async (doc) => {
+    filtrados.map(async (doc) => {
       const { data: signed } = await supabase.storage
         .from(BUCKET_ORIGEM[doc.origem])
         .createSignedUrl(doc.archivo_url, 3600);
