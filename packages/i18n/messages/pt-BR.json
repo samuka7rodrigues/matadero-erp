@@ -1412,7 +1412,9 @@
     "cancelar": "Cancelar",
     "guardar": "Guardar",
     "menusPadrao": "A usar o padrão do perfil",
-    "sempreVisiveis": "O Painel e o Perfil estão sempre visíveis."
+    "sempreVisiveis": "O Painel e o Perfil estão sempre visíveis.",
+    "new": "Novo Utilizador",
+    "password": "Palavra-passe"
   },
   "Dashboard": {
     "title": "Painel",

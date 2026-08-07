@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { getLocale } from 'next-intl/server';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import type { Utilizador, RoleUtilizador } from '@/types/database';
 
 async function requireAdmin(supabase: ReturnType<typeof createClient>) {
@@ -45,6 +46,65 @@ export async function listUtilizadores() {
     return { data: [] as UtilizadorComColaborador[], error: error.message };
   }
   return { data: (data || []) as UtilizadorComColaborador[], error: null };
+}
+
+export async function criarUtilizador(data: {
+  nome: string;
+  email: string;
+  telefone?: string;
+  password: string;
+  role: RoleUtilizador;
+}): Promise<{ success: boolean; error?: string }> {
+  const supabase = createClient();
+  const user = await requireAdmin(supabase);
+  if (!user) return { success: false, error: 'Sem permissão' };
+
+  const nome = data.nome?.trim() || '';
+  const email = data.email?.trim() || '';
+  const telefone = data.telefone?.trim() || '';
+
+  if (!nome) return { success: false, error: 'Nome obrigatório' };
+  if (!email) return { success: false, error: 'Email obrigatório' };
+  if (!data.password || data.password.length < 8) {
+    return { success: false, error: 'A palavra-passe deve ter pelo menos 8 caracteres' };
+  }
+  if (!['admin', 'rh', 'financeiro', 'encarregado', 'colaborador', 'auditor'].includes(data.role)) {
+    return { success: false, error: 'Perfil inválido' };
+  }
+
+  const admin = createAdminClient();
+
+  // Cria o utilizador em auth.users. O trigger on_auth_user_created
+  // insere automaticamente a linha em utilizadores com role 'colaborador'.
+  const { data: novo, error } = await admin.auth.admin.createUser({
+    email,
+    password: data.password,
+    email_confirm: true,
+    user_metadata: { nome_completo: nome, telefone },
+  });
+
+  if (error) {
+    console.error('Erro ao criar utilizador:', error.message);
+    return { success: false, error: 'Já existe um utilizador com este email' };
+  }
+
+  if (!novo.user) {
+    return { success: false, error: 'Não foi possível criar o utilizador' };
+  }
+
+  // Define a role escolhida (o trigger cria sempre como 'colaborador').
+  const { error: roleError } = await supabase
+    .from('utilizadores')
+    .update({ role: data.role })
+    .eq('user_id', novo.user.id);
+
+  if (roleError) {
+    console.error('Erro ao definir perfil:', roleError);
+    return { success: false, error: 'Utilizador criado, mas houve um erro ao definir o perfil' };
+  }
+
+  revalidatePath(`/${await getLocale()}/utilizadores`);
+  return { success: true };
 }
 
 export async function updateUtilizadorRole(

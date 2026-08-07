@@ -1412,7 +1412,9 @@
     "cancelar": "Cancelar",
     "guardar": "Guardar",
     "menusPadrao": "Usando el perfil por defecto",
-    "sempreVisiveis": "El Panel y el Perfil siempre están visibles."
+    "sempreVisiveis": "El Panel y el Perfil siempre están visibles.",
+    "new": "Nuevo Usuario",
+    "password": "Contraseña"
   },
   "Dashboard": {
     "title": "Panel",

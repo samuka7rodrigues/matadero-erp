@@ -6,11 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select } from '@/components/ui/select';
-import { Search, ChevronLeft, ChevronRight, Mail, Phone, Pencil, Users } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, Mail, Phone, Pencil, Trash2, Users } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import type { ColaboradorCompleto } from '@/types/database';
+import { deleteColaborador } from '@/actions/colaboradores';
 
 interface Props {
   colaboradores: ColaboradorCompleto[];
@@ -37,6 +38,16 @@ export function ColaboradoresList({ colaboradores, total, page, totalPages, show
 
   function showAllRows() {
     router.push('/colaboradores?todos=1');
+  }
+
+  async function handleDelete(id: string, nome: string) {
+    if (!window.confirm(`Eliminar o colaborador "${nome}"?`)) return;
+    const result = await deleteColaborador(id);
+    if (!result.success) {
+      window.alert(result.error || 'Erro ao eliminar colaborador');
+      return;
+    }
+    router.refresh();
   }
 
   const showEmptyInitial = !showAll && !hasFilter;
@@ -146,11 +157,22 @@ export function ColaboradoresList({ colaboradores, total, page, totalPages, show
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button variant="ghost" size="icon" asChild title="Editar">
-                        <Link href={`/colaboradores/${f.id}/edit`}>
-                          <Pencil className="h-4 w-4" />
-                        </Link>
-                      </Button>
+                      <div className="flex items-center justify-end gap-1">
+                        <Button variant="ghost" size="icon" asChild title="Editar">
+                          <Link href={`/colaboradores/${f.id}/edit`}>
+                            <Pencil className="h-4 w-4" />
+                          </Link>
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          title="Eliminar"
+                          className="text-destructive hover:text-destructive"
+                          onClick={() => handleDelete(f.id, `${f.apellido1}, ${f.nombre}`)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))
