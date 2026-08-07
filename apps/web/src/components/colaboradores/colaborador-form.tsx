@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { useState } from 'react';
 import { useRouter } from '@/i18n/config';
 import { useForm } from 'react-hook-form';
@@ -28,6 +28,25 @@ const TIPO_CONTRATO_OPTIONS = [
   { value: 'pratica', label: 'Prática' },
   { value: 'fixo_discontinuo', label: 'Fixo descontínuo' },
   { value: 'obra_servico', label: 'Obra ou Serviço' },
+];
+
+// Campo único para os dois países: mutuas de Espanha e seguradoras de Portugal.
+const MUTUA_OPTIONS = [
+  'FREMAP',
+  'ASEPEYO',
+  'Mutua Activa',
+  'Ibermutua',
+  'UMA',
+  'Fraternidad-Muprespa',
+  'Fidelidade',
+  'Tranquilidade',
+  'AGEAS',
+  'Allianz',
+  'Mapfre',
+  'Zurich',
+  'AIG',
+  'Ocidental',
+  'Liberty',
 ];
 
 function mapColaboradorToForm(f: ColaboradorCompleto): ColaboradorFormData {
@@ -76,6 +95,7 @@ function mapColaboradorToForm(f: ColaboradorCompleto): ColaboradorFormData {
 
 export function ColaboradorForm({ departamentos, initialData, isEditing = false }: Props) {
   const t = useTranslations('Colaboradores');
+  const locale = useLocale();
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -414,15 +434,14 @@ export function ColaboradorForm({ departamentos, initialData, isEditing = false 
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="mutua">Mutua</Label>
+            <Label htmlFor="mutua">{t('fields.mutua')}</Label>
             <Select id="mutua" {...register('mutua')}>
-              <option value="">Seleccionar...</option>
-              <option value="fremap">FREMAP</option>
-              <option value="asepeyo">ASEPEYO</option>
-              <option value="mutua_activ">Mutua Activa</option>
-              <option value="ibermutua">Ibermutua</option>
-              <option value="uma">UMA</option>
-              <option value="fraternidad">Fraternidad-Muprespa</option>
+              <option value="">{locale === 'pt-BR' ? 'Selecionar...' : 'Seleccionar...'}</option>
+              {MUTUA_OPTIONS.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
             </Select>
           </div>
         </CardContent>

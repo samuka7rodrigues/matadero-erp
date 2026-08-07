@@ -2,6 +2,7 @@ import { AppShell } from '@/components/app-shell';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { getTranslations } from 'next-intl/server';
 import { getColaborador, listDocumentos } from '@/actions/colaboradores';
 import { DocumentosCard } from '@/components/colaboradores/documentos-card';
 import { ArrowLeft, Pencil, Mail, Phone, MapPin, Calendar } from 'lucide-react';
@@ -16,6 +17,7 @@ interface Props {
 
 export default async function ColaboradorDetalhePage({ params }: Props) {
   const { id } = await params;
+  const t = await getTranslations('Colaboradores');
   const [f, docsResult] = await Promise.all([
     getColaborador(id),
     listDocumentos(id),
@@ -193,7 +195,7 @@ export default async function ColaboradorDetalhePage({ params }: Props) {
               )}
               {f.mutua && (
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Mutua</span>
+                  <span className="text-muted-foreground">{t('fields.mutua')}</span>
                   <span>{f.mutua}</span>
                 </div>
               )}

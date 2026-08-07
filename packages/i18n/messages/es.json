@@ -98,6 +98,7 @@
       "estado": "Estado",
       "iban": "IBAN",
       "numeroSS": "Nº Seguridad Social",
+      "mutua": "Mutua",
       "foto": "Fotografía"
     },
     "estados": {
