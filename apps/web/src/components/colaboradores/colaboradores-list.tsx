@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select } from '@/components/ui/select';
-import { Search, ChevronLeft, ChevronRight, Mail, Phone, Pencil, Trash2, Users } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, Mail, Phone, Pencil, Trash2, Users, Paperclip } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { formatCurrency, formatDate } from '@/lib/utils';
@@ -158,6 +158,11 @@ export function ColaboradoresList({ colaboradores, total, page, totalPages, show
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-1">
+                        <Button variant="ghost" size="icon" asChild title="Adicionar documento">
+                          <Link href={`/colaboradores/${f.id}/edit#documentos`}>
+                            <Paperclip className="h-4 w-4" />
+                          </Link>
+                        </Button>
                         <Button variant="ghost" size="icon" asChild title="Editar">
                           <Link href={`/colaboradores/${f.id}/edit`}>
                             <Pencil className="h-4 w-4" />

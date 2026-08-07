@@ -29,7 +29,9 @@ export default async function EditColaboradorPage({ params }: Props) {
           initialData={colaborador}
           isEditing
         />
-        <DocumentosCard colaboradorId={id} documentos={docsResult.data} />
+        <div id="documentos">
+          <DocumentosCard colaboradorId={id} documentos={docsResult.data} />
+        </div>
       </div>
     </AppShell>
   );
