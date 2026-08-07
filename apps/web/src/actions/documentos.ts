@@ -15,6 +15,48 @@ import { eliminarDocumentoFinanzas } from '@/actions/finanzas';
 
 const DOCUMENTOS_BUCKET = 'documentos';
 const DOCUMENTOS_ROLES = ['admin', 'rh'];
+const MAX_FICHEIROS = 5;
+const MAX_FICHEIRO_SIZE = 20 * 1024 * 1024;
+
+const EXTENSOES_PERMITIDAS = new Set([
+  'pdf',
+  'jpg',
+  'jpeg',
+  'png',
+  'gif',
+  'webp',
+  'doc',
+  'docx',
+  'xls',
+  'xlsx',
+  'ppt',
+  'pptx',
+  'txt',
+  'odt',
+  'ods',
+]);
+
+const MIME_PERMITIDOS = new Set([
+  'application/pdf',
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'image/webp',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/vnd.ms-powerpoint',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  'application/vnd.oasis.opendocument.text',
+  'application/vnd.oasis.opendocument.spreadsheet',
+  'text/plain',
+]);
+
+function isTipoPermitido(file: File) {
+  const ext = file.name.split('.').pop()?.toLowerCase() || '';
+  return MIME_PERMITIDOS.has(file.type) || EXTENSOES_PERMITIDAS.has(ext);
+}
 
 export type EntidadeDocumento =
   | 'faturas'
@@ -327,58 +369,106 @@ export async function uploadDocumento(
   referencia: string | null,
   formData: FormData
 ): Promise<{ success: boolean; error?: string }> {
+  const result = await uploadDocumentos(entidade, entidadeId, referencia, formData);
+  return { success: result.success, error: result.error || (result.erros[0] ?? undefined) };
+}
+
+/**
+ * Faz upload de um ou mais documentos (máximo 5) para um registo.
+ * Recebe um FormData com várias entradas "files", categoria e descricao.
+ * Cada ficheiro é validado (tipo e tamanho) antes de subir.
+ */
+export async function uploadDocumentos(
+  entidade: EntidadeDocumento,
+  entidadeId: string,
+  referencia: string | null,
+  formData: FormData
+): Promise<{ success: boolean; uploaded: number; erros: string[]; error?: string }> {
   const supabase = createClient();
   const user = await requireRoles(supabase, DOCUMENTOS_ROLES);
-  if (!user) return { success: false, error: 'Sem permissão para gerir documentos' };
+  if (!user) return { success: false, uploaded: 0, erros: [], error: 'Sem permissão para gerir documentos' };
 
-  const file = formData.get('file') as File | null;
+  const files = formData.getAll('files').filter((f): f is File => f instanceof File);
   const categoria = (formData.get('categoria') as string) || 'documento';
   const descricao = (formData.get('descricao') as string) || null;
 
-  if (!file || file.size === 0) {
-    return { success: false, error: 'Seleciona um ficheiro para carregar' };
+  if (files.length === 0) {
+    return { success: false, uploaded: 0, erros: [], error: 'Seleciona pelo menos um ficheiro para carregar' };
   }
-  if (file.size > 20 * 1024 * 1024) {
-    return { success: false, error: 'Ficheiro demasiado grande (máximo 20 MB)' };
-  }
-
-  const safeName = fixFilenameEncoding(file.name).replace(/[^a-zA-Z0-9._-]/g, '_');
-  const path = `${entidade}/${entidadeId}/${Date.now()}-${safeName}`;
-
-  const { error: uploadError } = await supabase.storage
-    .from(DOCUMENTOS_BUCKET)
-    .upload(path, file, { cacheControl: '3600', upsert: false });
-
-  if (uploadError) {
-    console.error('Erro no upload:', uploadError);
-    return { success: false, error: `Erro no upload: ${uploadError.message}` };
+  if (files.length > MAX_FICHEIROS) {
+    return {
+      success: false,
+      uploaded: 0,
+      erros: [],
+      error: `Máximo de ${MAX_FICHEIROS} ficheiros de cada vez`,
+    };
   }
 
-  const { error: insertError } = await supabase
-    .from('documentos')
-    .insert({
-      entidade,
-      entidade_id: entidadeId,
-      categoria,
-      nombre: fixFilenameEncoding(file.name),
-      descricao,
-      referencia,
-      archivo_url: path,
-      archivo_size: file.size,
-      mime_type: file.type || null,
-      uploaded_by: user.id,
-    });
+  const erros: string[] = [];
+  let uploaded = 0;
 
-  if (insertError) {
-    await supabase.storage.from(DOCUMENTOS_BUCKET).remove([path]);
-    console.error('Erro ao registar documento:', insertError);
-    return { success: false, error: `Erro ao registar documento: ${insertError.message}` };
+  for (const file of files) {
+    if (file.size === 0) {
+      erros.push(`${file.name}: ficheiro vazio`);
+      continue;
+    }
+    if (file.size > MAX_FICHEIRO_SIZE) {
+      erros.push(`${file.name}: ficheiro demasiado grande (máximo 20 MB)`);
+      continue;
+    }
+    if (!isTipoPermitido(file)) {
+      erros.push(`${file.name}: formato de ficheiro não suportado`);
+      continue;
+    }
+
+    const safeName = fixFilenameEncoding(file.name).replace(/[^a-zA-Z0-9._-]/g, '_');
+    const path = `${entidade}/${entidadeId}/${Date.now()}-${safeName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from(DOCUMENTOS_BUCKET)
+      .upload(path, file, { cacheControl: '3600', upsert: false });
+
+    if (uploadError) {
+      console.error('Erro no upload:', uploadError);
+      erros.push(`${file.name}: erro no upload`);
+      continue;
+    }
+
+    const { error: insertError } = await supabase
+      .from('documentos')
+      .insert({
+        entidade,
+        entidade_id: entidadeId,
+        categoria,
+        nombre: fixFilenameEncoding(file.name),
+        descricao,
+        referencia,
+        archivo_url: path,
+        archivo_size: file.size,
+        mime_type: file.type || null,
+        uploaded_by: user.id,
+      });
+
+    if (insertError) {
+      await supabase.storage.from(DOCUMENTOS_BUCKET).remove([path]);
+      console.error('Erro ao registar documento:', insertError);
+      erros.push(`${file.name}: erro ao registar`);
+      continue;
+    }
+
+    uploaded += 1;
   }
 
   const locale = await getLocale();
   revalidatePath(`/${locale}${ROTA_ENTIDADE[entidade]}`);
   revalidatePath(`/${locale}/documentos`);
-  return { success: true };
+
+  return {
+    success: uploaded > 0,
+    uploaded,
+    erros,
+    error: uploaded > 0 ? undefined : erros[0] || 'Erro ao carregar os ficheiros',
+  };
 }
 
 /**
