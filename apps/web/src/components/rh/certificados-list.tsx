@@ -238,7 +238,7 @@ export function CertificadosList({ items, colaboradores }: Props) {
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1">
                       <Button variant="ghost" size="icon" asChild title="Adicionar documento">
-                        <Link href={`/rh/certificados/${c.id}/edit#documentos`}>
+                        <Link href={`/rh/certificados?edit=${c.id}#documentos`}>
                           <Paperclip className="h-4 w-4" />
                         </Link>
                       </Button>
@@ -248,7 +248,7 @@ export function CertificadosList({ items, colaboradores }: Props) {
                         </Link>
                       </Button>
                       <Button variant="ghost" size="icon" asChild title="Editar">
-                        <Link href={`/rh/certificados/${c.id}/edit`}>
+                        <Link href={`/rh/certificados?edit=${c.id}`}>
                           <Pencil className="h-4 w-4" />
                         </Link>
                       </Button>
