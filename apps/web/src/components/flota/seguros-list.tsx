@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from '@/i18n/config';
+import { Link, useRouter } from '@/i18n/config';
 import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Plus, Trash2, AlertCircle, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { Plus, Trash2, FileDown, AlertCircle, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { createSeguro, updateSeguroEstado, deleteSeguro } from '@/actions/flota';
 import type { FlotaSeguroCompleto } from '@/actions/flota';
 import type { FlotaVehiculo } from '@/types/database';
@@ -273,6 +273,16 @@ export function SegurosList({ items, vehiculos, documentosCount }: Props) {
                           <option key={k} value={k}>{t(`estados.${k}`)}</option>
                         ))}
                       </Select>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        asChild
+                        title="Exportar PDF"
+                      >
+                        <Link href={`/flota/seguros/${s.id}/print`}>
+                          <FileDown className="h-4 w-4" />
+                        </Link>
+                      </Button>
                       <Button
                         variant="ghost"
                         size="icon"

@@ -68,6 +68,7 @@ export type EntidadeDocumento =
   | 'exames'
   | 'alojamientos'
   | 'flota_vehiculos'
+  | 'flota_conductores'
   | 'flota_itv'
   | 'flota_seguros'
   | 'flota_mantenimiento'
@@ -93,6 +94,7 @@ const ROTA_ENTIDADE: Record<EntidadeDocumento, string> = {
   exames: '/rh/exames',
   alojamientos: '/alojamientos',
   flota_vehiculos: '/flota/vehiculos',
+  flota_conductores: '/flota/conductores',
   flota_itv: '/flota/itv',
   flota_seguros: '/flota/seguros',
   flota_mantenimiento: '/flota/mantenimiento',

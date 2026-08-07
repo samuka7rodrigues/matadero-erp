@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from '@/i18n/config';
+import { Link, useRouter } from '@/i18n/config';
 import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Plus, Trash2, Pencil, AlertCircle, CheckCircle2, Truck } from 'lucide-react';
+import { Plus, Trash2, Pencil, FileDown, AlertCircle, CheckCircle2, Truck } from 'lucide-react';
 import { createVehiculo, updateVehiculo, deleteVehiculo } from '@/actions/flota';
 import type { FlotaVehiculo } from '@/types/database';
 import { MostrarTodos } from '@/components/common/mostrar-todos';
@@ -263,6 +263,11 @@ export function VehiculosList({ items, documentosCount }: Props) {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center justify-end gap-1">
+                      <Button variant="ghost" size="icon" asChild title="Exportar PDF">
+                        <Link href={`/flota/vehiculos/${v.id}/print`}>
+                          <FileDown className="h-4 w-4" />
+                        </Link>
+                      </Button>
                       <Button
                         variant="ghost"
                         size="icon"

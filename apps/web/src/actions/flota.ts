@@ -93,6 +93,16 @@ export async function listVehiculos(): Promise<FlotaVehiculo[]> {
   return (data || []) as FlotaVehiculo[];
 }
 
+export async function getVehiculo(id: string): Promise<FlotaVehiculo | null> {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from('flota_vehiculos')
+    .select('*')
+    .eq('id', id)
+    .single();
+  return (data || null) as FlotaVehiculo | null;
+}
+
 export async function createVehiculo(values: {
   matricula: string;
   marca: string;
@@ -161,6 +171,18 @@ export async function listConductores(): Promise<FlotaConductorCompleto[]> {
   return (data || []) as FlotaConductorCompleto[];
 }
 
+export async function getConductor(id: string): Promise<FlotaConductorCompleto | null> {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from('flota_conductores')
+    .select(
+      `*, vehiculos:vehiculo_id (id, matricula, marca, modelo), colaboradores (nombre, apellido1, apellido2)`
+    )
+    .eq('id', id)
+    .single();
+  return (data || null) as FlotaConductorCompleto | null;
+}
+
 export async function createConductor(values: {
   vehiculo_id: string;
   colaborador_id: string;
@@ -193,6 +215,16 @@ export async function listITVs(): Promise<FlotaITVCompleto[]> {
     .select(`*, vehiculos:vehiculo_id (id, matricula, marca, modelo)`)
     .order('fecha', { ascending: false });
   return (data || []) as FlotaITVCompleto[];
+}
+
+export async function getITV(id: string): Promise<FlotaITVCompleto | null> {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from('flota_itv')
+    .select(`*, vehiculos:vehiculo_id (id, matricula, marca, modelo)`)
+    .eq('id', id)
+    .single();
+  return (data || null) as FlotaITVCompleto | null;
 }
 
 export async function createITV(values: {
@@ -231,6 +263,16 @@ export async function listSeguros(): Promise<FlotaSeguroCompleto[]> {
     .select(`*, vehiculos:vehiculo_id (id, matricula, marca, modelo)`)
     .order('fecha_fin', { ascending: false });
   return (data || []) as FlotaSeguroCompleto[];
+}
+
+export async function getSeguro(id: string): Promise<FlotaSeguroCompleto | null> {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from('flota_seguros')
+    .select(`*, vehiculos:vehiculo_id (id, matricula, marca, modelo)`)
+    .eq('id', id)
+    .single();
+  return (data || null) as FlotaSeguroCompleto | null;
 }
 
 export async function createSeguro(values: {
@@ -274,6 +316,16 @@ export async function listMantenimientos(): Promise<FlotaMantenimientoCompleto[]
   return (data || []) as FlotaMantenimientoCompleto[];
 }
 
+export async function getMantenimiento(id: string): Promise<FlotaMantenimientoCompleto | null> {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from('flota_mantenimiento')
+    .select(`*, vehiculos:vehiculo_id (id, matricula, marca, modelo)`)
+    .eq('id', id)
+    .single();
+  return (data || null) as FlotaMantenimientoCompleto | null;
+}
+
 export async function createMantenimiento(values: {
   vehiculo_id: string;
   fecha: string;
@@ -313,6 +365,18 @@ export async function listCombustible(): Promise<FlotaCombustibleCompleto[]> {
     )
     .order('fecha', { ascending: false });
   return (data || []) as FlotaCombustibleCompleto[];
+}
+
+export async function getCombustible(id: string): Promise<FlotaCombustibleCompleto | null> {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from('flota_combustible')
+    .select(
+      `*, vehiculos:vehiculo_id (id, matricula, marca, modelo), colaboradores (nombre, apellido1, apellido2)`
+    )
+    .eq('id', id)
+    .single();
+  return (data || null) as FlotaCombustibleCompleto | null;
 }
 
 export async function createCombustible(values: {
@@ -356,6 +420,18 @@ export async function listKilometrajes(): Promise<FlotaKilometrajeCompleto[]> {
   return (data || []) as FlotaKilometrajeCompleto[];
 }
 
+export async function getKilometraje(id: string): Promise<FlotaKilometrajeCompleto | null> {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from('flota_kilometraje')
+    .select(
+      `*, vehiculos:vehiculo_id (id, matricula, marca, modelo), colaboradores (nombre, apellido1, apellido2)`
+    )
+    .eq('id', id)
+    .single();
+  return (data || null) as FlotaKilometrajeCompleto | null;
+}
+
 export async function createKilometraje(values: {
   vehiculo_id: string;
   fecha: string;
@@ -392,6 +468,18 @@ export async function listMultas(): Promise<FlotaMultaCompleto[]> {
     )
     .order('fecha', { ascending: false });
   return (data || []) as FlotaMultaCompleto[];
+}
+
+export async function getMulta(id: string): Promise<FlotaMultaCompleto | null> {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from('flota_multas')
+    .select(
+      `*, vehiculos:vehiculo_id (id, matricula, marca, modelo), colaboradores (nombre, apellido1, apellido2)`
+    )
+    .eq('id', id)
+    .single();
+  return (data || null) as FlotaMultaCompleto | null;
 }
 
 export async function createMulta(values: {

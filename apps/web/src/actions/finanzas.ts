@@ -370,6 +370,22 @@ export async function listCobros() {
   return { data: (data || []) as CobroCompleto[], error: null };
 }
 
+export async function getCobro(id: string): Promise<CobroCompleto | null> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('cobros')
+    .select('*, faturas (numero)')
+    .eq('id', id)
+    .is('deleted_at', null)
+    .single();
+
+  if (error) {
+    console.error('Erro ao obter cobro:', error);
+    return null;
+  }
+  return data as CobroCompleto;
+}
+
 export async function createCobro(
   data: CobroFormData
 ): Promise<{ success: boolean; error?: string; id?: string }> {
@@ -441,6 +457,22 @@ export async function listPagos() {
   return { data: (data || []) as Pago[], error: null };
 }
 
+export async function getPago(id: string): Promise<Pago | null> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('pagos')
+    .select('*')
+    .eq('id', id)
+    .is('deleted_at', null)
+    .single();
+
+  if (error) {
+    console.error('Erro ao obter pago:', error);
+    return null;
+  }
+  return data as Pago;
+}
+
 export async function createPago(
   data: PagoFormData
 ): Promise<{ success: boolean; error?: string; id?: string }> {
@@ -508,6 +540,22 @@ export async function listDespesas() {
     return { data: [] as DespesaCompleto[], error: error.message };
   }
   return { data: (data || []) as DespesaCompleto[], error: null };
+}
+
+export async function getDespesa(id: string): Promise<DespesaCompleto | null> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('despesas')
+    .select('*, clientes (nombre)')
+    .eq('id', id)
+    .is('deleted_at', null)
+    .single();
+
+  if (error) {
+    console.error('Erro ao obter despesa:', error);
+    return null;
+  }
+  return data as DespesaCompleto;
 }
 
 export async function createDespesa(
